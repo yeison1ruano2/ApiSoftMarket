@@ -41,7 +41,7 @@ public class FacturaServiceImpl implements FacturaService{
   @Override
   public ResponseEntity<FacturaDto> crearfactura(FacturaRequest facturaRequest) throws JsonProcessingException {
     FactusTokenResponse factusTokenResponse = authenticationService.authenticationFactus();
-    logger.info("Token Response: {} ",objectMapper.writeValueAsString(factusTokenResponse));
+
     //Crear factura en Factus
     try {
       FacturaResponse responseFactus =
@@ -54,9 +54,11 @@ public class FacturaServiceImpl implements FacturaService{
                       .retrieve()
                       .bodyToMono(FacturaResponse.class)
                       .block();
-      logger.info("Factus Response: {} ",objectMapper.writeValueAsString(responseFactus));
+
       assert responseFactus != null;
       FacturaDto facturaDto = facturaMapper.responseFactusToDto(responseFactus);
+      logger.info("Token Response: {} " + factusTokenResponse.getAccess_token());
+      logger.info("Factus Response: {} ",objectMapper.writeValueAsString(responseFactus));
       return ResponseEntity.ok(facturaDto);
     }catch(Exception e){
       logger.info("Error Response: " + e);
