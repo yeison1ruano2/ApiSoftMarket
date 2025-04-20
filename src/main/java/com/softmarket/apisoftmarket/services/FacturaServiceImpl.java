@@ -69,7 +69,7 @@ public class FacturaServiceImpl implements FacturaService{
 
       assert responseFactus != null;
       FacturaDto facturaDto = facturaMapper.responseFactusToDto(responseFactus);
-      logger.info("Token Response: ",factusTokenResponse.getAccess_token());
+      logger.info("Token Response: " + factusTokenResponse.getAccess_token());
       logger.info("Factus Response: {} ",objectMapper.writeValueAsString(responseFactus));
       return ResponseEntity.ok(facturaDto);
     }catch (FacturaException e) {
