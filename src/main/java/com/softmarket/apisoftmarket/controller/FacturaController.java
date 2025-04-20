@@ -1,5 +1,7 @@
 package com.softmarket.apisoftmarket.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softmarket.apisoftmarket.dto.FacturaDto;
 import com.softmarket.apisoftmarket.dto.FacturaRequest;
 import com.softmarket.apisoftmarket.services.FacturaService;
@@ -18,15 +20,18 @@ public class FacturaController {
 
   private final FacturaService facturaService;
 
+  private final ObjectMapper objectMapper;
+
   private static final Logger logger = LoggerFactory.getLogger(FacturaController.class);
 
-  public FacturaController(FacturaService facturaService) {
+  public FacturaController(FacturaService facturaService, ObjectMapper objectMapper) {
     this.facturaService = facturaService;
+    this.objectMapper = objectMapper;
   }
 
   @PostMapping("/create")
-  public ResponseEntity<FacturaDto> crearFactura(@RequestBody FacturaRequest facturaRequest){
-    logger.info("Factura",facturaRequest);
+  public ResponseEntity<FacturaDto> crearFactura(@RequestBody FacturaRequest facturaRequest) throws JsonProcessingException {
+    logger.info("Factura: {} ",objectMapper.writeValueAsString(facturaRequest));
     return facturaService.crearfactura(facturaRequest);
   }
 }
