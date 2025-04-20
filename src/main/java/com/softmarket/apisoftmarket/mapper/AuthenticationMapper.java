@@ -5,6 +5,10 @@ import com.softmarket.apisoftmarket.entity.FactusTokenResponse;
 import com.softmarket.apisoftmarket.repository.AuthorizationTokenRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
 @Service
 public class AuthenticationMapper {
   private final AuthorizationTokenRepository authorizationTokenRepository;
@@ -22,23 +26,31 @@ public class AuthenticationMapper {
   }
 
   public FactusTokenResponse factusResponseToAuthorizationTokenCreate(FactusTokenResponse factusTokenResponse) {
+    ZonedDateTime nowInColombia = ZonedDateTime.now(ZoneId.of("America/Bogota"));
+    ZonedDateTime expirationZoned = nowInColombia.plusSeconds(factusTokenResponse.getExpires_in());
+    LocalDateTime timeColombia = expirationZoned.toLocalDateTime();
     AuthorizationToken authorizationToken = new AuthorizationToken(
             factusTokenResponse.getAccess_token(),
             factusTokenResponse.getExpires_in(),
             factusTokenResponse.getRefresh_token(),
-            factusTokenResponse.getToken_type()
+            factusTokenResponse.getToken_type(),
+            timeColombia
     );
     authorizationTokenRepository.save(authorizationToken);
     return factusTokenResponse;
   }
 
   public FactusTokenResponse factusResponseToAuthorizationTokenRefresh(FactusTokenResponse factusTokenResponse, AuthorizationToken token) {
+    ZonedDateTime nowInColombia = ZonedDateTime.now(ZoneId.of("America/Bogota"));
+    ZonedDateTime expirationZoned = nowInColombia.plusSeconds(factusTokenResponse.getExpires_in());
+    LocalDateTime timeColombia = expirationZoned.toLocalDateTime();
     AuthorizationToken authorizationToken = new AuthorizationToken(
             token.getId(),
             factusTokenResponse.getAccess_token(),
             factusTokenResponse.getExpires_in(),
             factusTokenResponse.getRefresh_token(),
-            factusTokenResponse.getToken_type()
+            factusTokenResponse.getToken_type(),
+            timeColombia
     );
     authorizationTokenRepository.save(authorizationToken);
     return factusTokenResponse;

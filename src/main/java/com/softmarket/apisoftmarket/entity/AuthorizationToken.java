@@ -25,21 +25,21 @@ public class AuthorizationToken {
     this.token_type = token_type;
   }
 
-  public AuthorizationToken(Long id,String access_token, int expires_in, String refresh_token, String token_type) {
+  public AuthorizationToken(Long id,String access_token, int expires_in, String refresh_token, String token_type,LocalDateTime timeColombia) {
     this.access_token = access_token;
     this.expires_in = expires_in;
     this.refresh_token = refresh_token;
     this.token_type = token_type;
-    this.expiration_time = LocalDateTime.now().plusSeconds(expires_in);
+    this.expiration_time = timeColombia;
     this.id = id;
   }
 
-  public AuthorizationToken(String access_token, int expires_in, String refresh_token, String token_type) {
+  public AuthorizationToken(String access_token, int expires_in, String refresh_token, String token_type,LocalDateTime timeColombia) {
     this.access_token = access_token;
     this.expires_in = expires_in;
     this.refresh_token = refresh_token;
     this.token_type = token_type;
-    this.expiration_time = LocalDateTime.now().plusSeconds(expires_in);
+    this.expiration_time = timeColombia;
   }
 
   public AuthorizationToken() {
