@@ -1,11 +1,10 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/apisoftmarket
-    username: apisoftmarket
-    password: softmarket
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
     show-sql: false
@@ -14,5 +13,5 @@ server:
     include-message: always
 
 external-api:
-  authUrl: https://api-sandbox.factus.com.co/oauth/token
-  facturaUrl: https://api-sandbox.factus.com.co/v1/bills/validate
+  authUrl: ${AUTH_URL}
+  facturaUrl: ${FACTURA_CREATE_URL}
