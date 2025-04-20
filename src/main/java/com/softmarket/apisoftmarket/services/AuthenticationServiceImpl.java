@@ -16,8 +16,8 @@ public class AuthenticationServiceImpl implements  AuthenticationService{
 
   private final AuthenticationRepository authenticationRepository;
   private final AuthorizationTokenRepository authorizationTokenRepository;
-  private final AuthenticationMapper authenticationMapper;
   private final WebClientService webClientService;
+  private final AuthenticationMapper authenticationMapper;
 
   public AuthenticationServiceImpl(AuthenticationRepository authenticationRepository,
                                    AuthorizationTokenRepository authorizationTokenRepository,
