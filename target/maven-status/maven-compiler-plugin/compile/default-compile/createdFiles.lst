@@ -21,6 +21,7 @@ com\softmarket\apisoftmarket\services\AuthorizationTokenService.class
 com\softmarket\apisoftmarket\entity\CompanyResponse.class
 com\softmarket\apisoftmarket\entity\ItemResponse.class
 com\softmarket\apisoftmarket\entity\PaymentFormResponse.class
+com\softmarket\apisoftmarket\exception\FacturaException.class
 com\softmarket\apisoftmarket\entity\FactusTokenResponse.class
 com\softmarket\apisoftmarket\controller\FacturaController.class
 com\softmarket\apisoftmarket\entity\DocumentResponse.class
