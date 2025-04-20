@@ -59,6 +59,7 @@ public class FacturaServiceImpl implements FacturaService{
       FacturaDto facturaDto = facturaMapper.responseFactusToDto(responseFactus);
       return ResponseEntity.ok(facturaDto);
     }catch(Exception e){
+      logger.info("Error Response: " + e.getMessage());
       return ResponseEntity.ok(new FacturaDto(e.getMessage()));
     }
   }
