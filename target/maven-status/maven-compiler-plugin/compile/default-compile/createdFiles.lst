@@ -12,8 +12,10 @@ com\softmarket\apisoftmarket\entity\StandardCode.class
 com\softmarket\apisoftmarket\entity\RateResponse.class
 com\softmarket\apisoftmarket\services\WebClientService.class
 com\softmarket\apisoftmarket\entity\ExternalApiProperties.class
+com\softmarket\apisoftmarket\repository\ErrorFacturaRepository.class
 com\softmarket\apisoftmarket\dto\CustomerRequest.class
 com\softmarket\apisoftmarket\mapper\AuthenticationMapper.class
+com\softmarket\apisoftmarket\entity\ErrorFactura.class
 com\softmarket\apisoftmarket\dto\BillingPeriodRequest.class
 com\softmarket\apisoftmarket\entity\DataResponse.class
 com\softmarket\apisoftmarket\entity\Authentication.class
