@@ -20,9 +20,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.softmarket.apisoftmarket.mapper.FacturaMapper;
 import reactor.core.publisher.Mono;
 
-import java.util.Map;
-
-
 @Service
 public class FacturaServiceImpl implements FacturaService{
 
@@ -46,7 +43,7 @@ public class FacturaServiceImpl implements FacturaService{
   }
 
   @Override
-  public ResponseEntity<?> crearfactura(FacturaRequest facturaRequest) throws JsonProcessingException {
+  public ResponseEntity<FacturaDto> crearfactura(FacturaRequest facturaRequest) throws JsonProcessingException {
     FactusTokenResponse factusTokenResponse = authenticationService.authenticationFactus();
     //Crear factura en Factus
     try {
@@ -75,23 +72,27 @@ public class FacturaServiceImpl implements FacturaService{
     }catch (FacturaException e) {
       try {
         JsonNode errorJson = objectMapper.readTree(e.getBody());
+        String message = errorJson.has("message")
+                ?errorJson.get("message").asText()
+                :errorJson.toString();
+        FacturaDto facturaDto = facturaMapper.exceptionFacturaSave(e,facturaRequest,message);
         return ResponseEntity
                 .status(e.getStatus())
-                .body(errorJson);
+                .body(facturaDto);
       } catch (JsonProcessingException jsonEx) {
         logger.error("Error al parsear el cuerpo de error: {}", jsonEx.getMessage());
+        String message="Error al parsear cuerpo de error: " + jsonEx.getMessage();
+        FacturaDto facturaDto = facturaMapper.exceptionFacturaSave(e,facturaRequest,message);
         return ResponseEntity
                 .status(e.getStatus())
-                .body(Map.of("status", e.getStatus().value(), "message", e.getBody()));
+                .body(facturaDto);
       }
     } catch (Exception e) {
       logger.error("💥 Error inesperado: {}", e.getMessage());
+      FacturaDto facturaDto = facturaMapper.exceptionFactura500Save(e,facturaRequest);
       return ResponseEntity
               .status(HttpStatus.INTERNAL_SERVER_ERROR)
-              .body(Map.of(
-                      "status", 500,
-                      "message", "Error interno: " + e.getMessage()
-              ));
+              .body(facturaDto);
     }
   }
 }

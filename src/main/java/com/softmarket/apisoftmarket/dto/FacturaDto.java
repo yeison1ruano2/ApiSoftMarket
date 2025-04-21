@@ -8,11 +8,12 @@ public class FacturaDto {
   private String cufe;
   private String message;
 
-  public FacturaDto(String status,String cufe, String number, String reference_code) {
+  public FacturaDto(String status,String cufe, String number, String reference_code,String message) {
     this.cufe = cufe;
     this.number = number;
     this.reference_code = reference_code;
     this.status = status;
+    this.message = message;
   }
 
   public FacturaDto(String message) {
