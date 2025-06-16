@@ -1,6 +1,5 @@
 package com.softmarket.apisoftmarket.repository;
 
-import com.softmarket.apisoftmarket.dto.ClienteResponse;
 import com.softmarket.apisoftmarket.entity.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

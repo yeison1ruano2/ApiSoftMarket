@@ -4,6 +4,7 @@ import com.softmarket.apisoftmarket.dto.CategoriaRequest;
 import com.softmarket.apisoftmarket.dto.CategoriaResponse;
 import com.softmarket.apisoftmarket.dto.GenericResponse;
 import com.softmarket.apisoftmarket.entity.Categoria;
+import com.softmarket.apisoftmarket.exception.CategoriaException;
 import com.softmarket.apisoftmarket.mapper.CategoriaMapper;
 import com.softmarket.apisoftmarket.repository.CategoriaRepository;
 import com.softmarket.apisoftmarket.services.CategoriaService;
@@ -43,7 +44,7 @@ public class CategoriaServiceImpl implements CategoriaService {
 
   @Override
   public Categoria obtenerCategoriaNombre(String nombre) {
-    return categoriaRepository.findByNombre(nombre);
+    return categoriaRepository.findByNombre(nombre).orElseThrow(()->new CategoriaException("Categoria no encontrada"));
   }
 
   @Override

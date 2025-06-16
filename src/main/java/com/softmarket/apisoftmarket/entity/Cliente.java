@@ -17,24 +17,51 @@ public class Cliente {
 
   private String nombre;
   private String apellido;
+  @ManyToOne
+  @JoinColumn(name = "tipo_identificacion_id")
+  private TipoIdentificacion tipoIdentificacion;
   private String identificacion;
   private String telefono;
   private String direccion;
+  private String correoElectronico;
   private BigDecimal creditoMaximo;
   private BigDecimal cupoTotal;
+  @ManyToOne
+  @JoinColumn(name = "tipo_cliente_id")
+  private TipoCliente tipoCliente;
   @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
   @JsonBackReference
   private List<Venta> ventas = new ArrayList<>();
+  @OneToMany(mappedBy = "cliente",cascade = CascadeType.ALL)
+  private List<Cuenta> cuentas = new ArrayList<>();
 
-  public Cliente(Long id, String nombre, String apellido, String identificacion, String telefono, String direccion, BigDecimal creditoMaximo, BigDecimal cupoTotal) {
+  public Cliente(Long id, String nombre, String apellido, TipoIdentificacion tipoIdentificacion, String identificacion, String telefono, String direccion, String correoElectronico, BigDecimal creditoMaximo, BigDecimal cupoTotal, TipoCliente tipoCliente, List<Venta> ventas, List<Cuenta> cuentas) {
     this.id = id;
     this.nombre = nombre;
     this.apellido = apellido;
+    this.tipoIdentificacion = tipoIdentificacion;
     this.identificacion = identificacion;
     this.telefono = telefono;
     this.direccion = direccion;
+    this.correoElectronico = correoElectronico;
     this.creditoMaximo = creditoMaximo;
     this.cupoTotal = cupoTotal;
+    this.tipoCliente = tipoCliente;
+    this.ventas = ventas;
+    this.cuentas = cuentas;
+  }
+
+  public Cliente(String nombre, String apellido, TipoIdentificacion tipoIdentificacion, String identificacion, String telefono, String direccion, String correoElectronico, BigDecimal creditoMaximo, BigDecimal cupoTotal, TipoCliente tipoCliente) {
+    this.nombre = nombre;
+    this.apellido = apellido;
+    this.tipoIdentificacion = tipoIdentificacion;
+    this.identificacion = identificacion;
+    this.telefono = telefono;
+    this.direccion = direccion;
+    this.correoElectronico = correoElectronico;
+    this.creditoMaximo = creditoMaximo;
+    this.cupoTotal = cupoTotal;
+    this.tipoCliente = tipoCliente;
   }
 
   public Cliente() {
@@ -110,5 +137,37 @@ public class Cliente {
 
   public void setVentas(List<Venta> ventas) {
     this.ventas = ventas;
+  }
+
+  public String getCorreoElectronico() {
+    return correoElectronico;
+  }
+
+  public void setCorreoElectronico(String correoElectronico) {
+    this.correoElectronico = correoElectronico;
+  }
+
+  public TipoIdentificacion getTipoIdentificacion() {
+    return tipoIdentificacion;
+  }
+
+  public void setTipoIdentificacion(TipoIdentificacion tipoIdentificacion) {
+    this.tipoIdentificacion = tipoIdentificacion;
+  }
+
+  public List<Cuenta> getCuentas() {
+    return cuentas;
+  }
+
+  public void setCuentas(List<Cuenta> cuentas) {
+    this.cuentas = cuentas;
+  }
+
+  public TipoCliente getTipoCliente() {
+    return tipoCliente;
+  }
+
+  public void setTipoCliente(TipoCliente tipoCliente) {
+    this.tipoCliente = tipoCliente;
   }
 }

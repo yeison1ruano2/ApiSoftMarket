@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CategoriaRepository extends JpaRepository<Categoria,Long> {
@@ -17,5 +18,5 @@ public interface CategoriaRepository extends JpaRepository<Categoria,Long> {
   List<Categoria> findByNombreList(@Param("nombre") String nombre);
 
   @Query("SELECT c FROM Categoria c WHERE LOWER(c.nombre) LIKE LOWER(CONCAT('%',:nombre,'%'))")
-  Categoria findByNombre(@Param("nombre") String nombre);
+  Optional<Categoria> findByNombre(@Param("nombre") String nombre);
 }

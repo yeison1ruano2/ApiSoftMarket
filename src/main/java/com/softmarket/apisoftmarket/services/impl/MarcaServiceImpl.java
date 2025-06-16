@@ -4,6 +4,7 @@ import com.softmarket.apisoftmarket.dto.GenericResponse;
 import com.softmarket.apisoftmarket.dto.MarcaRequest;
 import com.softmarket.apisoftmarket.dto.MarcaResponse;
 import com.softmarket.apisoftmarket.entity.Marca;
+import com.softmarket.apisoftmarket.exception.MarcaException;
 import com.softmarket.apisoftmarket.mapper.MarcaMapper;
 import com.softmarket.apisoftmarket.repository.MarcaRepository;
 import com.softmarket.apisoftmarket.services.MarcaService;
@@ -63,6 +64,6 @@ public class MarcaServiceImpl implements MarcaService {
 
   @Override
   public Marca obtenerMarcaNombre(String nombre) {
-    return marcaRepository.findByNombre(nombre);
+    return marcaRepository.findByNombre(nombre).orElseThrow(() -> new MarcaException("Marca no encontrada"));
   }
 }

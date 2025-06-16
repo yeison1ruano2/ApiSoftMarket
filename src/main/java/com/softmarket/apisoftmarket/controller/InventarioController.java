@@ -3,7 +3,9 @@ package com.softmarket.apisoftmarket.controller;
 import com.softmarket.apisoftmarket.dto.GenericResponse;
 import com.softmarket.apisoftmarket.dto.InventarioRequestStock;
 import com.softmarket.apisoftmarket.dto.InventarioResponse;
+import com.softmarket.apisoftmarket.dto.StockResponse;
 import com.softmarket.apisoftmarket.services.InventarioService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +31,11 @@ public class InventarioController {
   @GetMapping("/{codigoBarras}")
   public ResponseEntity<InventarioResponse> verInventario(@PathVariable String codigoBarras) {
      return inventarioService.obtenerInventario(codigoBarras);
+  }
+
+  @GetMapping("/obtenerStock")
+  public ResponseEntity<StockResponse> obtenerStock(@RequestParam("codigoBarras") String codigoBarras){
+    return ResponseEntity.status(HttpStatus.OK).body(new StockResponse(inventarioService.obtenerStock(codigoBarras)));
   }
 
 }

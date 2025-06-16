@@ -3,7 +3,6 @@ package com.softmarket.apisoftmarket.services;
 import com.softmarket.apisoftmarket.dto.GenericResponse;
 import com.softmarket.apisoftmarket.dto.VentaRequest;
 import com.softmarket.apisoftmarket.dto.VentaResponse;
-import com.softmarket.apisoftmarket.entity.Venta;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
