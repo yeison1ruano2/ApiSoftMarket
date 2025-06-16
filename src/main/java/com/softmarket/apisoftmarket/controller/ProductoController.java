@@ -19,7 +19,7 @@ public class ProductoController {
   }
 
   @PostMapping()
-  public ResponseEntity<ProductoResponse> crearProducto(@RequestBody ProductoRequest productoRequest){
+  public ResponseEntity<GenericResponse> crearProducto(@RequestBody ProductoRequest productoRequest){
     return productoService.crearProducto(productoRequest);
   }
 

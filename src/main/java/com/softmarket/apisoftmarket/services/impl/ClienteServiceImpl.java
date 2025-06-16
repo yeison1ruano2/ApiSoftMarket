@@ -3,10 +3,14 @@ package com.softmarket.apisoftmarket.services.impl;
 import com.softmarket.apisoftmarket.dto.ClienteRequest;
 import com.softmarket.apisoftmarket.dto.ClienteResponse;
 import com.softmarket.apisoftmarket.dto.GenericResponse;
+import com.softmarket.apisoftmarket.entity.TipoIdentificacion;
 import com.softmarket.apisoftmarket.entity.Cliente;
+import com.softmarket.apisoftmarket.entity.TipoCliente;
 import com.softmarket.apisoftmarket.mapper.ClienteMapper;
 import com.softmarket.apisoftmarket.repository.ClienteRepository;
 import com.softmarket.apisoftmarket.services.ClienteService;
+import com.softmarket.apisoftmarket.services.TipoClienteService;
+import com.softmarket.apisoftmarket.services.TipoIdentificacionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,15 +23,21 @@ public class ClienteServiceImpl implements ClienteService {
 
   private final ClienteMapper clienteMapper;
   private final ClienteRepository clienteRepository;
+  private final TipoClienteService tipoClienteService;
+  private final TipoIdentificacionService tipoIdentificacionService;
 
-  public ClienteServiceImpl(ClienteMapper clienteMapper, ClienteRepository clienteRepository) {
+  public ClienteServiceImpl(ClienteMapper clienteMapper, ClienteRepository clienteRepository, TipoClienteService tipoClienteService, TipoIdentificacionService tipoIdentificacionService) {
     this.clienteMapper = clienteMapper;
     this.clienteRepository = clienteRepository;
+    this.tipoClienteService = tipoClienteService;
+    this.tipoIdentificacionService = tipoIdentificacionService;
   }
 
   @Override
   public ResponseEntity<GenericResponse> crearCliente(ClienteRequest clienteRequest) {
-    Cliente cliente = clienteMapper.requestToEntityCreate(clienteRequest);
+    TipoIdentificacion tipoIdentificacion = tipoIdentificacionService.obtenerTipoIdentificacionNombre(clienteRequest.getTipoIdentificacion());
+    TipoCliente tipoCliente =  tipoClienteService.obtenerTipoClienteNombre(clienteRequest.getTipoCliente());
+    Cliente cliente = clienteMapper.requestToEntityCreate(clienteRequest,tipoIdentificacion,tipoCliente);
     clienteRepository.save(cliente);
     return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse(HttpStatus.OK.getReasonPhrase(),"Cliente creado con éxito"));
   }

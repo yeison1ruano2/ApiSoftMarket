@@ -3,7 +3,6 @@ package com.softmarket.apisoftmarket.controller;
 import com.softmarket.apisoftmarket.dto.GenericResponse;
 import com.softmarket.apisoftmarket.dto.VentaRequest;
 import com.softmarket.apisoftmarket.dto.VentaResponse;
-import com.softmarket.apisoftmarket.entity.Venta;
 import com.softmarket.apisoftmarket.services.VentaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

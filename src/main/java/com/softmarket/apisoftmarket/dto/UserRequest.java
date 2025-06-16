@@ -1,5 +1,7 @@
 package com.softmarket.apisoftmarket.dto;
 
+import jakarta.validation.constraints.Email;
+
 public class UserRequest {
   private String nombre;
   private String apellido;

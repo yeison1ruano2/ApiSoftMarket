@@ -48,6 +48,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/marca/**").permitAll()
                 .requestMatchers("/api/clientes/**").permitAll()
                 .requestMatchers("/api/ventas/**").permitAll()
+                .requestMatchers("/api/metodoPago/**").permitAll()
             .anyRequest().permitAll())
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

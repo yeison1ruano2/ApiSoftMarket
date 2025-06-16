@@ -25,7 +25,9 @@ public class Venta {
 
   private Usuario usuario;
 
-  private String metodoDePago;
+  @ManyToOne
+  @JoinColumn(name="metodo_pago_id")
+  private MetodoDePago metodoDePago;
 
   private Long fecha;
 
@@ -37,7 +39,7 @@ public class Venta {
   @JsonManagedReference
   private List<DetalleVenta> detalles;
 
-  public Venta(Long id, String codigoFactura, Cliente cliente, Usuario usuario, String metodoDePago, Long fecha, BigDecimal total, boolean estado) {
+  public Venta(Long id, String codigoFactura, Cliente cliente, Usuario usuario, MetodoDePago metodoDePago, Long fecha, BigDecimal total, boolean estado) {
     this.id = id;
     this.codigoFactura = codigoFactura;
     this.cliente = cliente;
@@ -91,11 +93,11 @@ public class Venta {
     this.id = id;
   }
 
-  public String getMetodoDePago() {
+  public MetodoDePago getMetodoDePago() {
     return metodoDePago;
   }
 
-  public void setMetodoDePago(String metodoDePago) {
+  public void setMetodoDePago(MetodoDePago metodoDePago) {
     this.metodoDePago = metodoDePago;
   }
 

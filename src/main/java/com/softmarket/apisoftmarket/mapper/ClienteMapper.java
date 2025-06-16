@@ -2,22 +2,37 @@ package com.softmarket.apisoftmarket.mapper;
 
 import com.softmarket.apisoftmarket.dto.ClienteRequest;
 import com.softmarket.apisoftmarket.dto.ClienteResponse;
+import com.softmarket.apisoftmarket.entity.TipoIdentificacion;
 import com.softmarket.apisoftmarket.entity.Cliente;
+import com.softmarket.apisoftmarket.entity.TipoCliente;
+import com.softmarket.apisoftmarket.services.TipoClienteService;
+import com.softmarket.apisoftmarket.services.TipoIdentificacionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ClienteMapper {
-  public Cliente requestToEntityCreate(ClienteRequest clienteRequest) {
+
+  private final TipoClienteService tipoClienteService;
+  private final TipoIdentificacionService tipoIdentificacionService;
+
+  public ClienteMapper(TipoClienteService tipoClienteService, TipoIdentificacionService tipoIdentificacionService) {
+    this.tipoClienteService = tipoClienteService;
+    this.tipoIdentificacionService = tipoIdentificacionService;
+  }
+
+  public Cliente requestToEntityCreate(ClienteRequest clienteRequest, TipoIdentificacion tipoIdentificacion, TipoCliente tipoCliente) {
     return new Cliente(
-            null,
             clienteRequest.getNombre(),
             clienteRequest.getApellido(),
+            tipoIdentificacion,
             clienteRequest.getIdentificacion(),
             clienteRequest.getTelefono(),
             clienteRequest.getDireccion(),
+            clienteRequest.getCorreoElectronico(),
             clienteRequest.getCreditoMaximo(),
-            clienteRequest.getCupoTotal()
+            clienteRequest.getCupoTotal(),
+            tipoCliente
     );
   }
 
@@ -32,7 +47,7 @@ public class ClienteMapper {
             cliente.getCreditoMaximo(),
             cliente.getCupoTotal(),
             HttpStatus.OK.getReasonPhrase(),
-            "Cliente creado con éxito"
+            ""
     );
   }
 
@@ -44,6 +59,9 @@ public class ClienteMapper {
     cliente.setDireccion(clienteRequest.getDireccion());
     cliente.setCreditoMaximo(clienteRequest.getCreditoMaximo());
     cliente.setCupoTotal(clienteRequest.getCupoTotal());
+    cliente.setTipoCliente(tipoClienteService.obtenerTipoClienteNombre(clienteRequest.getTipoCliente()));
+    cliente.setCorreoElectronico(cliente.getCorreoElectronico());
+    cliente.setTipoIdentificacion(tipoIdentificacionService.obtenerTipoIdentificacionNombre(clienteRequest.getTipoIdentificacion()));
     return cliente;
   }
 }

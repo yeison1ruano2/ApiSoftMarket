@@ -5,6 +5,9 @@ import com.softmarket.apisoftmarket.dto.GenericResponse;
 import com.softmarket.apisoftmarket.dto.VentaRequest;
 import com.softmarket.apisoftmarket.dto.VentaResponse;
 import com.softmarket.apisoftmarket.entity.*;
+import com.softmarket.apisoftmarket.exception.ClienteException;
+import com.softmarket.apisoftmarket.exception.ProductoException;
+import com.softmarket.apisoftmarket.exception.UsuarioException;
 import com.softmarket.apisoftmarket.mapper.DetalleVentaMapper;
 import com.softmarket.apisoftmarket.mapper.VentaMapper;
 import com.softmarket.apisoftmarket.repository.*;
@@ -41,20 +44,20 @@ public class VentaServiceImpl implements VentaService {
 
   @Override
   public GenericResponse registrarVenta(VentaRequest ventaRequest) {
-    Cliente cliente = clienteRepository.findById(Long.parseLong(ventaRequest.getClienteId()))
-            .orElseThrow(()-> new RuntimeException("Cliente no encontrado"));
-    Usuario usuario = usuarioRepository.findById(Long.parseLong(ventaRequest.getUsuarioId()))
-            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-    Venta venta = new Venta();
-    AtomicReference<BigDecimal> totalVenta = new AtomicReference<>(BigDecimal.ZERO);
-    List<DetalleVenta> detalles = new ArrayList<>();
-    for(DetalleVentaRequest d: ventaRequest.getDetalles()){
-      DetalleVenta detalle = procesarDetalle(d,venta,totalVenta);
-      detalles.add(detalle);
-    }
-    Venta ventaCreate = ventaMapper.entityCreate(venta,cliente,usuario,ventaRequest.getMetodoDePago(),totalVenta.get(),detalles);
-    ventaRepository.save(ventaCreate);
-    return new GenericResponse(HttpStatus.OK.getReasonPhrase(),"Venta realizada con éxito");
+      Cliente cliente = clienteRepository.findById(Long.parseLong(ventaRequest.getClienteId()))
+              .orElseThrow(()->new ClienteException("Cliente no encontrado"));
+      Usuario usuario = usuarioRepository.findById(Long.parseLong(ventaRequest.getUsuarioId()))
+              .orElseThrow(()->new UsuarioException("Usuario no encontrado"));
+      Venta venta = new Venta();
+      AtomicReference<BigDecimal> totalVenta = new AtomicReference<>(BigDecimal.ZERO);
+      List<DetalleVenta> detalles = new ArrayList<>();
+      for(DetalleVentaRequest d: ventaRequest.getDetalles()){
+        DetalleVenta detalle = procesarDetalle(d,venta,totalVenta);
+        detalles.add(detalle);
+      }
+      Venta ventaCreate = ventaMapper.entityCreate(venta,cliente,usuario,ventaRequest.getMetodoDePago(),totalVenta.get(),detalles);
+      ventaRepository.save(ventaCreate);
+      return new GenericResponse(HttpStatus.OK.getReasonPhrase(),"Venta realizada con éxito");
   }
 
   @Override
@@ -72,12 +75,12 @@ public class VentaServiceImpl implements VentaService {
     return ResponseEntity.status(HttpStatus.OK).body(ventaResponseList);
   }
 
-  private DetalleVenta procesarDetalle(DetalleVentaRequest detalleRequest, Venta venta, AtomicReference<BigDecimal> totalVenta){
+  private DetalleVenta procesarDetalle(DetalleVentaRequest detalleRequest, Venta venta, AtomicReference<BigDecimal> totalVenta) {
     Long productoId = Long.parseLong(detalleRequest.getProductoId());
     int cantidad = detalleRequest.getCantidad();
 
     Producto producto = productoRepository.findById(productoId)
-            .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+            .orElseThrow(()->new ProductoException("Producto no encontrado"));
     BigDecimal precioUnitario = producto.getPrecioVenta();
     BigDecimal subtotal = precioUnitario.multiply(BigDecimal.valueOf(cantidad));
 

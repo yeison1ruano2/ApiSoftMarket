@@ -6,14 +6,25 @@ public class ClienteRequest {
 
   private String nombre;
   private String apellido;
+  private String tipoIdentificacion;
   private String identificacion;
   private String telefono;
   private String direccion;
+  private String correoElectronico;
   private BigDecimal creditoMaximo;
   private BigDecimal cupoTotal;
+  private String tipoCliente;
 
   public String getApellido() {
     return apellido;
+  }
+
+  public String getCorreoElectronico() {
+    return correoElectronico;
+  }
+
+  public void setCorreoElectronico(String correoElectronico) {
+    this.correoElectronico = correoElectronico;
   }
 
   public void setApellido(String apellido) {
@@ -66,5 +77,21 @@ public class ClienteRequest {
 
   public void setCreditoMaximo(BigDecimal creditoMaximo) {
     this.creditoMaximo = creditoMaximo;
+  }
+
+  public String getTipoCliente() {
+    return tipoCliente;
+  }
+
+  public void setTipoCliente(String tipoCliente) {
+    this.tipoCliente = tipoCliente;
+  }
+
+  public String getTipoIdentificacion() {
+    return tipoIdentificacion;
+  }
+
+  public void setTipoIdentificacion(String tipoIdentificacion) {
+    this.tipoIdentificacion = tipoIdentificacion;
   }
 }

@@ -4,8 +4,7 @@ import com.softmarket.apisoftmarket.dto.*;
 import com.softmarket.apisoftmarket.entity.Categoria;
 import com.softmarket.apisoftmarket.entity.Marca;
 import com.softmarket.apisoftmarket.entity.Producto;
-import com.softmarket.apisoftmarket.mapper.CategoriaMapper;
-import com.softmarket.apisoftmarket.mapper.MarcaMapper;
+import com.softmarket.apisoftmarket.exception.ProductoException;
 import com.softmarket.apisoftmarket.mapper.ProductoMapper;
 import com.softmarket.apisoftmarket.repository.ProductoRepository;
 import com.softmarket.apisoftmarket.services.*;
@@ -14,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class ProductoServiceImpl implements ProductoService {
@@ -22,35 +20,25 @@ public class ProductoServiceImpl implements ProductoService {
   private final ProductoRepository productoRepository;
   private final ProductoMapper productoMapper;
   private final InventarioService inventarioService;
-  private final CategoriaMapper categoriaMapper;
-  private final MarcaMapper marcaMapper;
   private final MarcaService marcaService;
   private final CategoriaService categoriaService;
 
-  public ProductoServiceImpl(ProductoRepository productoRepository, ProductoMapper productoMapper, InventarioService inventarioService, CategoriaMapper categoriaMapper, MarcaMapper marcaMapper, MarcaService marcaService, CategoriaService categoriaService) {
+  public ProductoServiceImpl(ProductoRepository productoRepository, ProductoMapper productoMapper, InventarioService inventarioService,  MarcaService marcaService, CategoriaService categoriaService) {
     this.productoRepository = productoRepository;
     this.productoMapper = productoMapper;
     this.inventarioService = inventarioService;
-    this.categoriaMapper = categoriaMapper;
-    this.marcaMapper = marcaMapper;
     this.marcaService = marcaService;
     this.categoriaService = categoriaService;
   }
 
   @Override
-  public ResponseEntity<ProductoResponse> crearProducto(ProductoRequest productoRequest) {
+  public ResponseEntity<GenericResponse> crearProducto(ProductoRequest productoRequest) {
     Marca marca = marcaService.obtenerMarcaNombre(productoRequest.getMarca());
     Categoria categoria = categoriaService.obtenerCategoriaNombre(productoRequest.getCategoria());
     Producto producto = productoMapper.requestToEntityCreate(productoRequest,marca,categoria);
     producto  = productoRepository.save(producto);
-    InventarioResponse inventarioResponse = inventarioService.crearStock(producto.getId(),productoRequest.getStockMinimo());
-    if(Objects.equals(inventarioResponse.getStatus(), HttpStatus.NOT_FOUND.getReasonPhrase())){
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ProductoResponse(inventarioResponse.getStatus(),inventarioResponse.getMensaje()));
-    }
-    MarcaResponse marcaResponse = marcaMapper.entityToResponse(marca);
-    CategoriaResponse categoriaResponse = categoriaMapper.entityToResponse(categoria);
-    ProductoResponse productoResponse = productoMapper.entityToResponseCreate(producto,marcaResponse,categoriaResponse);
-    return ResponseEntity.status(HttpStatus.CREATED).body(productoResponse);
+    inventarioService.crearInventario(producto.getId(),productoRequest.getStockMinimo());
+    return ResponseEntity.status(HttpStatus.CREATED).body(new GenericResponse(HttpStatus.CREATED.getReasonPhrase(), "Producto creado con éxito"));
   }
 
   /*@Override
@@ -67,9 +55,12 @@ public class ProductoServiceImpl implements ProductoService {
   @Override
   public ResponseEntity<List<ProductoResponse>> listarTodos() {
     List<ProductoResponse> productosResponse = productoRepository.findAll()
-            .stream()
-            .map(productoMapper::entityToResponse)
-            .toList();
+              .stream()
+              .map(productoMapper::entityToResponse)
+              .toList();
+    if(productosResponse.isEmpty()){
+      throw new ProductoException("Lista de productos vacia");
+    }
     return ResponseEntity.status(HttpStatus.OK).body(productosResponse);
   }
 
@@ -85,11 +76,11 @@ public class ProductoServiceImpl implements ProductoService {
 
   @Override
   public ResponseEntity<List<ProductoResponse>> obtenerProductoNombre(String nombre) {
-    List<ProductoResponse> productoResponses = productoRepository.findByNombre(nombre)
-            .stream()
-            .map(productoMapper::entityToResponse)
-            .toList();
-    return ResponseEntity.status(HttpStatus.OK).body(productoResponses);
+      List<ProductoResponse> productoResponses = productoRepository.findByNombre(nombre)
+              .stream()
+              .map(productoMapper::entityToResponse)
+              .toList();
+      return ResponseEntity.status(HttpStatus.OK).body(productoResponses);
   }
 
 

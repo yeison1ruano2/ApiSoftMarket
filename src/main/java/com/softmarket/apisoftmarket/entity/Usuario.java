@@ -2,6 +2,7 @@ package com.softmarket.apisoftmarket.entity;
 
 import com.softmarket.apisoftmarket.dto.Role;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +21,7 @@ public class Usuario implements UserDetails {
   private String identificacion;
   private String correo;
   private String telefono;
-  private boolean estado;
+  private Boolean estado;
   private String username;
   private String password;
   @Enumerated(EnumType.STRING)
@@ -118,11 +119,11 @@ public class Usuario implements UserDetails {
     this.username = username;
   }
 
-  public boolean isEstado() {
+  public Boolean isEstado() {
     return estado;
   }
 
-  public void setEstado(boolean estado) {
+  public void setEstado(Boolean estado) {
     this.estado = estado;
   }
 }

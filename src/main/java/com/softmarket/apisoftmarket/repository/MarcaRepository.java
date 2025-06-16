@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MarcaRepository extends JpaRepository<Marca,Long> {
@@ -14,6 +15,6 @@ public interface MarcaRepository extends JpaRepository<Marca,Long> {
   List<Marca> findByNombreList(@Param("nombre") String nombre);
 
   @Query("SELECT m FROM Marca m WHERE LOWER(m.nombre) LIKE LOWER(CONCAT('%',:nombre,'%'))")
-  Marca findByNombre(@Param("nombre") String nombre);
+  Optional<Marca> findByNombre(@Param("nombre") String nombre);
 
 }

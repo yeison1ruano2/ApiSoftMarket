@@ -9,6 +9,7 @@ import com.softmarket.apisoftmarket.entity.DetalleVenta;
 import com.softmarket.apisoftmarket.entity.Usuario;
 import com.softmarket.apisoftmarket.entity.Venta;
 import com.softmarket.apisoftmarket.services.ClienteService;
+import com.softmarket.apisoftmarket.services.MetodoDePagoService;
 import com.softmarket.apisoftmarket.services.UsuarioService;
 import org.springframework.stereotype.Service;
 
@@ -22,18 +23,20 @@ public class VentaMapper {
   private final DetalleVentaMapper detalleVentaMapper;
   private final ClienteService clienteService;
   private final UsuarioService usuarioService;
+  private final MetodoDePagoService metodoDePagoService;
 
-  public VentaMapper(DetalleVentaMapper detalleVentaMapper, ClienteService clienteService, UsuarioService usuarioService) {
+  public VentaMapper(DetalleVentaMapper detalleVentaMapper, ClienteService clienteService, UsuarioService usuarioService, MetodoDePagoService metodoDePagoService) {
     this.detalleVentaMapper = detalleVentaMapper;
     this.usuarioService = usuarioService;
     this.clienteService = clienteService;
+    this.metodoDePagoService = metodoDePagoService;
   }
 
   public Venta entityCreate(Venta venta, Cliente cliente, Usuario usuario, String metodoDePago, BigDecimal totalVenta, List<DetalleVenta> detalles) {
     venta.setCliente(cliente);
     venta.setUsuario(usuario);
     venta.setFecha(Instant.now().toEpochMilli());
-    venta.setMetodoDePago(metodoDePago);
+    venta.setMetodoDePago(metodoDePagoService.obtenerMetodoPagoTermino(metodoDePago));
     venta.setCodigoFactura("FAC-"+System.currentTimeMillis());
     venta.setEstado(true);
     venta.setTotal(totalVenta);
@@ -57,8 +60,6 @@ public class VentaMapper {
             detalleVentaResponseList
 
     );
-
-
   }
 
   public List<VentaResponse> convertEntityToResponseList(List<Venta> ventaList) {
