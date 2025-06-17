@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/apisoftmarket
-    username: apisoftmarket
-    password: softmarket
+    url: jdbc:postgresql://ep-rapid-grass-a4m42ube-pooler.us-east-1.aws.neon.tech/neondb&sslmode=require
+    username: neondb_owner
+    password: npg_29oYLCIbMuvF
     driver-class-name: org.postgresql.Driver
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
