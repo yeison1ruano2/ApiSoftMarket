@@ -2,7 +2,7 @@ package com.softmarket.apisoftmarket.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class NumberingRange {
+public class NumberingRangeResponse {
 
   private String prefix;
   private int from;

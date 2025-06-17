@@ -3,7 +3,7 @@ package com.softmarket.apisoftmarket.entity;
 public class CustomerResponse {
 
   private String identification;
-  private Object dv;
+  private String dv;
   private String graphic_representation_name;
   private String trade_name;
   private String company;
@@ -31,11 +31,11 @@ public class CustomerResponse {
     this.company = company;
   }
 
-  public Object getDv() {
+  public String getDv() {
     return dv;
   }
 
-  public void setDv(Object dv) {
+  public void setDv(String dv) {
     this.dv = dv;
   }
 

@@ -1,6 +1,6 @@
 package com.softmarket.apisoftmarket.dto;
 
-public class WithholdingTax {
+public class WithholdingTaxRequest {
 
   private String code;
   private String withholding_tax_rate;
