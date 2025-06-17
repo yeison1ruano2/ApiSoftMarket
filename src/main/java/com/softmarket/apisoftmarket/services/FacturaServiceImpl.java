@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softmarket.apisoftmarket.dto.FacturaDto;
 import com.softmarket.apisoftmarket.dto.FacturaRequest;
 import com.softmarket.apisoftmarket.entity.ExternalApiProperties;
-import com.softmarket.apisoftmarket.entity.FacturaResponse;
+import com.softmarket.apisoftmarket.dto.FacturaResponse;
 import com.softmarket.apisoftmarket.entity.FactusTokenResponse;
 import com.softmarket.apisoftmarket.exception.FacturaException;
 import org.slf4j.Logger;
@@ -43,10 +43,11 @@ public class FacturaServiceImpl implements FacturaService{
   }
 
   @Override
-  public ResponseEntity<FacturaDto> crearfactura(FacturaRequest facturaRequest) throws JsonProcessingException {
+  public ResponseEntity<?> crearfactura(FacturaRequest facturaRequest) throws JsonProcessingException {
     FactusTokenResponse factusTokenResponse = authenticationService.authenticationFactus();
+
+    try{
     //Crear factura en Factus
-    try {
       FacturaResponse responseFactus =
               webClientBuilder.build()
                       .post()
@@ -58,17 +59,18 @@ public class FacturaServiceImpl implements FacturaService{
                       .onStatus(HttpStatusCode::isError, response ->
                               response.bodyToMono(String.class).flatMap(errorBody -> {
                                 HttpStatus statusCode = (HttpStatus) response.statusCode();
+                                System.err.println("❌ ERROR FACTUS BODY: " + errorBody);
                                 return Mono.error(new FacturaException(statusCode, errorBody));
                               })
                       )
                       .bodyToMono(FacturaResponse.class)
                       .block();
-
       assert responseFactus != null;
       FacturaDto facturaDto = facturaMapper.responseFactusToDto(responseFactus);
       logger.info("Token Response: " + factusTokenResponse.getAccess_token());
       logger.info("Factus Response: {} ",objectMapper.writeValueAsString(responseFactus));
       return ResponseEntity.ok(facturaDto);
+
     }catch (FacturaException e) {
       try {
         JsonNode errorJson = objectMapper.readTree(e.getBody());
@@ -94,5 +96,32 @@ public class FacturaServiceImpl implements FacturaService{
               .status(HttpStatus.INTERNAL_SERVER_ERROR)
               .body(facturaDto);
     }
+
+    /*catch (FacturaException e) {
+      try {
+        JsonNode errorJson = objectMapper.readTree(e.getBody());
+        String message = errorJson.has("message")
+                ?errorJson.get("message").asText()
+                :errorJson.toString();
+        FacturaDto facturaDto = facturaMapper.exceptionFacturaSave(e,facturaRequest,message);
+        return ResponseEntity
+                .status(e.getStatus())
+                .body(facturaDto);
+      } catch (JsonProcessingException jsonEx) {
+        logger.error("Error al parsear el cuerpo de error: {}", jsonEx.getMessage());
+        String message="Error al parsear cuerpo de error: " + jsonEx.getMessage();
+        FacturaDto facturaDto = facturaMapper.exceptionFacturaSave(e,facturaRequest,message);
+        return ResponseEntity
+                .status(e.getStatus())
+                .body(facturaDto);
+      }
+    } catch (Exception e) {
+      logger.error("💥 Error inesperado: {}", e.getMessage());
+      FacturaDto facturaDto = facturaMapper.exceptionFactura500Save(e,facturaRequest);
+      return ResponseEntity
+              .status(HttpStatus.INTERNAL_SERVER_ERROR)
+              .body(facturaDto);
+    }
+    */
   }
 }

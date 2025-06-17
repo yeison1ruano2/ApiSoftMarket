@@ -1,19 +1,22 @@
-package com.softmarket.apisoftmarket.entity;
+package com.softmarket.apisoftmarket.dto;
 
+import com.softmarket.apisoftmarket.entity.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class DataResponse {
 
   private CompanyResponse company;
   private CustomerResponse customer;
-  private NumberingRange numbering_range;
-  private List<Object> billing_period;
+  private NumberingRangeResponse numbering_range;
+  private BilingPeriodResponse billing_period;
   private BillResponse bill;
-  private List<Object> related_documents;
-  private List<ItemResponse> item;
+  private List<Object> related_documents = new ArrayList<>();
+  private List<ItemResponse> items;
   private List<WithholdingTaxisResponse> withholding_taxes;
-  private List<Object> credit_notes;
-  private List<Object> debit_notes;
+  private List<Object> credit_notes = new ArrayList<>();
+  private List<Object> debit_notes = new ArrayList<>();
 
   public BillResponse getBill() {
     return bill;
@@ -23,11 +26,11 @@ public class DataResponse {
     this.bill = bill;
   }
 
-  public List<Object> getBilling_period() {
+  public BilingPeriodResponse getBilling_period() {
     return billing_period;
   }
 
-  public void setBilling_period(List<Object> billing_period) {
+  public void setBilling_period(BilingPeriodResponse billing_period) {
     this.billing_period = billing_period;
   }
 
@@ -64,18 +67,18 @@ public class DataResponse {
   }
 
   public List<ItemResponse> getItems() {
-    return item;
+    return items;
   }
 
   public void setItems(List<ItemResponse> item) {
-    this.item = item;
+    this.items = item;
   }
 
-  public NumberingRange getNumbering_range() {
+  public NumberingRangeResponse getNumbering_range() {
     return numbering_range;
   }
 
-  public void setNumbering_range(NumberingRange numbering_range) {
+  public void setNumbering_range(NumberingRangeResponse numbering_range) {
     this.numbering_range = numbering_range;
   }
 

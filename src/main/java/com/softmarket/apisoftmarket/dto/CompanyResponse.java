@@ -1,4 +1,4 @@
-package com.softmarket.apisoftmarket.entity;
+package com.softmarket.apisoftmarket.dto;
 
 public class CompanyResponse {
   private String url_logo;

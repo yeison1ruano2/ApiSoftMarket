@@ -37,8 +37,8 @@ public class ApiSoftMarketApplication implements CommandLineRunner {
     }*/
 		if (authenticationRepository.findByUsername("sandbox@factus.com.co").isEmpty()) {
 			Authentication auth = new Authentication();
-			auth.setClient_id("9de1ceb1-0a11-44c0-b8f9-e2f743cb7427");
-			auth.setClient_secret("lf8JRkDhDSnPVoadfo5FIZmKkPNpNw51AhNTFbxD");
+			auth.setClient_id("9ed98af2-5a02-47f2-b2be-992e34b4c5d7");
+			auth.setClient_secret("vHntJnJw4nBrx1HkztDbdh4VtBEPrBuBbYbknizg");
 			auth.setGran_type("password");
 			auth.setUsername("sandbox@factus.com.co");
 			auth.setPassword("sandbox2024%");

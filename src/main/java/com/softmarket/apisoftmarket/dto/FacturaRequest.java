@@ -14,6 +14,8 @@ public class FacturaRequest {
   private CustomerRequest customer;
   private List<ItemRequest> items;
 
+  
+
   public BillingPeriodRequest getBilling_period() {
     return billing_period;
   }

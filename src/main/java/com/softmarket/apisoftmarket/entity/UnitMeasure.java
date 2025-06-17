@@ -1,7 +1,7 @@
 package com.softmarket.apisoftmarket.entity;
 
 public class UnitMeasure {
-  private int id;
+  private Integer id;
   private String code;
   private String name;
 
@@ -13,11 +13,11 @@ public class UnitMeasure {
     this.code = code;
   }
 
-  public int getId() {
+  public Integer getId() {
     return id;
   }
 
-  public void setId(int id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 

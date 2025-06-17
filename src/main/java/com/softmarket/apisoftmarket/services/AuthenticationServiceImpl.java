@@ -37,7 +37,7 @@ public class AuthenticationServiceImpl implements  AuthenticationService{
     }
     AuthorizationToken token = authorizationTokenOptional.get();
     if(token.getExpiration_time().isBefore(LocalDateTime.now())){
-      return AuthenticationRefreshToken();
+      return authenticationRefreshToken();
     }
     return authenticationMapper.tokenToFactusResponse(token);
   }
@@ -53,7 +53,7 @@ public class AuthenticationServiceImpl implements  AuthenticationService{
     return authenticationMapper.factusResponseToAuthorizationTokenCreate(factusTokenResponse);
   }
 
-  private FactusTokenResponse AuthenticationRefreshToken() {
+  private FactusTokenResponse authenticationRefreshToken() {
     Optional<Authentication> authenticationOptional  = authenticationRepository.findFirstAuthentication();
     if(authenticationOptional.isEmpty()){
       return new FactusTokenResponse();

@@ -1,15 +1,19 @@
 package com.softmarket.apisoftmarket.entity;
 
+import com.softmarket.apisoftmarket.dto.OperationTypeResponse;
+
 import java.util.List;
 
 public class BillResponse {
 
-  private int id;
+  private Integer id;
   private DocumentResponse document;
   private String number;
   private String reference_code;
-  private int status;
-  private int send_email;
+  private OperationTypeResponse operation_type;
+  private String order_reference;
+  private Integer status;
+  private Integer send_email;
   private String qr;
   private String cufe;
   private String validated;
@@ -19,16 +23,32 @@ public class BillResponse {
   private String taxable_amount;
   private String tax_amount;
   private String total;
-  private Object observation;
+  private String observation;
   private List<String> errors;
   private String created_at;
-  private Object payment_due_date;
+  private String payment_due_date;
   private String qr_image;
-  private int has_claim;
-  private int is_negotiable_instrument;
+  private Integer has_claim;
+  private Integer is_negotiable_instrument;
   private PaymentFormResponse payment_form;
   private PaymentMethodResponse payment_method;
   private String public_url;
+
+  public String getOrder_reference() {
+    return order_reference;
+  }
+
+  public void setOrder_reference(String order_reference) {
+    this.order_reference = order_reference;
+  }
+
+  public OperationTypeResponse getOperation_type() {
+    return operation_type;
+  }
+
+  public void setOperation_type(OperationTypeResponse operation_type) {
+    this.operation_type = operation_type;
+  }
 
   public String getCreated_at() {
     return created_at;
@@ -66,8 +86,8 @@ public class BillResponse {
     return document;
   }
 
-  public void setDocument(DocumentResponse documentResponse) {
-    this.document = documentResponse;
+  public void setDocument(DocumentResponse document) {
+    this.document = document;
   }
 
   public List<String> getErrors() {
@@ -86,27 +106,27 @@ public class BillResponse {
     this.gross_value = gross_value;
   }
 
-  public int getHas_claim() {
+  public Integer getHas_claim() {
     return has_claim;
   }
 
-  public void setHas_claim(int has_claim) {
+  public void setHas_claim(Integer has_claim) {
     this.has_claim = has_claim;
   }
 
-  public int getId() {
+  public Integer getId() {
     return id;
   }
 
-  public void setId(int id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 
-  public int getIs_negotiable_instrument() {
+  public Integer getIs_negotiable_instrument() {
     return is_negotiable_instrument;
   }
 
-  public void setIs_negotiable_instrument(int is_negotiable_instrument) {
+  public void setIs_negotiable_instrument(Integer is_negotiable_instrument) {
     this.is_negotiable_instrument = is_negotiable_instrument;
   }
 
@@ -118,19 +138,19 @@ public class BillResponse {
     this.number = number;
   }
 
-  public Object getObservation() {
+  public String getObservation() {
     return observation;
   }
 
-  public void setObservation(Object observation) {
+  public void setObservation(String observation) {
     this.observation = observation;
   }
 
-  public Object getPayment_due_date() {
+  public String getPayment_due_date() {
     return payment_due_date;
   }
 
-  public void setPayment_due_date(Object payment_due_date) {
+  public void setPayment_due_date(String payment_due_date) {
     this.payment_due_date = payment_due_date;
   }
 
@@ -182,19 +202,19 @@ public class BillResponse {
     this.reference_code = reference_code;
   }
 
-  public int getSend_email() {
+  public Integer getSend_email() {
     return send_email;
   }
 
-  public void setSend_email(int send_email) {
+  public void setSend_email(Integer send_email) {
     this.send_email = send_email;
   }
 
-  public int getStatus() {
+  public Integer getStatus() {
     return status;
   }
 
-  public void setStatus(int status) {
+  public void setStatus(Integer status) {
     this.status = status;
   }
 

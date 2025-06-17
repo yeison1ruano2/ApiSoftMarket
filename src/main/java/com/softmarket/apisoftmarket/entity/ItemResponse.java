@@ -4,9 +4,11 @@ import java.util.List;
 
 public class ItemResponse {
 
+  private String scheme_id;
+  private String note;
   private String code_reference;
   private String name;
-  private int quantity;
+  private Integer quantity;
   private String discount_rate;
   private String discount;
   private String gross_value;
@@ -14,12 +16,37 @@ public class ItemResponse {
   private String taxable_amount;
   private String tax_amount;
   private String price;
-  private int is_excluded;
+  private Integer is_excluded;
   private UnitMeasure unit_measure;
   private StandardCode standard_code;
   private TributeResponse tribute;
-  private int total;
+  private Integer total;
   private List<WithholdingTaxisResponse> withholding_taxes;
+  private String mandate;
+
+  public String getNote() {
+    return note;
+  }
+
+  public void setNote(String note) {
+    this.note = note;
+  }
+
+  public String getScheme_id() {
+    return scheme_id;
+  }
+
+  public void setScheme_id(String scheme_id) {
+    this.scheme_id = scheme_id;
+  }
+
+  public String getMandate() {
+    return mandate;
+  }
+
+  public void setMandate(String mandate) {
+    this.mandate = mandate;
+  }
 
   public String getCode_reference() {
     return code_reference;
@@ -53,11 +80,11 @@ public class ItemResponse {
     this.gross_value = gross_value;
   }
 
-  public int getIs_excluded() {
+  public Integer getIs_excluded() {
     return is_excluded;
   }
 
-  public void setIs_excluded(int is_excluded) {
+  public void setIs_excluded(Integer is_excluded) {
     this.is_excluded = is_excluded;
   }
 
@@ -77,11 +104,11 @@ public class ItemResponse {
     this.price = price;
   }
 
-  public int getQuantity() {
+  public Integer getQuantity() {
     return quantity;
   }
 
-  public void setQuantity(int quantity) {
+  public void setQuantity(Integer quantity) {
     this.quantity = quantity;
   }
 
@@ -117,11 +144,11 @@ public class ItemResponse {
     this.taxable_amount = taxable_amount;
   }
 
-  public int getTotal() {
+  public Integer getTotal() {
     return total;
   }
 
-  public void setTotal(int total) {
+  public void setTotal(Integer total) {
     this.total = total;
   }
 
@@ -129,8 +156,8 @@ public class ItemResponse {
     return tribute;
   }
 
-  public void setTribute(TributeResponse tributeResponse) {
-    this.tribute = tributeResponse;
+  public void setTribute(TributeResponse tribute) {
+    this.tribute = tribute;
   }
 
   public UnitMeasure getUnit_measure() {

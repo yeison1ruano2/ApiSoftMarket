@@ -6,7 +6,7 @@ import com.softmarket.apisoftmarket.dto.FacturaDto;
 import com.softmarket.apisoftmarket.dto.FacturaRequest;
 import com.softmarket.apisoftmarket.entity.ErrorFactura;
 import com.softmarket.apisoftmarket.entity.Factura;
-import com.softmarket.apisoftmarket.entity.FacturaResponse;
+import com.softmarket.apisoftmarket.dto.FacturaResponse;
 import com.softmarket.apisoftmarket.exception.FacturaException;
 import com.softmarket.apisoftmarket.repository.ErrorFacturaRepository;
 import com.softmarket.apisoftmarket.repository.FacturaRepository;

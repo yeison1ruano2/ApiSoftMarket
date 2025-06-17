@@ -1,17 +1,17 @@
-package com.softmarket.apisoftmarket.entity;
+package com.softmarket.apisoftmarket.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class NumberingRangeResponse {
 
   private String prefix;
-  private int from;
+  private Integer from;
   @JsonProperty("to")
-  private int myto;
+  private Integer to;
   private String resolution_number;
   private String start_date;
   private String end_date;
-  private int months;
+  private Integer months;
 
   public String getEnd_date() {
     return end_date;
@@ -21,28 +21,20 @@ public class NumberingRangeResponse {
     this.end_date = end_date;
   }
 
-  public int getFrom() {
+  public Integer getFrom() {
     return from;
   }
 
-  public void setFrom(int from) {
+  public void setFrom(Integer from) {
     this.from = from;
   }
 
-  public int getMonths() {
+  public Integer getMonths() {
     return months;
   }
 
-  public void setMonths(int months) {
+  public void setMonths(Integer months) {
     this.months = months;
-  }
-
-  public int getMyto() {
-    return myto;
-  }
-
-  public void setMyto(int myto) {
-    this.myto = myto;
   }
 
   public String getPrefix() {
@@ -67,5 +59,13 @@ public class NumberingRangeResponse {
 
   public void setStart_date(String start_date) {
     this.start_date = start_date;
+  }
+
+  public Integer getTo() {
+    return to;
+  }
+
+  public void setTo(Integer to) {
+    this.to = to;
   }
 }

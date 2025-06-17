@@ -1,4 +1,8 @@
-package com.softmarket.apisoftmarket.entity;
+package com.softmarket.apisoftmarket.dto;
+
+import com.softmarket.apisoftmarket.entity.LegalOrganizationResponse;
+import com.softmarket.apisoftmarket.entity.MunicipalityResponse;
+import com.softmarket.apisoftmarket.entity.TributeResponse;
 
 public class CustomerResponse {
 

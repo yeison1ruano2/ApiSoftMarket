@@ -1,4 +1,4 @@
-package com.softmarket.apisoftmarket.entity;
+package com.softmarket.apisoftmarket.dto;
 
 public class FacturaResponse {
   private String status;
