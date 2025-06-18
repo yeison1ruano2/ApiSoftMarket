@@ -57,18 +57,13 @@ public class FacturaServiceImpl implements FacturaService{
                       .bodyValue(facturaRequest)
                       .retrieve()
                       .onStatus(HttpStatusCode::isError, response ->
-                              response.bodyToMono(String.class).flatMap(errorBody -> {
-                                HttpStatus statusCode = (HttpStatus) response.statusCode();
-                                System.err.println("❌ ERROR FACTUS BODY: " + errorBody);
-                                return Mono.error(new FacturaException(statusCode, errorBody));
-                              })
-                      )
+                                response.bodyToMono(String.class).flatMap(errorBody ->
+                                        Mono.error(new FacturaException((HttpStatus) response.statusCode(),errorBody))
+                                ))
                       .bodyToMono(FacturaResponse.class)
                       .block();
       assert responseFactus != null;
       FacturaDto facturaDto = facturaMapper.responseFactusToDto(responseFactus);
-      logger.info("Token Response: " + factusTokenResponse.getAccess_token());
-      logger.info("Factus Response: {} ",objectMapper.writeValueAsString(responseFactus));
       return ResponseEntity.ok(facturaDto);
 
     }catch (FacturaException e) {
@@ -96,32 +91,5 @@ public class FacturaServiceImpl implements FacturaService{
               .status(HttpStatus.INTERNAL_SERVER_ERROR)
               .body(facturaDto);
     }
-
-    /*catch (FacturaException e) {
-      try {
-        JsonNode errorJson = objectMapper.readTree(e.getBody());
-        String message = errorJson.has("message")
-                ?errorJson.get("message").asText()
-                :errorJson.toString();
-        FacturaDto facturaDto = facturaMapper.exceptionFacturaSave(e,facturaRequest,message);
-        return ResponseEntity
-                .status(e.getStatus())
-                .body(facturaDto);
-      } catch (JsonProcessingException jsonEx) {
-        logger.error("Error al parsear el cuerpo de error: {}", jsonEx.getMessage());
-        String message="Error al parsear cuerpo de error: " + jsonEx.getMessage();
-        FacturaDto facturaDto = facturaMapper.exceptionFacturaSave(e,facturaRequest,message);
-        return ResponseEntity
-                .status(e.getStatus())
-                .body(facturaDto);
-      }
-    } catch (Exception e) {
-      logger.error("💥 Error inesperado: {}", e.getMessage());
-      FacturaDto facturaDto = facturaMapper.exceptionFactura500Save(e,facturaRequest);
-      return ResponseEntity
-              .status(HttpStatus.INTERNAL_SERVER_ERROR)
-              .body(facturaDto);
-    }
-    */
   }
 }

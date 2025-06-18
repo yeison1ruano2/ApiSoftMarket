@@ -61,7 +61,7 @@ public class AuthenticationServiceImpl implements  AuthenticationService{
     Authentication authentication = authenticationOptional.get();
     authentication.setGran_type("refresh_token");
     Optional<AuthorizationToken> authorizationTokenOptional = authorizationTokenRepository.findFirstAuthentication();
-    AuthorizationToken token = authorizationTokenOptional.get();
+    AuthorizationToken token = authorizationTokenOptional.orElseThrow();
     FactusTokenResponse factusTokenResponse = webClientService.authenticationRefresh(authentication,token);
     assert factusTokenResponse != null;
     return authenticationMapper.factusResponseToAuthorizationTokenRefresh(factusTokenResponse,token);
