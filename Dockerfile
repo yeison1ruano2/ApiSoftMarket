@@ -1,5 +1,5 @@
 # Dockerfile
-FROM eclipse-temurin:17-jdk-alpine
+FROM openjdk:17-jdk-slim
 
 # Crea un directorio de trabajo
 WORKDIR /app

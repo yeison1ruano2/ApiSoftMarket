@@ -1,6 +1,5 @@
 package com.softmarket.apisoftmarket.entity;
 
-import com.softmarket.apisoftmarket.dto.FacturaRequest;
 import jakarta.persistence.*;
 
 @Entity
