@@ -27,6 +27,7 @@ com\softmarket\apisoftmarket\entity\TipoIdentificacion.class
 com\softmarket\apisoftmarket\dto\BillingPeriodRequest.class
 com\softmarket\apisoftmarket\mapper\TokenMapper.class
 com\softmarket\apisoftmarket\services\AuthorizationTokenService.class
+com\softmarket\apisoftmarket\controller\GenericController.class
 com\softmarket\apisoftmarket\dto\GenericResponse.class
 com\softmarket\apisoftmarket\entity\ItemResponse.class
 com\softmarket\apisoftmarket\entity\FactusTokenResponse.class

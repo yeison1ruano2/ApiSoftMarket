@@ -45,6 +45,7 @@ public class SecurityConfig {
             .requestMatchers("/api/auth/**").permitAll()
 
                 .requestMatchers("/api/factura/**").permitAll()
+                .requestMatchers("/api/generic/**").permitAll()
                 .requestMatchers("/api/productos/**").hasAnyRole(ADMIN)
                 .requestMatchers("/api/usuarios/**").hasRole(ADMIN)
                 .requestMatchers("/api/inventario/entrada/**").hasRole(ADMIN)//hasAnyRole(ADMIN,CAJERO)
