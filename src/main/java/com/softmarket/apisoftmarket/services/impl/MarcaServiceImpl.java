@@ -29,7 +29,7 @@ public class MarcaServiceImpl implements MarcaService {
   public ResponseEntity<GenericResponse> crearMarca(MarcaRequest marcaRequest) {
     Marca marca = marcaMapper.requestToEntityCreate(marcaRequest);
     marcaRepository.save(marca);
-    return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse(HttpStatus.OK.getReasonPhrase(),"Marca creada con éxito"));
+    return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse(HttpStatus.OK.hashCode(),"Marca creada con éxito"));
   }
 
   @Override
@@ -38,9 +38,9 @@ public class MarcaServiceImpl implements MarcaService {
             .map(marca -> {
               marca = marcaMapper.requestToEntityUpdate(marca,marcaRequest);
               marcaRepository.save(marca);
-              return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse(HttpStatus.OK.getReasonPhrase(),"Marca actualiazada con éxito"));
+              return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse(HttpStatus.OK.value(),"Marca actualiazada con éxito"));
             })
-            .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(new GenericResponse(HttpStatus.NOT_FOUND.getReasonPhrase(),"Marca no encontrada")));
+            .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(new GenericResponse(HttpStatus.NOT_FOUND.value(),"Marca no encontrada")));
   }
 
   @Override

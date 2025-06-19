@@ -1,12 +1,12 @@
 package com.softmarket.apisoftmarket.dto;
 
 public class UserResponse {
-  private String status;
+  private Integer status;
   private String token;
   private String nombre;
   private String mensaje;
 
-  public UserResponse(String status,String token,String nombre,String mensaje) {
+  public UserResponse(Integer status,String token,String nombre,String mensaje) {
     this.status = status;
     this.token = token;
     this.nombre= nombre;
@@ -29,11 +29,11 @@ public class UserResponse {
     this.mensaje = mensaje;
   }
 
-  public String getStatus() {
+  public Integer getStatus() {
     return status;
   }
 
-  public void setStatus(String status) {
+  public void setStatus(Integer status) {
     this.status = status;
   }
 

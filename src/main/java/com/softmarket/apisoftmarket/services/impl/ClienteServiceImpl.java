@@ -6,6 +6,7 @@ import com.softmarket.apisoftmarket.dto.GenericResponse;
 import com.softmarket.apisoftmarket.entity.TipoIdentificacion;
 import com.softmarket.apisoftmarket.entity.Cliente;
 import com.softmarket.apisoftmarket.entity.TipoCliente;
+import com.softmarket.apisoftmarket.exception.ClienteException;
 import com.softmarket.apisoftmarket.mapper.ClienteMapper;
 import com.softmarket.apisoftmarket.repository.ClienteRepository;
 import com.softmarket.apisoftmarket.services.ClienteService;
@@ -39,7 +40,7 @@ public class ClienteServiceImpl implements ClienteService {
     TipoCliente tipoCliente =  tipoClienteService.obtenerTipoClienteNombre(clienteRequest.getTipoCliente());
     Cliente cliente = clienteMapper.requestToEntityCreate(clienteRequest,tipoIdentificacion,tipoCliente);
     clienteRepository.save(cliente);
-    return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse(HttpStatus.OK.getReasonPhrase(),"Cliente creado con éxito"));
+    return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse(HttpStatus.OK.value(),"Cliente creado con éxito"));
   }
 
   @Override
@@ -64,16 +65,16 @@ public class ClienteServiceImpl implements ClienteService {
   public ResponseEntity<GenericResponse> actualizarCliente(String id, ClienteRequest clienteRequest) {
     Optional<Cliente> clienteOptional =  clienteRepository.findById(Long.parseLong(id));
     if(clienteOptional.isEmpty()){
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new GenericResponse(HttpStatus.NOT_FOUND.getReasonPhrase(), "Cliente no encontrado"));
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new GenericResponse(HttpStatus.NOT_FOUND.value(), "Cliente no encontrado"));
     }
     Cliente clienteUpdated =  clienteMapper.mapCliente(clienteOptional.get(),clienteRequest);
     clienteRepository.save(clienteUpdated);
-    return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse(HttpStatus.OK.getReasonPhrase(), "Cliente actualizado con éxito"));
+    return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse(HttpStatus.OK.value(), "Cliente actualizado con éxito"));
   }
 
   @Override
   public ClienteResponse obtenerClienteId(Long id) {
-    Cliente cliente =  clienteRepository.findById(id).get();
+    Cliente cliente =  clienteRepository.findById(id).orElseThrow(()-> new ClienteException("Cliente no encontrado"));
     return new ClienteResponse(
             cliente.getNombre(),
             cliente.getApellido(),

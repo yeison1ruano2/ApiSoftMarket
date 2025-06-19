@@ -2,13 +2,13 @@ package com.softmarket.apisoftmarket.dto;
 
 public class DetalleVentaRequest {
   private String productoId;
-  private int cantidad;
+  private Integer cantidad;
 
-  public int getCantidad() {
+  public Integer getCantidad() {
     return cantidad;
   }
 
-  public void setCantidad(int cantidad) {
+  public void setCantidad(Integer cantidad) {
     this.cantidad = cantidad;
   }
 

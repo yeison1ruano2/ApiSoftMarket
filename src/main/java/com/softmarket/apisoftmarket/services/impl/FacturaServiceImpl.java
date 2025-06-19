@@ -36,7 +36,7 @@ public class FacturaServiceImpl implements FacturaService {
   }
 
   @Override
-  public ResponseEntity<FacturaDto> crearfactura(FacturaRequest facturaRequest) throws JsonProcessingException {
+  public ResponseEntity<?> crearfactura(FacturaRequest facturaRequest) throws JsonProcessingException {
     try {
       FactusTokenResponse factusTokenResponse = authenticationService.authenticationFactus();
       FacturaResponse responseFactus = webClientService.enviarFacturaAFactus(facturaRequest,factusTokenResponse);

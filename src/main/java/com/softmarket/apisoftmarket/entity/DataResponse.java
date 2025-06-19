@@ -1,5 +1,7 @@
 package com.softmarket.apisoftmarket.entity;
 
+import com.softmarket.apisoftmarket.dto.BillingPeriodResponse;
+
 import java.util.List;
 
 public class DataResponse {
@@ -7,7 +9,7 @@ public class DataResponse {
   private CompanyResponse company;
   private CustomerResponse customer;
   private NumberingRange numbering_range;
-  private List<Object> billing_period;
+  private BillingPeriodResponse billing_period;
   private BillResponse bill;
   private List<Object> related_documents;
   private List<ItemResponse> item;
@@ -23,11 +25,11 @@ public class DataResponse {
     this.bill = bill;
   }
 
-  public List<Object> getBilling_period() {
+  public BillingPeriodResponse getBilling_period() {
     return billing_period;
   }
 
-  public void setBilling_period(List<Object> billing_period) {
+  public void setBilling_period(BillingPeriodResponse billing_period) {
     this.billing_period = billing_period;
   }
 

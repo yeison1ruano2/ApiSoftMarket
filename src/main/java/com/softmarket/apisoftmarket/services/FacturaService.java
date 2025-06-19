@@ -6,5 +6,5 @@ import com.softmarket.apisoftmarket.dto.FacturaRequest;
 import org.springframework.http.ResponseEntity;
 
 public interface FacturaService {
-  ResponseEntity<FacturaDto> crearfactura(FacturaRequest facturaRequest) throws JsonProcessingException;
+  ResponseEntity<?> crearfactura(FacturaRequest facturaRequest) throws JsonProcessingException;
 }

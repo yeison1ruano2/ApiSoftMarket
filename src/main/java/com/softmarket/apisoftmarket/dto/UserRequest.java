@@ -1,10 +1,9 @@
 package com.softmarket.apisoftmarket.dto;
 
-import jakarta.validation.constraints.Email;
-
 public class UserRequest {
   private String nombre;
   private String apellido;
+  private String tipoIdentificacion;
   private String identificacion;
   private String correo;
   private String telefono;
@@ -12,18 +11,12 @@ public class UserRequest {
   private String password;
   private Role role;
 
-
-  public UserRequest() {
+  public String getTipoIdentificacion() {
+    return tipoIdentificacion;
   }
 
-  public UserRequest(String apellido, String correo, String identificacion, String nombre, String password, String telefono, String username) {
-    this.apellido = apellido;
-    this.correo = correo;
-    this.identificacion = identificacion;
-    this.nombre = nombre;
-    this.password = password;
-    this.telefono = telefono;
-    this.username = username;
+  public void setTipoIdentificacion(String tipoIdentificacion) {
+    this.tipoIdentificacion = tipoIdentificacion;
   }
 
   public Role getRole() {

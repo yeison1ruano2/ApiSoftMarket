@@ -2,7 +2,6 @@ package com.softmarket.apisoftmarket.entity;
 
 import com.softmarket.apisoftmarket.dto.Role;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,28 +17,68 @@ public class Usuario implements UserDetails {
   private Long id;
   private String nombre;
   private String apellido;
+  @ManyToOne
+  @JoinColumn(name="tipo_identificacion_id")
+  private TipoIdentificacion tipoIdentificacion;
   private String identificacion;
   private String correo;
   private String telefono;
   private Boolean estado;
+  @Column(unique = true)
   private String username;
   private String password;
   @Enumerated(EnumType.STRING)
   private Role roles;
+  @OneToMany(mappedBy = "usuario")
+  private List<Token> tokens;
 
   public Usuario() {
   }
 
-  public Usuario(String nombre, String apellido, String identificacion, String correo, String telefono, String username, String password,Role roles, boolean estado) {
+  public Usuario(Long id, String nombre, String apellido, TipoIdentificacion tipoIdentificacion, String identificacion, String correo, String telefono, Boolean estado, String username, String password, Role roles) {
+    this.id = id;
     this.nombre = nombre;
     this.apellido = apellido;
+    this.tipoIdentificacion = tipoIdentificacion;
     this.identificacion = identificacion;
     this.correo = correo;
     this.telefono = telefono;
+    this.estado = estado;
     this.username = username;
     this.password = password;
     this.roles = roles;
+  }
+  public Usuario(String nombre, String apellido, TipoIdentificacion tipoIdentificacion, String identificacion, String correo, String telefono, Boolean estado, String username, String password, Role roles) {
+    this.nombre = nombre;
+    this.apellido = apellido;
+    this.tipoIdentificacion = tipoIdentificacion;
+    this.identificacion = identificacion;
+    this.correo = correo;
+    this.telefono = telefono;
     this.estado = estado;
+    this.username = username;
+    this.password = password;
+    this.roles = roles;
+  }
+
+  public List<Token> getTokens() {
+    return tokens;
+  }
+
+  public void setTokens(List<Token> tokens) {
+    this.tokens = tokens;
+  }
+
+  public Boolean getEstado() {
+    return estado;
+  }
+
+  public TipoIdentificacion getTipoIdentificacion() {
+    return tipoIdentificacion;
+  }
+
+  public void setTipoIdentificacion(TipoIdentificacion tipoIdentificacion) {
+    this.tipoIdentificacion = tipoIdentificacion;
   }
 
   public Role getRoles() {

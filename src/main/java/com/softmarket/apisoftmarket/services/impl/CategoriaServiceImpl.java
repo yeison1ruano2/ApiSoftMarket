@@ -29,7 +29,7 @@ public class CategoriaServiceImpl implements CategoriaService {
   public ResponseEntity<GenericResponse> crearCategoria(CategoriaRequest categoriaRequest) {
     Categoria categoria = categoriaMapper.requestToEntityCreate(categoriaRequest);
     categoriaRepository.save(categoria);
-    return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse(HttpStatus.OK.getReasonPhrase(), "Categoria creada con éxito"));
+    return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse(HttpStatus.OK.value(), "Categoria creada con éxito"));
   }
 
   @Override
@@ -54,9 +54,9 @@ public class CategoriaServiceImpl implements CategoriaService {
             .map(categoria ->{
               categoria = categoriaMapper.requestToEntityUpdate(categoria,categoriaRequest);
               categoriaRepository.save(categoria);
-              return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse(HttpStatus.OK.getReasonPhrase(), "Categoria actualizada con éxito"));
+              return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse(HttpStatus.OK.value(), "Categoria actualizada con éxito"));
             })
-            .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(new GenericResponse(HttpStatus.NOT_FOUND.getReasonPhrase(),"Categoria no encontrado")));
+            .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(new GenericResponse(HttpStatus.NOT_FOUND.value(),"Categoria no encontrado")));
   }
 
 

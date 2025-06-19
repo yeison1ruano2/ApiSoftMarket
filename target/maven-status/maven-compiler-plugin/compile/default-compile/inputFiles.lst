@@ -10,6 +10,7 @@ D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarke
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\controller\UsuarioController.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\controller\VentaController.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\dto\BillingPeriodRequest.java
+D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\dto\BillingPeriodResponse.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\dto\CategoriaRequest.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\dto\CategoriaResponse.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\dto\ClienteRequest.java
@@ -66,10 +67,12 @@ D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarke
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\entity\PaymentMethodResponse.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\entity\Producto.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\entity\RateResponse.java
+D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\entity\RequestLog.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\entity\Rol.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\entity\StandardCode.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\entity\TipoCliente.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\entity\TipoIdentificacion.java
+D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\entity\Token.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\entity\TributeResponse.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\entity\UnitMeasure.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\entity\Usuario.java
@@ -77,6 +80,8 @@ D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarke
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\entity\WithholdingTaxisResponse.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\exception\CategoriaException.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\exception\ClienteException.java
+D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\exception\CustomAccessDeniedHandler.java
+D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\exception\CustomAuthenticationEntryPoint.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\exception\FacturaException.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\exception\GlobalExceptionHandler.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\exception\InventarioException.java
@@ -84,6 +89,7 @@ D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarke
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\exception\MetodoPagoException.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\exception\ProductoException.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\exception\StockException.java
+D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\exception\TokenException.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\exception\UsuarioException.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\mapper\AuthenticationMapper.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\mapper\AuthMapper.java
@@ -95,6 +101,7 @@ D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarke
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\mapper\MarcaMapper.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\mapper\MetodoDePagoMapper.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\mapper\ProductoMapper.java
+D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\mapper\TokenMapper.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\mapper\VentaMapper.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\repository\AuthenticationRepository.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\repository\AuthorizationTokenRepository.java
@@ -108,14 +115,17 @@ D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarke
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\repository\MetodoDePagoRepository.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\repository\MovimientoInventarioRepository.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\repository\ProductoRepository.java
+D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\repository\RequestLogRepository.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\repository\RolRepository.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\repository\TipoClienteRepository.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\repository\TipoIdentificacionRepository.java
+D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\repository\TokenRepository.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\repository\UserRepository.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\repository\UsuarioRepository.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\repository\VentaRepository.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\security\JwtAuthenticationFilter.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\security\PasswordConfig.java
+D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\security\RequestLoggingFilter.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\security\SecurityConfig.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\AuthenticationService.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\AuthorizationTokenService.java
@@ -134,6 +144,7 @@ D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarke
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\impl\MetodoDePagoServiceImpl.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\impl\MovimientoInventarioServiceImpl.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\impl\ProductoServiceImpl.java
+D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\impl\RequestLogServiceImpl.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\impl\TipoClienteServiceImpl.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\impl\TipoIdentificacionServiceImpl.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\impl\UserServiceImpl.java
@@ -145,6 +156,7 @@ D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarke
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\MetodoDePagoService.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\MovimientoInventarioService.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\ProductoService.java
+D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\RequestLogService.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\TipoClienteService.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\TipoIdentificacionService.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\UserService.java

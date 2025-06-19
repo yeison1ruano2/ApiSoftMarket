@@ -1,5 +1,7 @@
 package com.softmarket.apisoftmarket.security;
 
+import com.softmarket.apisoftmarket.exception.CustomAccessDeniedHandler;
+import com.softmarket.apisoftmarket.exception.CustomAuthenticationEntryPoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,9 +25,13 @@ public class SecurityConfig {
   private static final String CAJERO = "CAJERO";
 
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
+  private final CustomAccessDeniedHandler customAccessDeniedHandler;
+  private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
-  public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+  public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, CustomAccessDeniedHandler customAccessDeniedHandler, CustomAuthenticationEntryPoint customAuthenticationEntryPoint) {
     this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    this.customAccessDeniedHandler = customAccessDeniedHandler;
+    this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
   }
 
   @Bean
@@ -39,18 +45,21 @@ public class SecurityConfig {
             .requestMatchers("/api/auth/**").permitAll()
 
                 .requestMatchers("/api/factura/**").permitAll()
-                .requestMatchers("/api/productos/**").permitAll()
+                .requestMatchers("/api/productos/**").hasAnyRole(ADMIN)
                 .requestMatchers("/api/usuarios/**").hasRole(ADMIN)
-                .requestMatchers("/api/inventario/entrada/**").permitAll()//hasAnyRole(ADMIN,CAJERO)
-                .requestMatchers("/api/inventario/salida/**").hasAnyRole(ADMIN,CAJERO)
-                .requestMatchers("/api/inventario/**").permitAll()//hasAnyRole(ADMIN, CAJERO)
-                .requestMatchers("/api/categoria/**").permitAll()
-                .requestMatchers("/api/marca/**").permitAll()
-                .requestMatchers("/api/clientes/**").permitAll()
-                .requestMatchers("/api/ventas/**").permitAll()
-                .requestMatchers("/api/metodoPago/**").permitAll()
-            .anyRequest().permitAll())
-        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .requestMatchers("/api/inventario/entrada/**").hasRole(ADMIN)//hasAnyRole(ADMIN,CAJERO)
+                .requestMatchers("/api/inventario/salida/**").hasRole(ADMIN)
+                .requestMatchers("/api/inventario/**").hasRole(ADMIN)//hasAnyRole(ADMIN, CAJERO)
+                .requestMatchers("/api/categoria/**").hasRole(ADMIN)
+                .requestMatchers("/api/marca/**").hasRole(ADMIN)
+                .requestMatchers("/api/clientes/**").hasRole(ADMIN)
+                .requestMatchers("/api/ventas/**").hasRole(ADMIN)
+                .requestMatchers("/api/metodoPago/**").hasRole(ADMIN)
+            .anyRequest().permitAll());
+            /*.exceptionHandling(exception -> exception
+                    .accessDeniedHandler(customAccessDeniedHandler)
+                    .authenticationEntryPoint(customAuthenticationEntryPoint))*/
+        /*.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);*/
 
     return http.build();
   }
@@ -58,7 +67,7 @@ public class SecurityConfig {
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(List.of("http://localhost:4200")); // <-- TU FRONTEND
+    configuration.addAllowedOriginPattern("*"); // <-- TU FRONTEND
     configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
     configuration.setAllowedHeaders(List.of("*"));
     configuration.setAllowCredentials(true);

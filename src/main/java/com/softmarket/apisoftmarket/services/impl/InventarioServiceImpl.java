@@ -48,7 +48,7 @@ public class InventarioServiceImpl implements InventarioService {
 
     MovimientoInventario movimientoInventario = new MovimientoInventario(null,inventario, "ENTRADA",cantidadNueva);
     movimientoRepository.save(movimientoInventario);
-    return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse(HttpStatus.OK.getReasonPhrase(),"Stock ingresado con éxito"));
+    return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse(HttpStatus.OK.value(),"Stock ingresado con éxito"));
   }
 
   @Override
@@ -70,7 +70,7 @@ public class InventarioServiceImpl implements InventarioService {
             cantidad
     );
     movimientoRepository.save(movimientoInventario);
-    return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse(HttpStatus.OK.getReasonPhrase(),"Stock retirado con éxito"));
+    return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse(HttpStatus.OK.value(),"Stock retirado con éxito"));
   }
 
   @Override
