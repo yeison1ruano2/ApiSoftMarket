@@ -4,14 +4,17 @@ import com.softmarket.apisoftmarket.repository.UserRepository;
 import com.softmarket.apisoftmarket.services.impl.JwtService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
 @Component
-public class JwtAuthenticationFilter implements Filter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   private final JwtService jwtService;
   private final UserRepository userRepository;
@@ -22,17 +25,21 @@ public class JwtAuthenticationFilter implements Filter {
   }
 
   @Override
-  public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-    var httpReq = (HttpServletRequest) request;
-    String authHeader = httpReq.getHeader("Authorization");
+  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+    final String authHeader = request.getHeader("Authorization");
+    if(authHeader == null || !authHeader.startsWith("Bearer ")){
+      chain.doFilter(request,response);
+      return;
+    }
+    final String jwt = authHeader.substring(7);
+    final String username = jwtService.extractUsername(jwt);
 
-    if(authHeader != null && authHeader.startsWith("Bearer ")){
-      String token = authHeader.substring(7);
-      String username = jwtService.extractUsername(token);
-
-      var user = userRepository.findByUsername(username).orElse(null);
-      if(user != null){
+    if(username != null && SecurityContextHolder.getContext().getAuthentication() == null){
+      var userOptional = userRepository.findByUsername(username);
+      if(userOptional.isPresent() && jwtService.isValid(jwt,userOptional.get())){
+        var user = userOptional.get();
         var authToken = new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
+        authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authToken);
       }
     }

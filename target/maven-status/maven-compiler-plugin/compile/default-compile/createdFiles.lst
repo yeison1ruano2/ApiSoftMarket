@@ -21,9 +21,11 @@ com\softmarket\apisoftmarket\services\impl\UserServiceImpl.class
 com\softmarket\apisoftmarket\dto\MarcaResponse.class
 com\softmarket\apisoftmarket\mapper\DetalleVentaMapper.class
 com\softmarket\apisoftmarket\services\MetodoDePagoService.class
+com\softmarket\apisoftmarket\repository\TokenRepository.class
 com\softmarket\apisoftmarket\dto\MarcaRequest.class
 com\softmarket\apisoftmarket\entity\TipoIdentificacion.class
 com\softmarket\apisoftmarket\dto\BillingPeriodRequest.class
+com\softmarket\apisoftmarket\mapper\TokenMapper.class
 com\softmarket\apisoftmarket\services\AuthorizationTokenService.class
 com\softmarket\apisoftmarket\dto\GenericResponse.class
 com\softmarket\apisoftmarket\entity\ItemResponse.class
@@ -34,6 +36,7 @@ com\softmarket\apisoftmarket\dto\CategoriaResponse.class
 com\softmarket\apisoftmarket\dto\WithholdingTax.class
 com\softmarket\apisoftmarket\entity\Categoria.class
 com\softmarket\apisoftmarket\repository\ClienteRepository.class
+com\softmarket\apisoftmarket\services\impl\RequestLogServiceImpl.class
 com\softmarket\apisoftmarket\dto\InventarioRequest.class
 com\softmarket\apisoftmarket\dto\VentaResponse.class
 com\softmarket\apisoftmarket\services\TipoClienteService.class
@@ -65,6 +68,7 @@ com\softmarket\apisoftmarket\exception\CategoriaException.class
 com\softmarket\apisoftmarket\exception\MetodoPagoException.class
 com\softmarket\apisoftmarket\services\impl\TipoClienteServiceImpl.class
 com\softmarket\apisoftmarket\mapper\AuthenticationMapper.class
+com\softmarket\apisoftmarket\exception\TokenException.class
 com\softmarket\apisoftmarket\entity\MovimientoInventario.class
 com\softmarket\apisoftmarket\services\impl\TipoIdentificacionServiceImpl.class
 com\softmarket\apisoftmarket\controller\MarcaController.class
@@ -86,6 +90,7 @@ com\softmarket\apisoftmarket\dto\Role.class
 com\softmarket\apisoftmarket\dto\UserRequest.class
 com\softmarket\apisoftmarket\services\impl\JwtService.class
 com\softmarket\apisoftmarket\exception\ProductoException.class
+com\softmarket\apisoftmarket\repository\RequestLogRepository.class
 com\softmarket\apisoftmarket\entity\Cuenta.class
 com\softmarket\apisoftmarket\repository\UsuarioRepository.class
 com\softmarket\apisoftmarket\entity\StandardCode.class
@@ -105,11 +110,13 @@ com\softmarket\apisoftmarket\services\InventarioService.class
 com\softmarket\apisoftmarket\controller\FacturaController.class
 com\softmarket\apisoftmarket\services\UsuarioService.class
 com\softmarket\apisoftmarket\repository\UserRepository.class
+com\softmarket\apisoftmarket\entity\RequestLog.class
 com\softmarket\apisoftmarket\entity\Venta.class
 com\softmarket\apisoftmarket\controller\ClienteController.class
 com\softmarket\apisoftmarket\entity\Cliente.class
 com\softmarket\apisoftmarket\entity\Rol.class
 com\softmarket\apisoftmarket\repository\InventarioRepository.class
+com\softmarket\apisoftmarket\services\RequestLogService.class
 com\softmarket\apisoftmarket\entity\MunicipalityResponse.class
 com\softmarket\apisoftmarket\services\AuthenticationService.class
 com\softmarket\apisoftmarket\services\impl\MarcaServiceImpl.class
@@ -121,10 +128,14 @@ com\softmarket\apisoftmarket\exception\GlobalExceptionHandler.class
 com\softmarket\apisoftmarket\services\impl\CategoriaServiceImpl.class
 com\softmarket\apisoftmarket\entity\Usuario.class
 com\softmarket\apisoftmarket\repository\RolRepository.class
+com\softmarket\apisoftmarket\security\RequestLoggingFilter.class
 com\softmarket\apisoftmarket\dto\ClienteRequest.class
 com\softmarket\apisoftmarket\repository\ProductoRepository.class
 com\softmarket\apisoftmarket\entity\Factura.class
 com\softmarket\apisoftmarket\mapper\FacturaMapper.class
+com\softmarket\apisoftmarket\dto\BillingPeriodResponse.class
+com\softmarket\apisoftmarket\exception\CustomAccessDeniedHandler.class
+com\softmarket\apisoftmarket\exception\CustomAuthenticationEntryPoint.class
 com\softmarket\apisoftmarket\entity\Marca.class
 com\softmarket\apisoftmarket\exception\ClienteException.class
 com\softmarket\apisoftmarket\dto\CustomerRequest.class
@@ -139,6 +150,7 @@ com\softmarket\apisoftmarket\controller\CategoriaController.class
 com\softmarket\apisoftmarket\entity\DocumentResponse.class
 com\softmarket\apisoftmarket\entity\NumberingRange.class
 com\softmarket\apisoftmarket\services\FacturaService.class
+com\softmarket\apisoftmarket\entity\Token.class
 com\softmarket\apisoftmarket\mapper\ClienteMapper.class
 com\softmarket\apisoftmarket\controller\InventarioController.class
 com\softmarket\apisoftmarket\services\impl\WebClientService.class

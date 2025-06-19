@@ -57,7 +57,7 @@ public class VentaServiceImpl implements VentaService {
       }
       Venta ventaCreate = ventaMapper.entityCreate(venta,cliente,usuario,ventaRequest.getMetodoDePago(),totalVenta.get(),detalles);
       ventaRepository.save(ventaCreate);
-      return new GenericResponse(HttpStatus.OK.getReasonPhrase(),"Venta realizada con éxito");
+      return new GenericResponse(HttpStatus.OK.value(),"Venta realizada con éxito");
   }
 
   @Override

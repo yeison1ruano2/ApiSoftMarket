@@ -1,7 +1,7 @@
 package com.softmarket.apisoftmarket.dto;
 
 public class GenericResponse {
-  private String status;
+  private Integer status;
   private String mensaje;
 
   public String getMensaje() {
@@ -12,15 +12,15 @@ public class GenericResponse {
     this.mensaje = mensaje;
   }
 
-  public String getStatus() {
+  public Integer getStatus() {
     return status;
   }
 
-  public void setStatus(String status) {
+  public void setStatus(Integer status) {
     this.status = status;
   }
 
-  public GenericResponse(String status,String mensaje) {
+  public GenericResponse(Integer status,String mensaje) {
     this.status = status;
     this.mensaje = mensaje;
   }

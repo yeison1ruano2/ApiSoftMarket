@@ -38,7 +38,7 @@ public class ProductoServiceImpl implements ProductoService {
     Producto producto = productoMapper.requestToEntityCreate(productoRequest,marca,categoria);
     producto  = productoRepository.save(producto);
     inventarioService.crearInventario(producto.getId(),productoRequest.getStockMinimo());
-    return ResponseEntity.status(HttpStatus.CREATED).body(new GenericResponse(HttpStatus.CREATED.getReasonPhrase(), "Producto creado con éxito"));
+    return ResponseEntity.status(HttpStatus.CREATED).body(new GenericResponse(HttpStatus.CREATED.value(), "Producto creado con éxito"));
   }
 
   /*@Override
@@ -71,7 +71,7 @@ public class ProductoServiceImpl implements ProductoService {
               ProductoResponse productoResponse = productoMapper.entityToResponse(producto);
               return ResponseEntity.status(HttpStatus.OK).body(productoResponse);
             })
-            .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ProductoResponse(HttpStatus.NOT_FOUND.getReasonPhrase(),"No se encontro producto con el ID")));
+            .orElseThrow(()-> new ProductoException("Producto no encontrado"));
   }
 
   @Override
@@ -99,8 +99,8 @@ public class ProductoServiceImpl implements ProductoService {
             .map(producto -> {
               producto = productoMapper.requestToEntityUpdate(producto,productoRequest);
               productoRepository.save(producto);
-              return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse(HttpStatus.OK.getReasonPhrase(), "Producto actualizado con éxito"));
+              return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse(HttpStatus.OK.value(), "Producto actualizado con éxito"));
             })
-            .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(new GenericResponse(HttpStatus.NOT_FOUND.getReasonPhrase(),"Producto no encontrado")));
+            .orElseThrow(()->new ProductoException("Producto no encontrado"));
   }
 }

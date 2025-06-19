@@ -12,13 +12,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ProductoMapper {
-  private final MarcaMapper marcaMapper;
-  private final CategoriaMapper categoriaMapper;
-
-  public ProductoMapper(MarcaMapper marcaMapper, CategoriaMapper categoriaMapper) {
-    this.marcaMapper = marcaMapper;
-    this.categoriaMapper = categoriaMapper;
-  }
 
   public Producto requestToEntityCreate(ProductoRequest productoRequest, Marca marca, Categoria categoria){
     return new Producto(
@@ -37,11 +30,9 @@ public class ProductoMapper {
     return new ProductoResponse(
             producto.getNombre(),
             producto.getCodigoBarras(),
-            marcaMapper.entityToResponse(producto.getMarca()),
+            producto.getMarca().getNombre(),
             producto.getPrecioVenta(),
-            categoriaMapper.entityToResponse(producto.getCategoria()),
-            "",
-            HttpStatus.OK.getReasonPhrase()
+            producto.getCategoria().getNombre()
     );
   }
 
@@ -58,11 +49,9 @@ public class ProductoMapper {
     return new ProductoResponse(
             producto.getNombre(),
             producto.getCodigoBarras(),
-            marca,
+            marca.getNombre(),
             producto.getPrecioVenta(),
-            categoria,
-            HttpStatus.OK.getReasonPhrase(),
-            ""
+            categoria.getNombre()
     );
   }
 }

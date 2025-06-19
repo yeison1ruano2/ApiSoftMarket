@@ -26,7 +26,7 @@ public class FacturaController {
   }
 
   @PostMapping("/create")
-  public ResponseEntity<FacturaDto> crearFactura(@RequestBody FacturaRequest facturaRequest) throws JsonProcessingException {
+  public ResponseEntity<?> crearFactura(@RequestBody FacturaRequest facturaRequest) throws JsonProcessingException {
     //logger.info("Factura: {} ",objectMapper.writeValueAsString(facturaRequest));
     return facturaService.crearfactura(facturaRequest);
   }
