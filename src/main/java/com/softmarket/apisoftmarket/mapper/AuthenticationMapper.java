@@ -1,7 +1,7 @@
 package com.softmarket.apisoftmarket.mapper;
 
 import com.softmarket.apisoftmarket.entity.AuthorizationToken;
-import com.softmarket.apisoftmarket.entity.FactusTokenResponse;
+import com.softmarket.apisoftmarket.dto.FactusTokenResponse;
 import com.softmarket.apisoftmarket.repository.AuthorizationTokenRepository;
 import org.springframework.stereotype.Service;
 
