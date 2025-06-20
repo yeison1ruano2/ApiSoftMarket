@@ -1,5 +1,9 @@
 package com.softmarket.apisoftmarket.entity;
 
+import com.softmarket.apisoftmarket.dto.DocumentResponse;
+import com.softmarket.apisoftmarket.dto.PaymentFormResponse;
+import com.softmarket.apisoftmarket.dto.PaymentMethodResponse;
+
 import java.util.List;
 
 public class BillResponse {

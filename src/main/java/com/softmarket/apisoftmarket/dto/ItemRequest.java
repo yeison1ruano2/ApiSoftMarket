@@ -1,5 +1,7 @@
 package com.softmarket.apisoftmarket.dto;
 
+import com.softmarket.apisoftmarket.entity.WithholdingTax;
+
 import java.util.List;
 
 public class ItemRequest {

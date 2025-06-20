@@ -1,16 +1,15 @@
 package com.softmarket.apisoftmarket.services.impl;
 
-import com.softmarket.apisoftmarket.entity.Authentication;
 import com.softmarket.apisoftmarket.entity.AuthorizationToken;
-import com.softmarket.apisoftmarket.entity.FactusTokenResponse;
+import com.softmarket.apisoftmarket.dto.FactusTokenResponse;
 import com.softmarket.apisoftmarket.mapper.AuthenticationMapper;
 import com.softmarket.apisoftmarket.repository.AuthenticationRepository;
 import com.softmarket.apisoftmarket.repository.AuthorizationTokenRepository;
 import com.softmarket.apisoftmarket.services.AuthenticationService;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -32,42 +31,30 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
   @Override
   public FactusTokenResponse  authenticationFactus() {
-    Optional<AuthorizationToken> authorizationTokenOptional = authorizationTokenRepository.findFirstAuthentication();
-    if(authorizationTokenOptional.isEmpty()){
-       return firstAuthentication();
-    }
-    AuthorizationToken token = authorizationTokenOptional.get();
-    if(token.getExpiration_time().isBefore(LocalDateTime.now())){
-      return authenticationRefreshToken();
-    }
-    return authenticationMapper.tokenToFactusResponse(token);
+
+    return authorizationTokenRepository.findFirstAuthentication()
+            .filter(token -> token.getExpiration_time().isAfter(LocalDateTime.now()))
+            .map(authenticationMapper::tokenToFactusResponse)
+            .orElseGet(this::handleMissingOrExpiredToken);
   }
 
-  private FactusTokenResponse firstAuthentication() {
-    Optional<Authentication> authenticationOptional  = authenticationRepository.findFirstAuthentication();
-    if(authenticationOptional.isEmpty()){
-      return new FactusTokenResponse();
-    }
-    Authentication authentication = authenticationOptional.get();
-    FactusTokenResponse factusTokenResponse = webClientService.authenticationCreate(authentication);
-    assert factusTokenResponse != null;
-    return authenticationMapper.factusResponseToAuthorizationTokenCreate(factusTokenResponse);
-  }
+  private FactusTokenResponse handleMissingOrExpiredToken(){
+    return authenticationRepository.findFirstAuthentication()
+            .map(auth -> {
+              AuthorizationToken existingToken = authorizationTokenRepository.findFirstAuthentication().orElseThrow(null);
+              if(existingToken != null && existingToken.getExpiration_time().isBefore(LocalDateTime.now())){
+                auth.setGran_type("refresh_token");
+                FactusTokenResponse refreshed = webClientService.authenticationRefresh(auth,existingToken);
+                return refreshed != null
+                        ? authenticationMapper.factusResponseToAuthorizationTokenRefresh(refreshed,existingToken)
+                        : new FactusTokenResponse();
+              }
 
-  private FactusTokenResponse authenticationRefreshToken() {
-    Optional<Authentication> authenticationOptional  = authenticationRepository.findFirstAuthentication();
-    Optional<AuthorizationToken> authorizationTokenOptional = authorizationTokenRepository.findFirstAuthentication();
-    if(authenticationOptional.isEmpty()){
-      return new FactusTokenResponse();
-    }
-    if(authorizationTokenOptional.isEmpty()){
-      return new FactusTokenResponse();
-    }
-    Authentication authentication = authenticationOptional.get();
-    authentication.setGran_type("refresh_token");
-    AuthorizationToken token = authorizationTokenOptional.get();
-    FactusTokenResponse factusTokenResponse = webClientService.authenticationRefresh(authentication,token);
-    assert factusTokenResponse != null;
-    return authenticationMapper.factusResponseToAuthorizationTokenRefresh(factusTokenResponse,token);
+              FactusTokenResponse created = webClientService.authenticationCreate(auth);
+              return created != null
+                      ? authenticationMapper.factusResponseToAuthorizationTokenCreate(created)
+                      : new FactusTokenResponse();
+            })
+            .orElse(new FactusTokenResponse());
   }
 }

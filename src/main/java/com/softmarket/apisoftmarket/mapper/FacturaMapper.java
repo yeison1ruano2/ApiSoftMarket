@@ -6,7 +6,7 @@ import com.softmarket.apisoftmarket.dto.FacturaDto;
 import com.softmarket.apisoftmarket.dto.FacturaRequest;
 import com.softmarket.apisoftmarket.entity.ErrorFactura;
 import com.softmarket.apisoftmarket.entity.Factura;
-import com.softmarket.apisoftmarket.entity.FacturaResponse;
+import com.softmarket.apisoftmarket.dto.FacturaResponse;
 import com.softmarket.apisoftmarket.exception.FacturaException;
 import com.softmarket.apisoftmarket.repository.ErrorFacturaRepository;
 import com.softmarket.apisoftmarket.repository.FacturaRepository;
@@ -26,39 +26,37 @@ public class FacturaMapper {
   }
 
   public FacturaDto responseFactusToDto(FacturaResponse responseFactus) {
+    var bill = responseFactus.getData().getBill();
     FacturaDto facturaDto = new FacturaDto(
-            responseFactus.getStatus(), responseFactus.getData().getBill().getCufe(),
-            responseFactus.getData().getBill().getNumber(), responseFactus.getData().getBill().getReference_code(),
+            responseFactus.getStatus(),
+            bill.getCufe(),
+            bill.getNumber(),
+            bill.getReference_code(),
             ""
     );
-    Factura factura = new Factura(
-            facturaDto.getCufe(), facturaDto.getNumber(),
-            facturaDto.getReference_code()
-    );
-    facturaRepository.save(factura);
+    facturaRepository.save(new Factura(facturaDto.getCufe(), facturaDto.getNumber(), facturaDto.getReference_code()));
     return facturaDto;
   }
 
-  public FacturaDto exceptionFacturaSave(FacturaException e, FacturaRequest facturaRequest, String message) throws JsonProcessingException {
-    String facturaJson = objectMapper.writeValueAsString(facturaRequest);
-    ErrorFactura errorFactura = new ErrorFactura(facturaJson, message);
-    errorFacturaRepository.save(errorFactura);
+  public FacturaDto exceptionFacturaSave(FacturaException e, FacturaRequest facturaRequest, String message){
+    return guardarErrorYConstruirDto(facturaRequest,message,e.getStatus());
+  }
+
+  private FacturaDto guardarErrorYConstruirDto(FacturaRequest facturaRequest, String message, HttpStatus status) {
+    try {
+      String facturaJson = objectMapper.writeValueAsString(facturaRequest);
+      errorFacturaRepository.save(new ErrorFactura(facturaJson,message));
+    }catch (JsonProcessingException ex){
+      errorFacturaRepository.save(new ErrorFactura("Error serializando factura.",message));
+    }
     return new FacturaDto(
-            e.getStatus().getReasonPhrase(), "", "",
-            facturaRequest.getReference_code(), message
+            status.getReasonPhrase(),
+            "","",facturaRequest.getReference_code(),
+            message
     );
   }
 
-  public FacturaDto exceptionFactura500Save(Exception e, FacturaRequest facturaRequest) throws JsonProcessingException {
-    String facturaJson = objectMapper.writeValueAsString(facturaRequest);
-    ErrorFactura errorFactura = new ErrorFactura(
-            facturaJson,e.getMessage()
-    );
-    errorFacturaRepository.save(errorFactura);
-    return new FacturaDto(
-            HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
-            "","",
-            facturaRequest.getReference_code(),e.getMessage()
-    );
+  public FacturaDto exceptionFactura500Save(Exception e, FacturaRequest facturaRequest){
+    return guardarErrorYConstruirDto(facturaRequest,e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }
