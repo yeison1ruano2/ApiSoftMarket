@@ -12,20 +12,30 @@ public class RequestLog {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String ipCliente;
+  private String urlFront;
   private String metodo;
   private String ruta;
   private String origin;
   private String referer;
   private LocalDateTime fechaHora;
 
+  public String getUrlFront() {
+    return urlFront;
+  }
+
+  public void setUrlFront(String urlFront) {
+    this.urlFront = urlFront;
+  }
+
   public RequestLog() {
   }
 
-  public RequestLog(String ipCliente, String metodo, String ruta, String origin, String referer, LocalDateTime fechaHora) {
+  public RequestLog(String ipCliente, String metodo, String ruta, String origin, String referer,String urlFront, LocalDateTime fechaHora) {
     this.ipCliente = ipCliente;
     this.metodo = metodo;
     this.ruta = ruta;
     this.origin = origin;
+    this.urlFront = urlFront;
     this.referer = referer;
     this.fechaHora = fechaHora;
   }
