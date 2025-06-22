@@ -26,6 +26,12 @@ spring:
       read-timeout: 30s
       write-timeout: 30s
 
+      pool:
+        max-connections: 50
+        max-idle-time: 30s
+        max-life-time: 60s
+        acquire-timeout: 30s
+
 server:
   error:
     include-message: always
