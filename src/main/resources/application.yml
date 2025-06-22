@@ -8,12 +8,13 @@ spring:
       minimum-idle: 5
       maximum-pool-size: 20
       connection-timeout: 30000
-      idle-timeout: 300000
+      idle-timeout: 180000
       max-lifetime: 300000
       leak-detection-threshold: 60000
       connection-test-query: SELECT 1
       validation-timeout: 3000
   jpa:
+    open-in-view: true
     hibernate:
       ddl-auto: update
     show-sql: false
