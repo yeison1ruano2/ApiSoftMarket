@@ -1,18 +1,19 @@
 package com.softmarket.apisoftmarket.services.impl;
 
 import com.softmarket.apisoftmarket.dto.*;
-import com.softmarket.apisoftmarket.entity.Categoria;
-import com.softmarket.apisoftmarket.entity.Marca;
-import com.softmarket.apisoftmarket.entity.Producto;
+import com.softmarket.apisoftmarket.entity.*;
 import com.softmarket.apisoftmarket.exception.ProductoException;
 import com.softmarket.apisoftmarket.mapper.ProductoMapper;
 import com.softmarket.apisoftmarket.repository.ProductoRepository;
 import com.softmarket.apisoftmarket.services.*;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ProductoServiceImpl implements ProductoService {
@@ -22,35 +23,36 @@ public class ProductoServiceImpl implements ProductoService {
   private final InventarioService inventarioService;
   private final MarcaService marcaService;
   private final CategoriaService categoriaService;
+  private final IvaDataSheetService ivaDataSheetService;
 
-  public ProductoServiceImpl(ProductoRepository productoRepository, ProductoMapper productoMapper, InventarioService inventarioService,  MarcaService marcaService, CategoriaService categoriaService) {
+  public ProductoServiceImpl(ProductoRepository productoRepository, ProductoMapper productoMapper, InventarioService inventarioService, MarcaService marcaService, CategoriaService categoriaService, IvaDataSheetService ivaDataSheetService) {
     this.productoRepository = productoRepository;
     this.productoMapper = productoMapper;
     this.inventarioService = inventarioService;
     this.marcaService = marcaService;
     this.categoriaService = categoriaService;
+    this.ivaDataSheetService = ivaDataSheetService;
   }
 
   @Override
   public ResponseEntity<GenericResponse> crearProducto(ProductoRequest productoRequest) {
-    Marca marca = marcaService.obtenerMarcaNombre(productoRequest.getMarca());
-    Categoria categoria = categoriaService.obtenerCategoriaNombre(productoRequest.getCategoria());
-    Producto producto = productoMapper.requestToEntityCreate(productoRequest,marca,categoria);
-    producto  = productoRepository.save(producto);
-    inventarioService.crearInventario(producto.getId(),productoRequest.getStockMinimo());
-    return ResponseEntity.status(HttpStatus.CREATED).body(new GenericResponse(HttpStatus.CREATED.value(), "Producto creado con éxito"));
+    try {
+      Marca marca = marcaService.obtenerMarcaNombre(productoRequest.getMarca());
+      Categoria categoria = categoriaService.obtenerCategoriaNombre(productoRequest.getCategoria());
+      BigDecimal ivaProducto = ivaDataSheetService.buscarCoincidenciaCadena(productoRequest.getNombre());
+      Producto producto = productoMapper.requestToEntityCreate(productoRequest,marca,categoria,ivaProducto);
+      producto  = productoRepository.save(producto);
+      inventarioService.crearInventario(producto.getId(),productoRequest.getStockMinimo());
+      return ResponseEntity.status(HttpStatus.CREATED).body(new GenericResponse(HttpStatus.CREATED.value(), "Producto creado con éxito"));
+    } catch (DataIntegrityViolationException e) {
+      if (Objects.requireNonNull(e.getRootCause()).getMessage().toLowerCase().contains("codigo_barras") && e.getRootCause() != null) {
+          return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                  .body(new GenericResponse(HttpStatus.BAD_REQUEST.value(), "El código de barras ya existe"));
+        }
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+              .body(new GenericResponse(HttpStatus.BAD_REQUEST.value(), "Error de integridad en la base de datos"));
+    }
   }
-
-  /*@Override
-  public ResponseEntity<GenericResponse> ingresarStock(String codigoBarras, Integer cantidad) {
-    return productoRepository.findByCodigoBarras(codigoBarras)
-            .map(producto -> {
-              Inventario inventario = inventarioService.actualizarCantidadInventario(producto.getId(),cantidad);
-              movimientoInventarioService.crearEntrada(inventario,cantidad);
-              return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse(HttpStatus.OK.getReasonPhrase(),""));
-            })
-            .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(new GenericResponse(HttpStatus.NOT_FOUND.getReasonPhrase(),"No existe producto con ese ID")));
-  }*/
 
   @Override
   public ResponseEntity<List<ProductoResponse>> listarTodos() {
@@ -102,5 +104,12 @@ public class ProductoServiceImpl implements ProductoService {
               return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse(HttpStatus.OK.value(), "Producto actualizado con éxito"));
             })
             .orElseThrow(()->new ProductoException("Producto no encontrado"));
+  }
+
+  @Override
+  public ProductoResponse obtenerInfoWeb(String codigoBarras){
+    String url = "https://go-upc.com/search?q="+codigoBarras;
+    //Document doc = Jsoup.connect(url).get();
+    return null;
   }
 }

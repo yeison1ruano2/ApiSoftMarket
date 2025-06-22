@@ -7,8 +7,11 @@ import com.softmarket.apisoftmarket.dto.FacturaDto;
 import com.softmarket.apisoftmarket.dto.FacturaRequest;
 import com.softmarket.apisoftmarket.dto.FacturaResponse;
 import com.softmarket.apisoftmarket.dto.FactusTokenResponse;
+import com.softmarket.apisoftmarket.entity.Factura;
 import com.softmarket.apisoftmarket.exception.FacturaException;
+import com.softmarket.apisoftmarket.repository.FacturaRepository;
 import com.softmarket.apisoftmarket.services.AuthenticationService;
+import com.softmarket.apisoftmarket.services.FacturaFactusService;
 import com.softmarket.apisoftmarket.services.FacturaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.softmarket.apisoftmarket.mapper.FacturaMapper;
 
+import java.util.Optional;
+
 @Service
 public class FacturaServiceImpl implements FacturaService {
 
@@ -24,23 +29,30 @@ public class FacturaServiceImpl implements FacturaService {
   private final FacturaMapper facturaMapper;
   private final ObjectMapper objectMapper;
   private final WebClientService webClientService;
+  private final FacturaRepository facturaRepository;
 
   private static final Logger logger = LoggerFactory.getLogger(FacturaServiceImpl.class);
 
-  public FacturaServiceImpl(AuthenticationService authenticationService,FacturaMapper facturaMapper,
-                            ObjectMapper objectMapper,WebClientService webClientService) {
+  public FacturaServiceImpl(AuthenticationService authenticationService, FacturaMapper facturaMapper,
+                            ObjectMapper objectMapper, WebClientService webClientService, FacturaRepository facturaRepository) {
     this.authenticationService = authenticationService;
     this.facturaMapper = facturaMapper;
     this.objectMapper = objectMapper;
     this.webClientService = webClientService;
+    this.facturaRepository = facturaRepository;
   }
 
   @Override
   public ResponseEntity<?> crearfactura(FacturaRequest facturaRequest) throws JsonProcessingException {
     try {
-      FactusTokenResponse factusTokenResponse = authenticationService.authenticationFactus();
-      FacturaResponse responseFactus = webClientService.enviarFacturaAFactus(facturaRequest,factusTokenResponse);
-      logFactura(factusTokenResponse,responseFactus);
+      Factura factura = facturaRepository.findByReferenceCode(facturaRequest.getReference_code()).orElse(null);
+      if(factura != null){
+        return ResponseEntity.status(HttpStatus.OK).body(facturaMapper.entityToDto(factura));
+      }
+      //FactusTokenResponse factusTokenResponse = authenticationService.authenticationFactus();
+      //FacturaResponse responseFactus = facturaFactusService.crearFacturaFactus(facturaRequest,factusTokenResponse);
+      String accessToken = authenticationService.obtenerToken();
+      FacturaResponse responseFactus = webClientService.enviarFacturaAFactus(facturaRequest,accessToken);
       FacturaDto facturaDto = facturaMapper.responseFactusToDto(responseFactus);
       return ResponseEntity.ok(facturaDto);
     }catch (FacturaException e) {

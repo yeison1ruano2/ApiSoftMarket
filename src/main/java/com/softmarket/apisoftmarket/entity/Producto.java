@@ -13,7 +13,6 @@ public class Producto {
   private String nombre;
   @Column(unique = true)
   private String codigoBarras;
-
   @ManyToOne
   @JoinColumn(name="marca_id")
   private Marca marca;
@@ -25,7 +24,9 @@ public class Producto {
   @JoinColumn(name="categoria_id")
   private Categoria categoria;
 
-  public Producto(Long id, String nombre,String codigoBarras,Marca marca,Categoria categoria, BigDecimal precioVenta,BigDecimal precioPorMayor,Integer cantidadMinimaMayor) {
+  private BigDecimal iva;
+
+  public Producto(Long id, String nombre,String codigoBarras,Marca marca,Categoria categoria, BigDecimal precioVenta,BigDecimal precioPorMayor,Integer cantidadMinimaMayor,BigDecimal iva) {
     this.id = id;
     this.nombre = nombre;
     this.codigoBarras = codigoBarras;
@@ -34,6 +35,7 @@ public class Producto {
     this.precioVenta = precioVenta;
     this.precioPorMayor = precioPorMayor;
     this.cantidadMinimaMayor = cantidadMinimaMayor;
+    this.iva = iva;
   }
 
   public Producto() {
@@ -101,5 +103,13 @@ public class Producto {
 
   public void setPrecioVenta(BigDecimal precioVenta) {
     this.precioVenta = precioVenta;
+  }
+
+  public BigDecimal getIva() {
+    return iva;
+  }
+
+  public void setIva(BigDecimal iva) {
+    this.iva = iva;
   }
 }

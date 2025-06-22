@@ -25,7 +25,7 @@ public class AuthenticationMapper {
     );
   }
 
-  public FactusTokenResponse factusResponseToAuthorizationTokenCreate(FactusTokenResponse factusTokenResponse) {
+  public void factusResponseToAuthorizationTokenCreate(FactusTokenResponse factusTokenResponse) {
     ZonedDateTime nowInColombia = ZonedDateTime.now(ZoneId.of("America/Bogota"));
     ZonedDateTime expirationZoned = nowInColombia.plusSeconds(factusTokenResponse.getExpires_in());
     LocalDateTime timeColombia = expirationZoned.toLocalDateTime();
@@ -37,10 +37,9 @@ public class AuthenticationMapper {
             timeColombia
     );
     authorizationTokenRepository.save(authorizationToken);
-    return factusTokenResponse;
   }
 
-  public FactusTokenResponse factusResponseToAuthorizationTokenRefresh(FactusTokenResponse factusTokenResponse, AuthorizationToken token) {
+  public void factusResponseToAuthorizationTokenRefresh(FactusTokenResponse factusTokenResponse, AuthorizationToken token) {
     ZonedDateTime nowInColombia = ZonedDateTime.now(ZoneId.of("America/Bogota"));
     ZonedDateTime expirationZoned = nowInColombia.plusSeconds(factusTokenResponse.getExpires_in());
     LocalDateTime timeColombia = expirationZoned.toLocalDateTime();
@@ -53,7 +52,6 @@ public class AuthenticationMapper {
             timeColombia
     );
     authorizationTokenRepository.save(authorizationToken);
-    return factusTokenResponse;
   }
 }
 

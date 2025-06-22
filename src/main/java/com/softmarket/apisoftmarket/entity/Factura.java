@@ -5,12 +5,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.time.Instant;
+
 @Entity
 public class Factura {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+  private Long fecha;
   private String number;
   private String reference_code;
   private String cufe;
@@ -26,6 +29,7 @@ public class Factura {
     this.cufe = cufe;
     this.number = number;
     this.reference_code = reference_code;
+    this.fecha = Instant.now().toEpochMilli();
   }
 
   public Factura() {
@@ -61,5 +65,13 @@ public class Factura {
 
   public void setReference_code(String reference_code) {
     this.reference_code = reference_code;
+  }
+
+  public Long getFecha() {
+    return fecha;
+  }
+
+  public void setFecha(Long fecha) {
+    this.fecha = fecha;
   }
 }

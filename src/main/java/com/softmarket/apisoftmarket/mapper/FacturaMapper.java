@@ -59,4 +59,14 @@ public class FacturaMapper {
   public FacturaDto exceptionFactura500Save(Exception e, FacturaRequest facturaRequest){
     return guardarErrorYConstruirDto(facturaRequest,e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
   }
+
+  public FacturaDto entityToDto(Factura factura) {
+    return new FacturaDto(
+            HttpStatus.OK.getReasonPhrase(),
+            factura.getCufe(),
+            factura.getNumber(),
+            factura.getReference_code(),
+            ""
+    );
+  }
 }

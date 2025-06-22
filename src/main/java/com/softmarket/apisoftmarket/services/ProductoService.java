@@ -19,4 +19,6 @@ public interface ProductoService {
   ResponseEntity<GenericResponse> actualizarProducto(String codigoBarras, ProductoRequest productoRequest);
 
   ResponseEntity<List<ProductoResponse>> obtenerProductoBarras(String codigoBarras);
+
+  ProductoResponse obtenerInfoWeb(String codigoBarras);
 }

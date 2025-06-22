@@ -46,7 +46,7 @@ public class SecurityConfig {
 
                 .requestMatchers("/api/factura/**").permitAll()
                 .requestMatchers("/api/generic/**").permitAll()
-                .requestMatchers("/api/productos/**").hasAnyRole(ADMIN)
+                .requestMatchers("/api/productos/**").permitAll()
                 .requestMatchers("/api/usuarios/**").hasRole(ADMIN)
                 .requestMatchers("/api/inventario/entrada/**").hasRole(ADMIN)//hasAnyRole(ADMIN,CAJERO)
                 .requestMatchers("/api/inventario/salida/**").hasRole(ADMIN)
@@ -56,6 +56,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/clientes/**").hasRole(ADMIN)
                 .requestMatchers("/api/ventas/**").hasRole(ADMIN)
                 .requestMatchers("/api/metodoPago/**").hasRole(ADMIN)
+                .requestMatchers("/api/formaPago/**").permitAll()
             .anyRequest().permitAll());
             /*.exceptionHandling(exception -> exception
                     .accessDeniedHandler(customAccessDeniedHandler)

@@ -1,7 +1,10 @@
 package com.softmarket.apisoftmarket;
 
+import com.softmarket.apisoftmarket.dto.FactusTokenResponse;
 import com.softmarket.apisoftmarket.entity.Authentication;
 import com.softmarket.apisoftmarket.repository.AuthenticationRepository;
+import com.softmarket.apisoftmarket.services.AuthenticationService;
+import com.softmarket.apisoftmarket.services.impl.StartupAuthenticator;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -20,7 +23,7 @@ public class ApiSoftMarketApplication implements CommandLineRunner {
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	public static void main(String[] args) {
+  public static void main(String[] args) {
 		SpringApplication.run(ApiSoftMarketApplication.class, args);
 
 	}
@@ -44,10 +47,10 @@ public class ApiSoftMarketApplication implements CommandLineRunner {
 			auth.setGran_type("password");
 			auth.setUsername("sandbox@factus.com.co");
 			auth.setPassword("sandbox2024%");
-
 			authenticationRepository.save(auth);
 		} else {
 			System.out.println("ℹ️ Usuario 'admin' ya existe en Authentication.");
 		}
+
+		}
 	}
-}

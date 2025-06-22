@@ -48,4 +48,10 @@ public class ProductoController {
   public ResponseEntity<GenericResponse> actualizarProducto(@RequestParam("codigoBarras") String codigoBarras, @RequestBody ProductoRequest productoRequest){
     return productoService.actualizarProducto(codigoBarras,productoRequest);
   }
+
+  @GetMapping("/info/{codigoBarras}")
+  public ResponseEntity<ProductoResponse> obtenerInformacionProductoCodigoBarras(@RequestParam String codigoBarras){
+      //ProductoResponse productoInfo = productoService.obtenerInfoWeb(codigoBarras);
+    return null;
+  }
 }

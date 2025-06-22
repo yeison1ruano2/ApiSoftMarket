@@ -32,7 +32,6 @@ public class RequestLoggingFilter implements Filter {
     String origin = req.getHeader("Origin");
     String referer = req.getHeader("Referer");
     String urlFront = req.getRequestURL().toString();
-    logger.info(req.getRequestURL().toString());
 
     RequestLog log = new RequestLog(
             ip,method,uri,origin,referer,urlFront, LocalDateTime.now()

@@ -64,4 +64,10 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST)
             .body(new GenericResponse(BAD_REQUEST,ex.getMessage()));
   }
+
+  @ExceptionHandler(GenericException.class)
+  public ResponseEntity<GenericResponse> manejarToken(GenericException ex){
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(new GenericResponse(BAD_REQUEST,ex.getMessage()));
+  }
 }
