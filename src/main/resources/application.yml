@@ -18,6 +18,13 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: false
+  webflux:
+    timeout: 30s
+  reactor:
+    netty:
+      connection-timeout: 10s
+      read-timeout: 30s
+      write-timeout: 30s
 
 server:
   error:
