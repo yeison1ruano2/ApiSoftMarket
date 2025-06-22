@@ -21,7 +21,7 @@ public class StartupAuthenticator {
   private ScheduledFuture<?> scheduledTask;
   private static final long TOKEN_DURATION_MS = 3600000; // 1 hora (60 minutos)
   private static final long SAFETY_MARGIN_MS = 300000;   // 5 minutos de seguridad
-  private static final long REFRESH_DELAY_MS = TOKEN_DURATION_MS - SAFETY_MARGIN_MS; // 55 minutos
+  private static final long REFRESH_DELAY_MS = 1800000;//TOKEN_DURATION_MS - SAFETY_MARGIN_MS; // 55 minutos
 
   public StartupAuthenticator(AuthenticationService authenticationService, TaskScheduler taskScheduler) {
     this.authenticationService = authenticationService;
@@ -32,7 +32,7 @@ public class StartupAuthenticator {
   public void inicializarToken(){
     try {
       logger.info("[INIT] Autenticando con Factus...");
-      authenticationService.authenticationFactus();
+      authenticationService.refreshTokenFactus();
       logger.info("Autenticacion factus Lograda");
       programarRefreshToken();
     }catch(Exception e){

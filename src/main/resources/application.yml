@@ -4,11 +4,20 @@ spring:
     username: neondb_owner
     password: npg_29oYLCIbMuvF
     driver-class-name: org.postgresql.Driver
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      connection-timeout: 30000
+      idle-timeout: 300000
+      max-lifetime: 300000
+      leak-detection-threshold: 60000
+      connection-test-query: SELECT 1
+      validation-timeout: 3000
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
     show-sql: false
+
 server:
   error:
     include-message: always
