@@ -21,6 +21,7 @@ com\softmarket\apisoftmarket\services\AuthorizationTokenService.class
 com\softmarket\apisoftmarket\controller\GenericController.class
 com\softmarket\apisoftmarket\dto\GenericResponse.class
 com\softmarket\apisoftmarket\entity\CodigosEstandarIdentificacionProducto.class
+com\softmarket\apisoftmarket\services\impl\StartupAuthenticator$RetryableOperation.class
 com\softmarket\apisoftmarket\dto\CompanyResponse.class
 com\softmarket\apisoftmarket\dto\UsuarioResponse.class
 com\softmarket\apisoftmarket\dto\CategoriaResponse.class
