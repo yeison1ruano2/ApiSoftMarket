@@ -10,7 +10,7 @@ public class DataResponse {
   private CompanyResponse company;
   private CustomerResponse customer;
   private NumberingRange numbering_range;
-  private BillingPeriodResponse billing_period;
+  private List<Object> billing_period;
   private BillResponse bill;
   private List<Object> related_documents;
   private List<ItemResponse> item;
@@ -26,11 +26,11 @@ public class DataResponse {
     this.bill = bill;
   }
 
-  public BillingPeriodResponse getBilling_period() {
+  public List<Object> getBilling_period() {
     return billing_period;
   }
 
-  public void setBilling_period(BillingPeriodResponse billing_period) {
+  public void setBilling_period(List<Object> billing_period) {
     this.billing_period = billing_period;
   }
 

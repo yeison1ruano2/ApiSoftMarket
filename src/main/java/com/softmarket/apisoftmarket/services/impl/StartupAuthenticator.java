@@ -1,5 +1,8 @@
 package com.softmarket.apisoftmarket.services.impl;
 
+import com.softmarket.apisoftmarket.exception.RetryExhaustedException;
+import com.softmarket.apisoftmarket.exception.RetryInterruptedException;
+import com.softmarket.apisoftmarket.exception.RetryOperationException;
 import com.softmarket.apisoftmarket.services.AuthenticationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,7 +82,7 @@ public class StartupAuthenticator {
       } catch (Exception e) {
         logger.error("[SCHEDULED] 💥 ERROR: Falló refresh de token después de {} intentos: {}",
                 MAX_RETRIES, e.getMessage());
-        handleTokenRefreshFailure(e);
+        handleTokenRefreshFailure();
       }
 
     }, proximaEjecucion, Duration.ofMillis(REFRESH_DELAY_MS));
@@ -90,50 +93,55 @@ public class StartupAuthenticator {
   /**
    * Ejecuta una operación con retry automático
    */
-  private <T> T executeWithRetry(RetryableOperation<T> operation, String operationName) throws Exception {
-    Exception lastException = null;
-
-    for (int attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+  private <T> T executeWithRetry(RetryableOperation<T> operation,String operationName)throws RetryOperationException{
+    RetryOperationException lastException= null;
+    for (int attempt = 1;attempt<=MAX_RETRIES;attempt++){
       try {
-        logger.debug("🔄 Intento {}/{} para {}", attempt, MAX_RETRIES, operationName);
-
-        T result = operation.execute();
-
-        if (attempt > 1) {
-          logger.info("✅ {} exitosa en intento {}/{}", operationName, attempt, MAX_RETRIES);
-        }
-
-        return result;
-
-      } catch (Exception e) {
+        return executeAttempt(operation,operationName,attempt);
+      }catch (RetryOperationException e){
         lastException = e;
+        handleAttemptFailure(e,operationName,attempt);
 
-        // Log específico según el tipo de error
-        if (isNetworkError(e)) {
-          logger.warn("🌐 Error de red en {} - intento {}/{}: {}",
-                  operationName, attempt, MAX_RETRIES, e.getMessage());
-        } else {
-          logger.warn("⚠️ Error en {} - intento {}/{}: {}",
-                  operationName, attempt, MAX_RETRIES, e.getMessage());
-        }
-
-        // Si no es el último intento, esperar antes del siguiente
-        if (attempt < MAX_RETRIES) {
-          long delay = RETRY_BASE_DELAY_MS * attempt; // Backoff incremental: 2s, 4s, 6s
-          logger.debug("⏳ Esperando {}ms antes del siguiente intento...", delay);
-
-          try {
-            Thread.sleep(delay);
-          } catch (InterruptedException ie) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException("Proceso interrumpido durante retry de " + operationName, ie);
-          }
+        if(shouldRetry(attempt)){
+          waitBeforeRetry(operationName,attempt);
         }
       }
     }
+    throw new RetryExhaustedException(operationName, MAX_RETRIES, lastException);
+  }
 
-    // Si llegamos aquí, todos los intentos fallaron
-    throw new RuntimeException("💥 Falló " + operationName + " después de " + MAX_RETRIES + " intentos", lastException);
+  private<T> T executeAttempt(RetryableOperation<T> operation, String operationName,int attempt)throws RetryOperationException{
+    logger.debug("🔄 Intento {}/{} para {}", attempt, MAX_RETRIES, operationName);
+    T result = operation.execute();
+    if (attempt > 1) {
+      logger.info("✅ {} exitosa en intento {}/{}", operationName, attempt, MAX_RETRIES);
+    }
+    return result;
+  }
+
+  private void handleAttemptFailure(RetryOperationException e, String operationName,int attempt){
+    if(isNetworkError(e)){
+      logger.warn("🌐 Error de red en {} - intento {}/{}: {}",
+              operationName, attempt, MAX_RETRIES, e.getMessage());
+    }else{
+      logger.warn("⚠️ Error en {} - intento {}/{}: {}",
+              operationName, attempt, MAX_RETRIES, e.getMessage());
+    }
+  }
+
+  private boolean shouldRetry(int attempt){
+    return attempt < MAX_RETRIES;
+  }
+
+  private void waitBeforeRetry(String operationName, int attempt) throws RetryInterruptedException {
+    long delay = RETRY_BASE_DELAY_MS * attempt;
+    logger.debug("⏳ Esperando {}ms antes del siguiente intento...", delay);
+    try {
+      Thread.sleep(delay);
+    }catch (InterruptedException ie){
+      Thread.currentThread().interrupt();
+      throw new RetryInterruptedException(operationName,ie);
+    }
   }
 
   /**
@@ -157,7 +165,7 @@ public class StartupAuthenticator {
   /**
    * Maneja los fallos críticos de refresh de token
    */
-  private void handleTokenRefreshFailure(Exception e) {
+  private void handleTokenRefreshFailure() {
     logger.error("🚨 ALERTA CRÍTICA: Sistema sin token válido de Factus");
     logger.error("🚨 Todas las operaciones con Factus fallarán hasta el próximo refresh exitoso");
     logger.error("🚨 Revisar conectividad de red con api-sandbox.factus.com.co");
@@ -186,6 +194,6 @@ public class StartupAuthenticator {
    */
   @FunctionalInterface
   private interface RetryableOperation<T> {
-    T execute() throws Exception;
+    T execute() throws RetryOperationException;
   }
 }

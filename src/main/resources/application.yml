@@ -33,6 +33,7 @@ spring:
         acquire-timeout: 30s
 
 server:
+  port: 8080
   error:
     include-message: always
 

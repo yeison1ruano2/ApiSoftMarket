@@ -67,6 +67,7 @@ com\softmarket\apisoftmarket\entity\DataSheetProductosIva.class
 com\softmarket\apisoftmarket\exception\ProductoException.class
 com\softmarket\apisoftmarket\entity\Cuenta.class
 com\softmarket\apisoftmarket\entity\StandardCode.class
+com\softmarket\apisoftmarket\exception\RetryInterruptedException.class
 com\softmarket\apisoftmarket\mapper\InventarioMapper.class
 com\softmarket\apisoftmarket\services\impl\ProductoServiceImpl.class
 com\softmarket\apisoftmarket\entity\CodigosEventos.class
@@ -162,6 +163,7 @@ com\softmarket\apisoftmarket\services\CategoriaService.class
 com\softmarket\apisoftmarket\dto\DetalleVentaResponse.class
 com\softmarket\apisoftmarket\dto\RateResponse.class
 com\softmarket\apisoftmarket\exception\FacturaException.class
+com\softmarket\apisoftmarket\exception\RetryExhaustedException.class
 com\softmarket\apisoftmarket\entity\RequestLog.class
 com\softmarket\apisoftmarket\dto\DataResponse.class
 com\softmarket\apisoftmarket\controller\ClienteController.class
@@ -178,6 +180,7 @@ com\softmarket\apisoftmarket\entity\Usuario.class
 com\softmarket\apisoftmarket\security\RequestLoggingFilter.class
 com\softmarket\apisoftmarket\services\FacturaFactusService.class
 com\softmarket\apisoftmarket\dto\ItemResponse.class
+com\softmarket\apisoftmarket\exception\RetryOperationException.class
 com\softmarket\apisoftmarket\dto\VentaRequest.class
 com\softmarket\apisoftmarket\entity\Authentication.class
 com\softmarket\apisoftmarket\mapper\MarcaMapper.class
