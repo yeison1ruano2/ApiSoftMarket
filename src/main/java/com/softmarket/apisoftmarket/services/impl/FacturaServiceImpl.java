@@ -6,21 +6,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softmarket.apisoftmarket.dto.FacturaDto;
 import com.softmarket.apisoftmarket.dto.FacturaRequest;
 import com.softmarket.apisoftmarket.dto.FacturaResponse;
-import com.softmarket.apisoftmarket.dto.FactusTokenResponse;
 import com.softmarket.apisoftmarket.entity.Factura;
 import com.softmarket.apisoftmarket.exception.FacturaException;
 import com.softmarket.apisoftmarket.repository.FacturaRepository;
 import com.softmarket.apisoftmarket.services.AuthenticationService;
-import com.softmarket.apisoftmarket.services.FacturaFactusService;
 import com.softmarket.apisoftmarket.services.FacturaService;
+import com.softmarket.apisoftmarket.services.RangoEnumeracionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.softmarket.apisoftmarket.mapper.FacturaMapper;
-
-import java.util.Optional;
 
 @Service
 public class FacturaServiceImpl implements FacturaService {
@@ -30,16 +27,18 @@ public class FacturaServiceImpl implements FacturaService {
   private final ObjectMapper objectMapper;
   private final WebClientService webClientService;
   private final FacturaRepository facturaRepository;
+  private final RangoEnumeracionService rangoEnumeracionService;
 
   private static final Logger logger = LoggerFactory.getLogger(FacturaServiceImpl.class);
 
   public FacturaServiceImpl(AuthenticationService authenticationService, FacturaMapper facturaMapper,
-                            ObjectMapper objectMapper, WebClientService webClientService, FacturaRepository facturaRepository) {
+                            ObjectMapper objectMapper, WebClientService webClientService, FacturaRepository facturaRepository, RangoEnumeracionService rangoEnumeracionService) {
     this.authenticationService = authenticationService;
     this.facturaMapper = facturaMapper;
     this.objectMapper = objectMapper;
     this.webClientService = webClientService;
     this.facturaRepository = facturaRepository;
+    this.rangoEnumeracionService = rangoEnumeracionService;
   }
 
   @Override
@@ -49,9 +48,9 @@ public class FacturaServiceImpl implements FacturaService {
       if(factura != null){
         return ResponseEntity.status(HttpStatus.OK).body(facturaMapper.entityToDto(factura));
       }
-      //FactusTokenResponse factusTokenResponse = authenticationService.authenticationFactus();
-      //FacturaResponse responseFactus = facturaFactusService.crearFacturaFactus(facturaRequest,factusTokenResponse);
       String accessToken = authenticationService.obtenerToken();
+      Integer idventa = rangoEnumeracionService.rangoEnumeracionVenta().intValue();
+      facturaRequest.setNumbering_range_id(idventa);
       FacturaResponse responseFactus = webClientService.enviarFacturaAFactus(facturaRequest,accessToken);
       FacturaDto facturaDto = facturaMapper.responseFactusToDto(responseFactus);
       return ResponseEntity.ok(facturaDto);
@@ -64,7 +63,7 @@ public class FacturaServiceImpl implements FacturaService {
     }
   }
 
-  private ResponseEntity<FacturaDto> manejarFacturaException(FacturaException ex, FacturaRequest facturaRequest) throws JsonProcessingException {
+  private ResponseEntity<FacturaDto> manejarFacturaException(FacturaException ex, FacturaRequest facturaRequest){
     String message = extraerMensajeDeError(ex.getBody());
     FacturaDto facturaDto = facturaMapper.exceptionFacturaSave(ex,facturaRequest,message);
     return ResponseEntity.status(ex.getStatus()).body(facturaDto);
@@ -77,17 +76,6 @@ public class FacturaServiceImpl implements FacturaService {
     }catch(JsonProcessingException e){
       logger.error("❌ Error al parsear el cuerpo de error: {}", e.getMessage());
       return "Error al parsear cuerpo de error: " + e.getMessage();
-    }
-  }
-
-  private void logFactura(FactusTokenResponse factusTokenResponse, FacturaResponse responseFactus) {
-    try {
-      logger.info("🔐 Token Factus: {}", factusTokenResponse.getAccess_token());
-      if(logger.isInfoEnabled()){
-        logger.info("📦 Respuesta Factus: {}", objectMapper.writeValueAsString(responseFactus));
-      }
-    } catch (JsonProcessingException e) {
-      logger.warn("No se pudo serializar la respuesta de Factus: {}", e.getMessage());
     }
   }
 }

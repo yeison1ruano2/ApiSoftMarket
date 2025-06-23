@@ -7,9 +7,9 @@ public class FacturaRequest {
   private Integer numbering_range_id;
   private String reference_code;
   private String observation;
+  private String payment_method_code;
   private String payment_form;
   private String payment_due_date;
-  private String payment_method_code;
   private BillingPeriodRequest billing_period;
   private CustomerRequest customer;
   private List<ItemRequest> items;

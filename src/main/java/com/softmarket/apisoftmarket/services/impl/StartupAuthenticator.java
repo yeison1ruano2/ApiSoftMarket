@@ -4,6 +4,7 @@ import com.softmarket.apisoftmarket.exception.RetryExhaustedException;
 import com.softmarket.apisoftmarket.exception.RetryInterruptedException;
 import com.softmarket.apisoftmarket.exception.RetryOperationException;
 import com.softmarket.apisoftmarket.services.AuthenticationService;
+import com.softmarket.apisoftmarket.services.RangoEnumeracionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -22,6 +23,7 @@ public class StartupAuthenticator {
   private static final Logger logger = LoggerFactory.getLogger(StartupAuthenticator.class);
   private final TaskScheduler taskScheduler;
   private ScheduledFuture<?> scheduledTask;
+  private final RangoEnumeracionService rangoEnumeracionService;
 
   // Configuración de tiempos
   private static final long TOKEN_DURATION_MS = 3600000; // 1 hora (60 minutos)
@@ -32,9 +34,10 @@ public class StartupAuthenticator {
   private static final int MAX_RETRIES = 3;
   private static final long RETRY_BASE_DELAY_MS = 2000; // 2 segundos base
 
-  public StartupAuthenticator(AuthenticationService authenticationService, TaskScheduler taskScheduler) {
+  public StartupAuthenticator(AuthenticationService authenticationService, TaskScheduler taskScheduler, RangoEnumeracionService rangoEnumeracionService) {
     this.authenticationService = authenticationService;
     this.taskScheduler = taskScheduler;
+    this.rangoEnumeracionService = rangoEnumeracionService;
   }
 
   @EventListener(ApplicationReadyEvent.class)

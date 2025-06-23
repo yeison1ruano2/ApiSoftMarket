@@ -1,5 +1,6 @@
 package com.softmarket.apisoftmarket.services.impl;
 
+import com.softmarket.apisoftmarket.dto.DataRangoEnumeracionFactusResponse;
 import com.softmarket.apisoftmarket.dto.FacturaRequest;
 import com.softmarket.apisoftmarket.dto.FacturaResponse;
 import com.softmarket.apisoftmarket.dto.FactusTokenResponse;
@@ -12,6 +13,8 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -69,6 +72,19 @@ public class WebClientService {
               return Mono.error(new FacturaException(statusCode, errorBody));
             }))
             .bodyToMono(FacturaResponse.class)
+            .block();
+  }
+
+  public DataRangoEnumeracionFactusResponse buscarCrearRangoEnumeracion() {
+    String uri = UriComponentsBuilder.fromPath(externalApiProperties.getRangoEnumeracionUrl())
+            .queryParam("filter[document]","Factura de Venta")
+            .queryParam("filter[is_active]",1)
+            .toUriString();
+    return webClientBuilder
+            .get()
+            .uri(externalApiProperties.getAuthUrl())
+            .retrieve()
+            .bodyToMono(DataRangoEnumeracionFactusResponse.class)
             .block();
   }
 }

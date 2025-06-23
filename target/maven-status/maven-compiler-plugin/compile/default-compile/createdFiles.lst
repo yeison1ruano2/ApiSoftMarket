@@ -20,6 +20,7 @@ com\softmarket\apisoftmarket\mapper\TokenMapper.class
 com\softmarket\apisoftmarket\services\AuthorizationTokenService.class
 com\softmarket\apisoftmarket\controller\GenericController.class
 com\softmarket\apisoftmarket\dto\GenericResponse.class
+com\softmarket\apisoftmarket\entity\RangosEnumeracion.class
 com\softmarket\apisoftmarket\entity\CodigosEstandarIdentificacionProducto.class
 com\softmarket\apisoftmarket\services\impl\StartupAuthenticator$RetryableOperation.class
 com\softmarket\apisoftmarket\dto\CompanyResponse.class
@@ -126,6 +127,7 @@ com\softmarket\apisoftmarket\mapper\DetalleVentaMapper.class
 com\softmarket\apisoftmarket\dto\WithholdingTaxisResponse.class
 com\softmarket\apisoftmarket\entity\TipoIdentificacion.class
 com\softmarket\apisoftmarket\dto\BillingPeriodRequest.class
+com\softmarket\apisoftmarket\dto\DataRangoEnumeracionFactusResponse.class
 com\softmarket\apisoftmarket\repository\ClienteRepository.class
 com\softmarket\apisoftmarket\services\impl\RequestLogServiceImpl.class
 com\softmarket\apisoftmarket\services\TipoClienteService.class
@@ -133,8 +135,10 @@ com\softmarket\apisoftmarket\repository\MovimientoInventarioRepository.class
 com\softmarket\apisoftmarket\services\ClienteService.class
 com\softmarket\apisoftmarket\controller\VentaController.class
 com\softmarket\apisoftmarket\entity\AuthorizationToken.class
+com\softmarket\apisoftmarket\repository\RangosEnumeracionRepository.class
 com\softmarket\apisoftmarket\security\PasswordConfig.class
 com\softmarket\apisoftmarket\services\impl\FacturaServiceImpl.class
+com\softmarket\apisoftmarket\services\impl\RangoEnumeracionServiceImpl.class
 com\softmarket\apisoftmarket\entity\TipoCliente.class
 com\softmarket\apisoftmarket\services\MarcaService.class
 com\softmarket\apisoftmarket\entity\CodigosFormasPago.class
@@ -194,5 +198,6 @@ com\softmarket\apisoftmarket\services\impl\VentaServiceImpl.class
 com\softmarket\apisoftmarket\dto\TributeResponse.class
 com\softmarket\apisoftmarket\services\MovimientoInventarioService.class
 com\softmarket\apisoftmarket\entity\BillResponse.class
+com\softmarket\apisoftmarket\services\RangoEnumeracionService.class
 com\softmarket\apisoftmarket\repository\MetodoDePagoRepository.class
 com\softmarket\apisoftmarket\services\impl\StartupAuthenticator.class

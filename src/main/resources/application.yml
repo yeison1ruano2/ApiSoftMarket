@@ -14,6 +14,7 @@ spring:
       connection-test-query: SELECT 1
       validation-timeout: 3000
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: true
     hibernate:
       ddl-auto: update
@@ -40,4 +41,5 @@ server:
 external-api:
   authUrl: https://api-sandbox.factus.com.co/oauth/token
   facturaUrl: https://api-sandbox.factus.com.co/v1/bills/validate
+  rangoEnumeracionUrl: https://api-sandbox.factus.com.co/v1/numbering-ranges
 

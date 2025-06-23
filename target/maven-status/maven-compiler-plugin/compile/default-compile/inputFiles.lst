@@ -20,6 +20,7 @@ D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarke
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\dto\CompanyResponse.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\dto\CustomerRequest.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\dto\CustomerResponse.java
+D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\dto\DataRangoEnumeracionFactusResponse.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\dto\DataResponse.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\dto\DetalleVentaRequest.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\dto\DetalleVentaResponse.java
@@ -85,6 +86,7 @@ D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarke
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\entity\MovimientoInventario.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\entity\NumberingRange.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\entity\Producto.java
+D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\entity\RangosEnumeracion.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\entity\RequestLog.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\entity\Rol.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\entity\StandardCode.java
@@ -140,6 +142,7 @@ D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarke
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\repository\MetodoDePagoRepository.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\repository\MovimientoInventarioRepository.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\repository\ProductoRepository.java
+D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\repository\RangosEnumeracionRepository.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\repository\RequestLogRepository.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\repository\RolRepository.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\repository\TipoClienteRepository.java
@@ -175,6 +178,7 @@ D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarke
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\impl\MetodoDePagoServiceImpl.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\impl\MovimientoInventarioServiceImpl.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\impl\ProductoServiceImpl.java
+D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\impl\RangoEnumeracionServiceImpl.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\impl\RequestLogServiceImpl.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\impl\StartupAuthenticator.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\impl\TipoClienteServiceImpl.java
@@ -189,6 +193,7 @@ D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarke
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\MetodoDePagoService.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\MovimientoInventarioService.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\ProductoService.java
+D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\RangoEnumeracionService.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\RequestLogService.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\TipoClienteService.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\TipoIdentificacionService.java
