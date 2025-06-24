@@ -13,12 +13,15 @@ import com.softmarket.apisoftmarket.repository.FacturaRepository;
 import com.softmarket.apisoftmarket.services.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.softmarket.apisoftmarket.mapper.FacturaMapper;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Service
 public class FacturaServiceImpl implements FacturaService {
@@ -73,10 +76,15 @@ public class FacturaServiceImpl implements FacturaService {
     try{
        AuthorizationToken authorizationToken = authorizationTokenService.obtenerTokenAuthId(authId);
        Authentication auth = authorizationToken.getAuthId();
-       if(authorizationToken.getExpiration_time().isBefore(LocalDateTime.now())){
+       ZoneId colombiaZone = ZoneId.of("America/Bogota");
+       LocalDateTime nowColombia = LocalDateTime.now(Clock.system(colombiaZone));
+       logger.info("Token: " + authorizationToken.getAccess_token());
+       if(nowColombia.isAfter(authorizationToken.getExpiration_time())){
+         logger.info("Token expirado: " + authorizationToken.getAccess_token());
          FactusTokenResponse factusTokenResponse = webClientService.authenticationRefresh(auth,authorizationToken);
          authorizationToken = authenticationMapper.factusResponseToAuthorizationTokenUpdate(factusTokenResponse,authorizationToken,auth);
        }
+      logger.info("Token No expirado: " + authorizationToken.getAccess_token());
        Integer idventa = rangoEnumeracionService.rangoEnumeracionVenta().intValue();
        data.setNumbering_range_id(idventa);
        FacturaResponse responseFactus = webClientService.enviarFacturaAFactus(data,authorizationToken.getAccess_token());
