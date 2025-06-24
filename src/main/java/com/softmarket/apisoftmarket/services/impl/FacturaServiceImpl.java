@@ -78,13 +78,10 @@ public class FacturaServiceImpl implements FacturaService {
        Authentication auth = authorizationToken.getAuthId();
        ZoneId colombiaZone = ZoneId.of("America/Bogota");
        LocalDateTime nowColombia = LocalDateTime.now(Clock.system(colombiaZone));
-       logger.info("Token: " + authorizationToken.getAccess_token());
        if(nowColombia.isAfter(authorizationToken.getExpiration_time())){
-         logger.info("Token expirado: " + authorizationToken.getAccess_token());
          FactusTokenResponse factusTokenResponse = webClientService.authenticationRefresh(auth,authorizationToken);
          authorizationToken = authenticationMapper.factusResponseToAuthorizationTokenUpdate(factusTokenResponse,authorizationToken,auth);
        }
-      logger.info("Token No expirado: " + authorizationToken.getAccess_token());
        Integer idventa = rangoEnumeracionService.rangoEnumeracionVenta().intValue();
        data.setNumbering_range_id(idventa);
        FacturaResponse responseFactus = webClientService.enviarFacturaAFactus(data,authorizationToken.getAccess_token());
