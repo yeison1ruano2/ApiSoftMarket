@@ -1,5 +1,7 @@
 package com.softmarket.apisoftmarket.mapper;
 
+import com.softmarket.apisoftmarket.dto.ClientAuthRequest;
+import com.softmarket.apisoftmarket.entity.Authentication;
 import com.softmarket.apisoftmarket.entity.AuthorizationToken;
 import com.softmarket.apisoftmarket.dto.FactusTokenResponse;
 import com.softmarket.apisoftmarket.repository.AuthorizationTokenRepository;
@@ -25,7 +27,7 @@ public class AuthenticationMapper {
     );
   }
 
-  public void factusResponseToAuthorizationTokenCreate(FactusTokenResponse factusTokenResponse) {
+  /*public void factusResponseToAuthorizationTokenCreate(FactusTokenResponse factusTokenResponse) {
     ZonedDateTime nowInColombia = ZonedDateTime.now(ZoneId.of("America/Bogota"));
     ZonedDateTime expirationZoned = nowInColombia.plusSeconds(factusTokenResponse.getExpires_in());
     LocalDateTime timeColombia = expirationZoned.toLocalDateTime();
@@ -37,9 +39,9 @@ public class AuthenticationMapper {
             timeColombia
     );
     authorizationTokenRepository.save(authorizationToken);
-  }
+  }*/
 
-  public void factusResponseToAuthorizationTokenRefresh(FactusTokenResponse factusTokenResponse, AuthorizationToken token) {
+  public void factusResponseToAuthorizationTokenRefresh(FactusTokenResponse factusTokenResponse, AuthorizationToken token,Authentication auth) {
     ZonedDateTime nowInColombia = ZonedDateTime.now(ZoneId.of("America/Bogota"));
     ZonedDateTime expirationZoned = nowInColombia.plusSeconds(factusTokenResponse.getExpires_in());
     LocalDateTime timeColombia = expirationZoned.toLocalDateTime();
@@ -49,9 +51,38 @@ public class AuthenticationMapper {
             factusTokenResponse.getExpires_in(),
             factusTokenResponse.getRefresh_token(),
             factusTokenResponse.getToken_type(),
-            timeColombia
+            timeColombia,
+            auth
     );
     authorizationTokenRepository.save(authorizationToken);
+  }
+
+  public AuthorizationToken factusResponseToAuthorizationTokenUpdate(FactusTokenResponse factusTokenResponse, AuthorizationToken token, Authentication auth) {
+    ZonedDateTime nowInColombia = ZonedDateTime.now(ZoneId.of("America/Bogota"));
+    ZonedDateTime expirationZoned = nowInColombia.plusSeconds(factusTokenResponse.getExpires_in());
+    LocalDateTime timeColombia = expirationZoned.toLocalDateTime();
+    AuthorizationToken authorizationToken = new AuthorizationToken(
+            token.getId(),
+            factusTokenResponse.getAccess_token(),
+            factusTokenResponse.getExpires_in(),
+            factusTokenResponse.getRefresh_token(),
+            factusTokenResponse.getToken_type(),
+            timeColombia,
+            auth
+    );
+    return authorizationTokenRepository.save(authorizationToken);
+  }
+
+  public Authentication crearClientAuth(ClientAuthRequest clientAuthRequest) {
+    return new Authentication(
+            null,
+            clientAuthRequest.getNombre(),
+            clientAuthRequest.getClienteId(),
+            clientAuthRequest.getClientSecret(),
+            clientAuthRequest.getGrantType(),
+            clientAuthRequest.getUsername(),
+            clientAuthRequest.getPassword()
+    );
   }
 }
 

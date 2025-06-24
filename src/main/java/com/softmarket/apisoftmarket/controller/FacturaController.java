@@ -1,7 +1,7 @@
 package com.softmarket.apisoftmarket.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.softmarket.apisoftmarket.dto.FacturaDto;
+import com.softmarket.apisoftmarket.dto.AuthFacturaRequest;
 import com.softmarket.apisoftmarket.dto.FacturaRequest;
 import com.softmarket.apisoftmarket.services.FacturaService;
 import org.springframework.http.ResponseEntity;
@@ -30,4 +30,10 @@ public class FacturaController {
     //logger.info("Factura: {} ",objectMapper.writeValueAsString(facturaRequest));
     return facturaService.crearfactura(facturaRequest);
   }
+
+  @PostMapping("/create/v2")
+  public ResponseEntity<?> crearFacturaV2(@RequestBody AuthFacturaRequest authFacturaRequest){
+    return facturaService.crearFacturaV2(authFacturaRequest.getAuth_id(),authFacturaRequest.getData());
+  }
+
 }

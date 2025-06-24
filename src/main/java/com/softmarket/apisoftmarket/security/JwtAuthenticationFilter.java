@@ -1,6 +1,6 @@
 package com.softmarket.apisoftmarket.security;
 
-import com.softmarket.apisoftmarket.repository.UserRepository;
+import com.softmarket.apisoftmarket.services.UsuarioService;
 import com.softmarket.apisoftmarket.services.impl.JwtService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,11 +17,11 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
   private final JwtService jwtService;
-  private final UserRepository userRepository;
+  private final UsuarioService usuarioService;
 
-  public JwtAuthenticationFilter(JwtService jwtService, UserRepository userRepository) {
+  public JwtAuthenticationFilter(JwtService jwtService, UsuarioService usuarioService) {
     this.jwtService = jwtService;
-    this.userRepository = userRepository;
+    this.usuarioService = usuarioService;
   }
 
   @Override
@@ -35,9 +35,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     final String username = jwtService.extractUsername(jwt);
 
     if(username != null && SecurityContextHolder.getContext().getAuthentication() == null){
-      var userOptional = userRepository.findByUsername(username);
-      if(userOptional.isPresent() && jwtService.isValid(jwt,userOptional.get())){
-        var user = userOptional.get();
+      var usuarioOptional = usuarioService.obtenerUsuarioUsername(username);
+      if(usuarioOptional.isPresent() && jwtService.isValid(jwt,usuarioOptional.get())){
+        var user = usuarioOptional.get();
         var authToken = new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
         authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authToken);

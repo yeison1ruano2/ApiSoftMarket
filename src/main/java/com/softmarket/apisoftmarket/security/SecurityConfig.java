@@ -42,9 +42,10 @@ public class SecurityConfig {
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth
             .requestMatchers("/null/**").permitAll()
-            .requestMatchers("/api/auth/**").permitAll()
+            .requestMatchers("/api/authUsuario/**").permitAll()
 
                 .requestMatchers("/api/factura/**").permitAll()
+                .requestMatchers("/api/autenticacionAuth/**").permitAll()
                 .requestMatchers("/api/generic/**").permitAll()
                 .requestMatchers("/api/productos/**").permitAll()
                 .requestMatchers("/api/usuarios/**").hasRole(ADMIN)

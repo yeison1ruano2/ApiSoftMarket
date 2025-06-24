@@ -9,6 +9,9 @@ public class AuthorizationToken {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+  @OneToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name="auth_id")
+  private Authentication authId;
   private String token_type;
   private int expires_in;
   @Column(length = 3000)
@@ -16,6 +19,16 @@ public class AuthorizationToken {
   @Column(length = 3000)
   private String refresh_token;
   private LocalDateTime expiration_time;
+
+  public Authentication getAuthId() {
+    return authId;
+  }
+
+  public void setAuthId(Authentication authId) {
+    this.authId = authId;
+  }
+
+
 
   public AuthorizationToken(String access_token, int expires_in, Long id, String refresh_token, String token_type) {
     this.access_token = access_token;
@@ -25,21 +38,23 @@ public class AuthorizationToken {
     this.token_type = token_type;
   }
 
-  public AuthorizationToken(Long id,String access_token, int expires_in, String refresh_token, String token_type,LocalDateTime timeColombia) {
+  public AuthorizationToken(Long id,String access_token, int expires_in, String refresh_token, String token_type,LocalDateTime timeColombia,Authentication auth) {
     this.access_token = access_token;
     this.expires_in = expires_in;
     this.refresh_token = refresh_token;
     this.token_type = token_type;
     this.expiration_time = timeColombia;
     this.id = id;
+    this.authId = auth;
   }
 
-  public AuthorizationToken(String access_token, int expires_in, String refresh_token, String token_type,LocalDateTime timeColombia) {
+  public AuthorizationToken(String access_token, int expires_in, String refresh_token, String token_type,LocalDateTime timeColombia,Authentication authentication) {
     this.access_token = access_token;
     this.expires_in = expires_in;
     this.refresh_token = refresh_token;
     this.token_type = token_type;
     this.expiration_time = timeColombia;
+    this.authId = authentication;
   }
 
   public AuthorizationToken() {

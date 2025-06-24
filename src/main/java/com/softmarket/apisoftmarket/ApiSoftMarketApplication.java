@@ -1,10 +1,5 @@
 package com.softmarket.apisoftmarket;
-
-import com.softmarket.apisoftmarket.dto.FactusTokenResponse;
-import com.softmarket.apisoftmarket.entity.Authentication;
 import com.softmarket.apisoftmarket.repository.AuthenticationRepository;
-import com.softmarket.apisoftmarket.services.AuthenticationService;
-import com.softmarket.apisoftmarket.services.impl.StartupAuthenticator;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -40,7 +35,7 @@ public class ApiSoftMarketApplication implements CommandLineRunner {
     } catch (Exception e) {
       System.out.println("⚠️ Error al eliminar las tablas: " + e.getMessage());
     }*/
-		if (authenticationRepository.findByUsername("sandbox@factus.com.co").isEmpty()) {
+		/*if (authenticationRepository.findByNombre("Cristian").isEmpty()) {
 			Authentication auth = new Authentication();
 			auth.setClient_id("9ed98af2-5a02-47f2-b2be-992e34b4c5d7");
 			auth.setClient_secret("vHntJnJw4nBrx1HkztDbdh4VtBEPrBuBbYbknizg");
@@ -50,7 +45,8 @@ public class ApiSoftMarketApplication implements CommandLineRunner {
 			authenticationRepository.save(auth);
 		} else {
 			System.out.println("ℹ️ Usuario 'admin' ya existe en Authentication.");
-		}
+		}*/
+		System.out.println("ℹ️ Usuario 'admin' ya existe en Authentication.");
 
 		}
 	}

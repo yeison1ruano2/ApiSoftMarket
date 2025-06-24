@@ -66,7 +66,13 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(GenericException.class)
-  public ResponseEntity<GenericResponse> manejarToken(GenericException ex){
+  public ResponseEntity<GenericResponse> manejarGeneric(GenericException ex){
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(new GenericResponse(BAD_REQUEST,ex.getMessage()));
+  }
+
+  @ExceptionHandler(AuthenticationException.class)
+  public ResponseEntity<GenericResponse> manejarAuthentication(AuthenticationException ex){
     return ResponseEntity.status(HttpStatus.BAD_REQUEST)
             .body(new GenericResponse(BAD_REQUEST,ex.getMessage()));
   }

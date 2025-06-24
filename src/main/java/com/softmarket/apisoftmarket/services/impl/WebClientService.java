@@ -45,6 +45,7 @@ public class WebClientService {
   }
 
   public FactusTokenResponse authenticationRefresh(Authentication authentication, AuthorizationToken token) {
+    authentication.setGran_type("refresh_token");
     return webClientBuilder
             .post()
             .uri(externalApiProperties.getAuthUrl())

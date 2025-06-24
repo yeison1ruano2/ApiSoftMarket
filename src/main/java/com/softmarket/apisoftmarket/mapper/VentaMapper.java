@@ -50,7 +50,7 @@ public class VentaMapper {
             .map(detalleVentaMapper::detalleVentaToDetalleVentaResponse)
             .toList();
     ClienteResponse clienteResponse =  clienteService.obtenerClienteId(venta.getCliente().getId());
-    UsuarioResponse usuarioResponse = usuarioService.obetenerUsuarioId(venta.getUsuario().getId());
+    UsuarioResponse usuarioResponse = usuarioService.obtenerUsuarioResponseId(venta.getUsuario().getId());
     return new VentaResponse(
             venta.getCodigoFactura(),
             clienteResponse,
@@ -71,7 +71,7 @@ public class VentaMapper {
                       .map(detalleVentaMapper::detalleVentaToDetalleVentaResponse)
                       .toList();
               ClienteResponse clienteResponse = clienteService.obtenerClienteId(venta.getCliente().getId());
-              UsuarioResponse usuarioResponse = usuarioService.obetenerUsuarioId(venta.getUsuario().getId());
+              UsuarioResponse usuarioResponse = usuarioService.obtenerUsuarioResponseId(venta.getUsuario().getId());
               return new VentaResponse(
                       venta.getCodigoFactura(),
                       clienteResponse,

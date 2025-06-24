@@ -1,16 +1,15 @@
 package com.softmarket.apisoftmarket.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
-public class Authentication {
+public class  Authentication {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
+  private String nombre;
 
   private String client_id;
 
@@ -25,13 +24,14 @@ public class Authentication {
   public Authentication() {
   }
 
-  public Authentication(String client_id, String client_secret, String gran_type, Long id, String password, String username) {
+  public Authentication(Long id, String nombre, String client_id, String client_secret, String gran_type, String username, String password) {
+    this.id = id;
+    this.nombre = nombre;
     this.client_id = client_id;
     this.client_secret = client_secret;
     this.gran_type = gran_type;
-    this.id = id;
-    this.password = password;
     this.username = username;
+    this.password = password;
   }
 
   public String getClient_id() {
@@ -80,5 +80,13 @@ public class Authentication {
 
   public void setGran_type(String gran_type) {
     this.gran_type = gran_type;
+  }
+
+  public String getNombre() {
+    return nombre;
+  }
+
+  public void setNombre(String nombre) {
+    this.nombre = nombre;
   }
 }
