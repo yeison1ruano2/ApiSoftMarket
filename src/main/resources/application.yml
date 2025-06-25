@@ -20,18 +20,19 @@ spring:
       ddl-auto: update
     show-sql: false
   webflux:
-    timeout: 30s
+    timeout: 60s
   reactor:
     netty:
-      connection-timeout: 10s
-      read-timeout: 30s
-      write-timeout: 30s
+      connection-timeout: 20s
+      read-timeout: 60s
+      write-timeout: 60s
 
       pool:
         max-connections: 50
-        max-idle-time: 30s
-        max-life-time: 60s
+        max-idle-time: 15s
+        max-life-time: 30s
         acquire-timeout: 30s
+        evict-in-background: 5s
 
 server:
   port: 8080
@@ -39,6 +40,11 @@ server:
     include-message: always
 
 external-api:
+  connection:
+    timeout: 20s
+    read-timeout: 60s
+    max-retries: 1
+    retry-delay: 2s
   authUrl: https://api-sandbox.factus.com.co/oauth/token
   facturaUrl: https://api-sandbox.factus.com.co/v1/bills/validate
   rangoEnumeracionUrl: https://api-sandbox.factus.com.co/v1/numbering-ranges

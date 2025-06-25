@@ -6,6 +6,9 @@ import com.softmarket.apisoftmarket.dto.FacturaResponse;
 import com.softmarket.apisoftmarket.dto.FactusTokenResponse;
 import com.softmarket.apisoftmarket.entity.*;
 import com.softmarket.apisoftmarket.exception.FacturaException;
+import io.netty.channel.unix.Errors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -16,12 +19,18 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
+
+import java.net.ConnectException;
+import java.time.Duration;
 
 @Service
 public class WebClientService {
 
   private final WebClient webClientBuilder;
   private final ExternalApiProperties externalApiProperties;
+
+  private static final Logger logger = LoggerFactory.getLogger(WebClientService.class);
 
   public WebClientService(WebClient.Builder webClientBuilder, ExternalApiProperties externalApiProperties) {
     this.webClientBuilder = webClientBuilder.build();
@@ -57,7 +66,32 @@ public class WebClientService {
                     .with("refresh_token", token.getRefresh_token()))
             .retrieve()
             .bodyToMono(FactusTokenResponse.class)
+            .retryWhen(Retry.fixedDelay(1, Duration.ofSeconds(2))
+                    .filter(throwable -> {
+                      return isRetryableError(throwable);
+                    })
+                    .doBeforeRetry(retrySignal -> logger.warn("🔄 Reintentando refresh token. Intento: {}, Error: {}",
+                            retrySignal.totalRetries() + 1,
+                            retrySignal.failure().getMessage()))
+                    .onRetryExhaustedThrow((retryBackOffSpec,retrySignal)->{
+                      logger.error("❌ Error después de {} intentos: {}",
+                              retrySignal.totalRetries() + 1,
+                              retrySignal.failure().getMessage());
+                      return new RuntimeException("Error al refrescar token después de reintentos: " +
+                              retrySignal.failure().getMessage(),
+                              retrySignal.failure());
+                    })
+            )
+            .doOnSuccess(response -> logger.info("✅ Token refrescado exitosamente"))
+            .doOnError(error -> logger.error("💥 Error final en refresh token: {}", error.getMessage()))
             .block();
+  }
+
+  private boolean isRetryableError(Throwable throwable){
+    String message = throwable.getMessage();
+    if (message == null) return false;
+    // Errores de conexión que justifican retry
+    return throwable instanceof ConnectException || throwable instanceof java.net.SocketTimeoutException || throwable instanceof Errors.NativeIoException || message.contains("Connection reset") || message.contains("recvAddress") || message.contains("Connection refused") || message.contains("timeout") || message.contains("broken pipe");
   }
 
   public FacturaResponse enviarFacturaAFactus(FacturaRequest facturaRequest, String accessToken) {
