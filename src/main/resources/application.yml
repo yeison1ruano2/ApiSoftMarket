@@ -48,4 +48,5 @@ external-api:
   authUrl: https://api-sandbox.factus.com.co/oauth/token
   facturaUrl: https://api-sandbox.factus.com.co/v1/bills/validate
   rangoEnumeracionUrl: https://api-sandbox.factus.com.co/v1/numbering-ranges
+  descargarFacturaUrl: https://api-sandbox.factus.com.co/v1/bills/download-pdf
 

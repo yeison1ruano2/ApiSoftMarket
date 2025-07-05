@@ -8,4 +8,6 @@ public interface FacturaService {
   ResponseEntity<?> crearfactura(FacturaRequest facturaRequest) throws JsonProcessingException;
 
   ResponseEntity<?> crearFacturaV2(String clientId, FacturaRequest data);
+
+  ResponseEntity<?> crearFacturaV3(String authId, FacturaRequest data);
 }

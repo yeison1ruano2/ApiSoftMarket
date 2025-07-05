@@ -1,9 +1,6 @@
 package com.softmarket.apisoftmarket.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.Instant;
 
@@ -17,18 +14,23 @@ public class Factura {
   private String number;
   private String reference_code;
   private String cufe;
-
-  public Factura(String cufe, Long id, String number, String reference_code) {
-    this.cufe = cufe;
-    this.id = id;
-    this.number = number;
-    this.reference_code = reference_code;
-  }
+  private String filename;
+  @Column(name="pdf", columnDefinition = "text",length=100000)
+  private String pdf;
 
   public Factura(String cufe, String number, String reference_code) {
     this.cufe = cufe;
     this.number = number;
     this.reference_code = reference_code;
+    this.fecha = Instant.now().toEpochMilli();
+  }
+
+  public Factura(String cufe, String number, String reference_code, String filename, String pdf) {
+    this.cufe = cufe;
+    this.number = number;
+    this.reference_code = reference_code;
+    this.filename = filename;
+    this.pdf = pdf;
     this.fecha = Instant.now().toEpochMilli();
   }
 
@@ -73,5 +75,21 @@ public class Factura {
 
   public void setFecha(Long fecha) {
     this.fecha = fecha;
+  }
+
+  public String getFilename() {
+    return filename;
+  }
+
+  public void setFilename(String filename) {
+    this.filename = filename;
+  }
+
+  public String getPdf() {
+    return pdf;
+  }
+
+  public void setPdf(String pdf) {
+    this.pdf = pdf;
   }
 }

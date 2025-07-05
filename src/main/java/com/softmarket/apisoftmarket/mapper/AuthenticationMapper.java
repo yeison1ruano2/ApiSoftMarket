@@ -77,7 +77,7 @@ public class AuthenticationMapper {
     return new Authentication(
             null,
             clientAuthRequest.getNombre(),
-            clientAuthRequest.getClienteId(),
+            clientAuthRequest.getClientId(),
             clientAuthRequest.getClientSecret(),
             clientAuthRequest.getGrantType(),
             clientAuthRequest.getUsername(),

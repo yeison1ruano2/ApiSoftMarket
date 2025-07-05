@@ -10,6 +10,15 @@ public class ExternalApiProperties {
   private String authUrl;
   private String facturaUrl;
   private String rangoEnumeracionUrl;
+  private String descargarFacturaUrl;
+
+  public String getDescargarFacturaUrl() {
+    return descargarFacturaUrl;
+  }
+
+  public void setDescargarFacturaUrl(String descargarFacturaUrl) {
+    this.descargarFacturaUrl = descargarFacturaUrl;
+  }
 
   public String getRangoEnumeracionUrl() {
     return rangoEnumeracionUrl;

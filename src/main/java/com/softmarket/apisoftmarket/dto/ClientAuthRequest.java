@@ -3,18 +3,18 @@ package com.softmarket.apisoftmarket.dto;
 public class ClientAuthRequest {
 
   private String nombre;
-  private String clienteId;
+  private String clientId;
   private String clientSecret;
   private String username;
   private String password;
   private String grantType;
 
-  public String getClienteId() {
-    return clienteId;
+  public String getClientId() {
+    return clientId;
   }
 
-  public void setClienteId(String clienteId) {
-    this.clienteId = clienteId;
+  public void setClientId(String clientId) {
+    this.clientId = clientId;
   }
 
   public String getClientSecret() {

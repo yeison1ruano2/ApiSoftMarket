@@ -8,6 +8,7 @@ com\softmarket\apisoftmarket\dto\UserResponse.class
 com\softmarket\apisoftmarket\exception\StockException.class
 com\softmarket\apisoftmarket\dto\FacturaRequest.class
 com\softmarket\apisoftmarket\entity\MetodoDePago.class
+com\softmarket\apisoftmarket\exception\Factura422Exception.class
 com\softmarket\apisoftmarket\services\MetodoDePagoService.class
 com\softmarket\apisoftmarket\repository\TokenRepository.class
 com\softmarket\apisoftmarket\dto\MarcaRequest.class
@@ -54,12 +55,15 @@ com\softmarket\apisoftmarket\services\impl\TokenServiceImpl.class
 com\softmarket\apisoftmarket\mapper\AuthenticationMapper.class
 com\softmarket\apisoftmarket\controller\InicioSesionController.class
 com\softmarket\apisoftmarket\exception\TokenException.class
+com\softmarket\apisoftmarket\dto\FacturaPdfFactusResponse.class
 com\softmarket\apisoftmarket\controller\MarcaController.class
+com\softmarket\apisoftmarket\dto\FacturaError422Response.class
 com\softmarket\apisoftmarket\services\GenericTrashService.class
 com\softmarket\apisoftmarket\ApiSoftMarketApplication.class
 com\softmarket\apisoftmarket\services\VentaService.class
 com\softmarket\apisoftmarket\exception\InventarioException.class
 com\softmarket\apisoftmarket\services\impl\UsuarioServiceImpl.class
+com\softmarket\apisoftmarket\dto\FacturaError409Response.class
 com\softmarket\apisoftmarket\exception\MarcaException.class
 com\softmarket\apisoftmarket\entity\GenericTrash.class
 com\softmarket\apisoftmarket\entity\UnitMeasure.class
@@ -80,10 +84,12 @@ com\softmarket\apisoftmarket\services\InventarioService.class
 com\softmarket\apisoftmarket\controller\FacturaController.class
 com\softmarket\apisoftmarket\services\UsuarioService.class
 com\softmarket\apisoftmarket\entity\Venta.class
+com\softmarket\apisoftmarket\dto\FacturaError422Response$Data.class
 com\softmarket\apisoftmarket\services\RequestLogService.class
 com\softmarket\apisoftmarket\exception\AuthenticationException.class
 com\softmarket\apisoftmarket\mapper\FormaPagoMapper.class
 com\softmarket\apisoftmarket\services\impl\FormaPagoServiceImpl.class
+com\softmarket\apisoftmarket\exception\RangoEnumeracionException.class
 com\softmarket\apisoftmarket\services\impl\MarcaServiceImpl.class
 com\softmarket\apisoftmarket\repository\AuthorizationTokenRepository.class
 com\softmarket\apisoftmarket\dto\FacturaResponse.class
@@ -110,6 +116,8 @@ com\softmarket\apisoftmarket\entity\Token.class
 com\softmarket\apisoftmarket\mapper\ClienteMapper.class
 com\softmarket\apisoftmarket\services\impl\WebClientService.class
 com\softmarket\apisoftmarket\dto\ProductoResponse.class
+com\softmarket\apisoftmarket\services\impl\GoogleDriveService.class
+com\softmarket\apisoftmarket\dto\FacturaPdfFactusResponse$Data.class
 com\softmarket\apisoftmarket\entity\CodigosMotivosGeneracionNotasAjuste.class
 com\softmarket\apisoftmarket\security\SecurityConfig.class
 com\softmarket\apisoftmarket\entity\CodigosTiposDocumentoRangosNumeracion.class
@@ -162,6 +170,7 @@ com\softmarket\apisoftmarket\dto\MunicipalityResponse.class
 com\softmarket\apisoftmarket\dto\Role.class
 com\softmarket\apisoftmarket\services\impl\JwtService.class
 com\softmarket\apisoftmarket\repository\RequestLogRepository.class
+com\softmarket\apisoftmarket\exception\Factura409Exception.class
 com\softmarket\apisoftmarket\repository\UsuarioRepository.class
 com\softmarket\apisoftmarket\dto\CustomerResponse.class
 com\softmarket\apisoftmarket\controller\MetodoDePagoController.class

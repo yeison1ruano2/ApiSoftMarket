@@ -29,6 +29,9 @@ D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarke
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\dto\DetalleVentaResponse.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\dto\DocumentResponse.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\dto\FacturaDto.java
+D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\dto\FacturaError409Response.java
+D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\dto\FacturaError422Response.java
+D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\dto\FacturaPdfFactusResponse.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\dto\FacturaRequest.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\dto\FacturaResponse.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\dto\FactusTokenResponse.java
@@ -105,6 +108,8 @@ D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarke
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\exception\ClienteException.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\exception\CustomAccessDeniedHandler.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\exception\CustomAuthenticationEntryPoint.java
+D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\exception\Factura409Exception.java
+D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\exception\Factura422Exception.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\exception\FacturaException.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\exception\GenericException.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\exception\GlobalExceptionHandler.java
@@ -112,6 +117,7 @@ D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarke
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\exception\MarcaException.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\exception\MetodoPagoException.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\exception\ProductoException.java
+D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\exception\RangoEnumeracionException.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\exception\RetryExhaustedException.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\exception\RetryInterruptedException.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\exception\RetryOperationException.java
@@ -174,6 +180,7 @@ D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarke
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\impl\FacturaServiceImpl.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\impl\FormaPagoServiceImpl.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\impl\GenericTrashServiceImpl.java
+D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\impl\GoogleDriveService.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\impl\InventarioServiceImpl.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\impl\IvaDataSheetServiceImpl.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\impl\JwtService.java

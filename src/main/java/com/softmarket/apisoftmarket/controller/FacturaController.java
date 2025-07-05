@@ -36,4 +36,9 @@ public class FacturaController {
     return facturaService.crearFacturaV2(authFacturaRequest.getAuth_id(),authFacturaRequest.getData());
   }
 
+  @PostMapping("/create/v3")
+  public ResponseEntity<?> crearFacturav3(@RequestBody AuthFacturaRequest authFacturaRequest){
+    return facturaService.crearFacturaV3(authFacturaRequest.getAuth_id(),authFacturaRequest.getData());
+  }
+
 }

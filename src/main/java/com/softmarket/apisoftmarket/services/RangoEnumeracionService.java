@@ -1,7 +1,7 @@
 package com.softmarket.apisoftmarket.services;
 
 public interface RangoEnumeracionService {
-  void buscarCrearRangoEnumeracion();
+  Long buscarCrearRangoEnumeracion(String token);
 
   Long rangoEnumeracionVenta();
 }

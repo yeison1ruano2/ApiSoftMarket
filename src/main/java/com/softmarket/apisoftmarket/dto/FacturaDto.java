@@ -1,19 +1,24 @@
 package com.softmarket.apisoftmarket.dto;
 
+import java.util.List;
+import java.util.Map;
+
 public class FacturaDto {
 
-  private String status;
+  private Integer status;
   private String number;
   private String reference_code;
   private String cufe;
   private String message;
+  private Map<String, List<String>> errors;
 
-  public FacturaDto(String status,String cufe, String number, String reference_code,String message) {
+  public FacturaDto(Integer status,String cufe, String number, String reference_code,String message,Map<String,List<String>> errors) {
     this.cufe = cufe;
     this.number = number;
     this.reference_code = reference_code;
     this.status = status;
     this.message = message;
+    this.errors = errors;
   }
 
   public FacturaDto(String message) {
@@ -52,11 +57,19 @@ public class FacturaDto {
     this.reference_code = reference_code;
   }
 
-  public String getStatus() {
+  public Integer getStatus() {
     return status;
   }
 
-  public void setStatus(String status) {
+  public void setStatus(Integer status) {
     this.status = status;
+  }
+
+  public Map<String, List<String>> getErrors() {
+    return errors;
+  }
+
+  public void setErrors(Map<String, List<String>> errors) {
+    this.errors = errors;
   }
 }

@@ -1,10 +1,9 @@
 package com.softmarket.apisoftmarket.services.impl;
 
-import com.softmarket.apisoftmarket.dto.DataRangoEnumeracionFactusResponse;
-import com.softmarket.apisoftmarket.dto.FacturaRequest;
-import com.softmarket.apisoftmarket.dto.FacturaResponse;
-import com.softmarket.apisoftmarket.dto.FactusTokenResponse;
+import com.softmarket.apisoftmarket.dto.*;
 import com.softmarket.apisoftmarket.entity.*;
+import com.softmarket.apisoftmarket.exception.Factura409Exception;
+import com.softmarket.apisoftmarket.exception.Factura422Exception;
 import com.softmarket.apisoftmarket.exception.FacturaException;
 import io.netty.channel.unix.Errors;
 import org.slf4j.Logger;
@@ -16,8 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
 
@@ -50,6 +47,21 @@ public class WebClientService {
                     .with("password", authentication.getPassword()))
             .retrieve()
             .bodyToMono(FactusTokenResponse.class)
+            .retryWhen(Retry.fixedDelay(1,Duration.ofSeconds(2))
+                    .filter(this::isRetryableError)
+                    .doBeforeRetry(retrySignal -> logger.warn("🔄 Reintentando refresh token. Intento: {}, Error: {}",
+                            retrySignal.totalRetries()+1,
+                            retrySignal.failure().getMessage()))
+                    .onRetryExhaustedThrow(((retryBackoffSpec, retrySignal) -> {
+                      logger.error("❌ Error después de {} intentos: {}",
+                              retrySignal.totalRetries()+1,
+                              retrySignal.failure().getMessage());
+                      return new RuntimeException("Error al refrescar token después de reintentos: " +
+                              retrySignal.failure().getMessage(),
+                              retrySignal.failure());
+                    })))
+            .doOnSuccess(response -> logger.info("✅ Token refrescado exitosamente"))
+            .doOnError(error -> logger.error("💥 Error final en refresh token: {}", error.getMessage()))
             .block();
   }
 
@@ -67,9 +79,7 @@ public class WebClientService {
             .retrieve()
             .bodyToMono(FactusTokenResponse.class)
             .retryWhen(Retry.fixedDelay(1, Duration.ofSeconds(2))
-                    .filter(throwable -> {
-                      return isRetryableError(throwable);
-                    })
+                    .filter(this::isRetryableError)
                     .doBeforeRetry(retrySignal -> logger.warn("🔄 Reintentando refresh token. Intento: {}, Error: {}",
                             retrySignal.totalRetries() + 1,
                             retrySignal.failure().getMessage()))
@@ -102,24 +112,54 @@ public class WebClientService {
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
             .bodyValue(facturaRequest)
             .retrieve()
-            .onStatus(HttpStatusCode::isError, response -> response.bodyToMono(String.class).flatMap(errorBody -> {
-              HttpStatus statusCode = (HttpStatus) response.statusCode();
-              return Mono.error(new FacturaException(statusCode, errorBody));
-            }))
+            .onStatus(HttpStatusCode::isError, response -> {
+              if(response.statusCode().value() == 409){
+                logger.info("Error 409");
+                return response.bodyToMono(FacturaError409Response.class)
+                        .flatMap(error -> {
+                          String message = error.getMessage();
+                          return Mono.error(new Factura409Exception(
+                                  (HttpStatus) response.statusCode(),
+                                  message
+                          ));
+                        });
+              }else if(response.statusCode().value() == 422){
+                logger.info("Error 422");
+                return response.bodyToMono(FacturaError422Response.class)
+                        .flatMap(error -> Mono.error(new Factura422Exception(
+                                HttpStatus.UNPROCESSABLE_ENTITY,
+                                error.getMessage(),
+                                error.getData().getErrors()
+                        )));
+              }else{
+                logger.info("Otro error");
+                 return response.bodyToMono(String.class)
+                        .flatMap(body -> Mono.error(new FacturaException(
+                                body,
+                                (HttpStatus) response.statusCode()
+                        )));
+              }})
             .bodyToMono(FacturaResponse.class)
             .block();
   }
 
-  public DataRangoEnumeracionFactusResponse buscarCrearRangoEnumeracion() {
-    String uri = UriComponentsBuilder.fromPath(externalApiProperties.getRangoEnumeracionUrl())
-            .queryParam("filter[document]","Factura de Venta")
-            .queryParam("filter[is_active]",1)
-            .toUriString();
+  public DataRangoEnumeracionFactusResponse buscarCrearRangoEnumeracion(String token) {
     return webClientBuilder
             .get()
-            .uri(externalApiProperties.getAuthUrl())
+            .uri(externalApiProperties.getRangoEnumeracionUrl())
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
             .retrieve()
             .bodyToMono(DataRangoEnumeracionFactusResponse.class)
+            .block();
+  }
+
+  public FacturaPdfFactusResponse descargarPdfFactus(String number, String accessToken) {
+    return webClientBuilder
+            .get()
+            .uri(externalApiProperties.getDescargarFacturaUrl()+"/{number}",number)
+            .header(HttpHeaders.AUTHORIZATION,"Bearer " + accessToken)
+            .retrieve()
+            .bodyToMono(FacturaPdfFactusResponse.class)
             .block();
   }
 }

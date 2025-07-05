@@ -1,0 +1,106 @@
+package com.softmarket.apisoftmarket.services.impl;
+
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.api.client.http.FileContent;
+import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.DriveScopes;
+import com.google.api.services.drive.model.File;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Service;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Base64;
+import java.util.Collections;
+
+@Service
+public class GoogleDriveService {
+  private static final Logger logger = LoggerFactory.getLogger(GoogleDriveService.class);
+
+  private Drive getDriveService()throws IOException{
+    GoogleCredential credential = GoogleCredential.fromStream(
+            new ClassPathResource("credentials.json").getInputStream()
+    )
+            .createScoped(Collections.singleton(DriveScopes.DRIVE));
+    return new Drive.Builder(
+            credential.getTransport(),
+            credential.getJsonFactory(),
+            credential
+    ).setApplicationName("SoftMarket").build();
+  }
+
+  public void guardarPdfBase64EnDrive(String base64,String nombreArchivo,String folderIdDrive)throws IOException{
+    Drive driveService = getDriveService();
+    File archivoDrive = new File();
+    byte[] decodedBytes = Base64.getDecoder().decode(base64);
+    java.io.File archivoPdf = java.io.File.createTempFile(nombreArchivo,".pdf");
+    if (folderIdDrive != null && !folderIdDrive.isEmpty()) {
+      if (verificarCarpetaExiste(folderIdDrive)) {
+        archivoDrive.setName(nombreArchivo + ".pdf");
+        archivoDrive.setParents(Collections.singletonList(folderIdDrive));
+      }else{
+        throw new IOException("La carpeta con ID " + folderIdDrive + " no existe o no tienes permisos para acceder.");
+      }
+    }
+    try(FileOutputStream fos = new FileOutputStream(archivoPdf)){
+      fos.write(decodedBytes);
+    }
+    FileContent mediaContent = new FileContent("application/pdf",archivoPdf);
+    driveService.files().create(archivoDrive,mediaContent)
+            .setFields("id,name,parents,webViewLink")
+            .setUploadType("multipart")
+            .execute();
+    try{
+      Files.delete(archivoPdf.toPath());
+    }catch (IOException e){
+      logger.warn("No se pudo eliminar el archivo temporal: {}", archivoPdf.getName(), e);
+    }
+  }
+
+  private boolean verificarCarpetaExiste(String folderId) {
+    try {
+      Drive driveService = getDriveService();
+      File folder = driveService.files().get(folderId)
+              .setFields("id,name,mimeType,capabilities")
+              .execute();
+
+      // Verificar que es una carpeta
+      boolean esCarpeta = "application/vnd.google-apps.folder".equals(folder.getMimeType());
+
+      if (esCarpeta) {
+        // Verificar permisos de escritura
+        if (folder.getCapabilities() != null) {
+          Boolean canAddChildren = folder.getCapabilities().getCanAddChildren();
+          boolean puedeEscribir = canAddChildren != null && canAddChildren;
+
+          if (!puedeEscribir) {
+            logger.info("⚠️ ADVERTENCIA: No tienes permisos para crear archivos en esta carpeta");
+          }
+        }
+      }
+
+      return esCarpeta;
+
+    } catch (com.google.api.client.googleapis.json.GoogleJsonResponseException e) {
+      switch (e.getStatusCode()) {
+        case 404:
+          logger.info("❌ Carpeta no encontrada o sin permisos de acceso");
+          break;
+        case 403:
+          logger.info("❌ Permisos insuficientes para acceder a la carpeta");
+          break;
+        case 401:
+          logger.info("❌ Credenciales inválidas o expiradas");
+          break;
+        default:
+          logger.info("❌ Error de API: {}", e.getMessage());
+      }
+      return false;
+    } catch (IOException e) {
+      logger.info("❌ Error al verificar carpeta: {}", e.getMessage());
+      return false;
+    }
+  }
+}
