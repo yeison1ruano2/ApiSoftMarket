@@ -52,6 +52,6 @@ external-api:
   githubToken: ${GITHUBTOKEN}
   githubOwner: ${GITHUBOWNER}
   githubRepo: ${GITHUBREPO}
-  nameAuthorizationGoogle: credentials.json
+  nameAuthorizationGoogle: ${NAMEAUTHORIZATIONGOOGLE}
   urlGithub: ${URLGITHUB}
 
