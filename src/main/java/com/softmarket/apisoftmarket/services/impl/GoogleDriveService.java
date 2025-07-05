@@ -7,21 +7,37 @@ import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+
+import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Base64;
 import java.util.Collections;
+import java.util.Optional;
 
 @Service
 public class GoogleDriveService {
+  private final GithubWebClientService githubWebClientService;
   private static final Logger logger = LoggerFactory.getLogger(GoogleDriveService.class);
 
+  public GoogleDriveService(GithubWebClientService githubWebClientService) {
+    this.githubWebClientService = githubWebClientService;
+  }
+
   private Drive getDriveService()throws IOException{
+    Optional<String> credentialsJson = githubWebClientService.obtenerArchivoauthorizacionGoogle();
+    if(credentialsJson.isEmpty()){
+      throw new IOException("No se pudo obtener el archivo credentials.json desde GitHub");
+    }
+    InputStream credentialsStream = new ByteArrayInputStream(
+            credentialsJson.get().getBytes(StandardCharsets.UTF_8)
+    );
     GoogleCredential credential = GoogleCredential.fromStream(
-            new ClassPathResource("credentials.json").getInputStream()
+            credentialsStream
     )
             .createScoped(Collections.singleton(DriveScopes.DRIVE));
     return new Drive.Builder(
@@ -37,7 +53,7 @@ public class GoogleDriveService {
     byte[] decodedBytes = Base64.getDecoder().decode(base64);
     java.io.File archivoPdf = java.io.File.createTempFile(nombreArchivo,".pdf");
     if (folderIdDrive != null && !folderIdDrive.isEmpty()) {
-      if (verificarCarpetaExiste(folderIdDrive)) {
+      if (verificarCarpetaExiste(folderIdDrive,driveService)) {
         archivoDrive.setName(nombreArchivo + ".pdf");
         archivoDrive.setParents(Collections.singletonList(folderIdDrive));
       }else{
@@ -59,9 +75,8 @@ public class GoogleDriveService {
     }
   }
 
-  private boolean verificarCarpetaExiste(String folderId) {
+  private boolean verificarCarpetaExiste(String folderId,Drive driveService) {
     try {
-      Drive driveService = getDriveService();
       File folder = driveService.files().get(folderId)
               .setFields("id,name,mimeType,capabilities")
               .execute();
@@ -69,9 +84,7 @@ public class GoogleDriveService {
       // Verificar que es una carpeta
       boolean esCarpeta = "application/vnd.google-apps.folder".equals(folder.getMimeType());
 
-      if (esCarpeta) {
-        // Verificar permisos de escritura
-        if (folder.getCapabilities() != null) {
+      if (esCarpeta && folder.getCapabilities() != null) {
           Boolean canAddChildren = folder.getCapabilities().getCanAddChildren();
           boolean puedeEscribir = canAddChildren != null && canAddChildren;
 
@@ -79,7 +92,7 @@ public class GoogleDriveService {
             logger.info("⚠️ ADVERTENCIA: No tienes permisos para crear archivos en esta carpeta");
           }
         }
-      }
+
 
       return esCarpeta;
 

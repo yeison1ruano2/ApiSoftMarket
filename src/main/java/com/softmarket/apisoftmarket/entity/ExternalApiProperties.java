@@ -11,6 +11,11 @@ public class ExternalApiProperties {
   private String facturaUrl;
   private String rangoEnumeracionUrl;
   private String descargarFacturaUrl;
+  private String githubToken;
+  private String githubOwner;
+  private String githubRepo;
+  private String nameAuthorizationGoogle;
+  private String urlGithub;
 
   public String getDescargarFacturaUrl() {
     return descargarFacturaUrl;
@@ -42,5 +47,45 @@ public class ExternalApiProperties {
 
   public void setAuthUrl(String authUrl) {
     this.authUrl = authUrl;
+  }
+
+  public String getGithubOwner() {
+    return githubOwner;
+  }
+
+  public void setGithubOwner(String githubOwner) {
+    this.githubOwner = githubOwner;
+  }
+
+  public String getGithubRepo() {
+    return githubRepo;
+  }
+
+  public void setGithubRepo(String githubRepo) {
+    this.githubRepo = githubRepo;
+  }
+
+  public String getGithubToken() {
+    return githubToken;
+  }
+
+  public void setGithubToken(String githubToken) {
+    this.githubToken = githubToken;
+  }
+
+  public String getNameAuthorizationGoogle() {
+    return nameAuthorizationGoogle;
+  }
+
+  public void setNameAuthorizationGoogle(String nameAuthorizationGoogle) {
+    this.nameAuthorizationGoogle = nameAuthorizationGoogle;
+  }
+
+  public String getUrlGithub() {
+    return urlGithub;
+  }
+
+  public void setUrlGithub(String urlGithub) {
+    this.urlGithub = urlGithub;
   }
 }

@@ -92,6 +92,7 @@ com\softmarket\apisoftmarket\services\impl\FormaPagoServiceImpl.class
 com\softmarket\apisoftmarket\exception\RangoEnumeracionException.class
 com\softmarket\apisoftmarket\services\impl\MarcaServiceImpl.class
 com\softmarket\apisoftmarket\repository\AuthorizationTokenRepository.class
+com\softmarket\apisoftmarket\dto\GitHubFileResponse.class
 com\softmarket\apisoftmarket\dto\FacturaResponse.class
 com\softmarket\apisoftmarket\repository\TipoIdentificacionRepository.class
 com\softmarket\apisoftmarket\exception\GlobalExceptionHandler.class
@@ -145,6 +146,7 @@ com\softmarket\apisoftmarket\services\TipoClienteService.class
 com\softmarket\apisoftmarket\controller\AuthenticationController.class
 com\softmarket\apisoftmarket\repository\MovimientoInventarioRepository.class
 com\softmarket\apisoftmarket\services\ClienteService.class
+com\softmarket\apisoftmarket\services\impl\GithubWebClientService.class
 com\softmarket\apisoftmarket\controller\VentaController.class
 com\softmarket\apisoftmarket\entity\AuthorizationToken.class
 com\softmarket\apisoftmarket\repository\RangosEnumeracionRepository.class

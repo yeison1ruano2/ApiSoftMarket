@@ -49,4 +49,9 @@ external-api:
   facturaUrl: https://api-sandbox.factus.com.co/v1/bills/validate
   rangoEnumeracionUrl: https://api-sandbox.factus.com.co/v1/numbering-ranges
   descargarFacturaUrl: https://api-sandbox.factus.com.co/v1/bills/download-pdf
+  githubToken: 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
+  githubOwner: yeison1ruano2
+  githubRepo: AuthApiSoftMarket
+  nameAuthorizationGoogle: credentials.json
+  urlGithub: https://api.github.com
 

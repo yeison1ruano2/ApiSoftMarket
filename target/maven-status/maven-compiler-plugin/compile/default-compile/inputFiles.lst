@@ -37,6 +37,7 @@ D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarke
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\dto\FactusTokenResponse.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\dto\FormaPagoResponse.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\dto\GenericResponse.java
+D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\dto\GitHubFileResponse.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\dto\InventarioRequest.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\dto\InventarioRequestStock.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\dto\InventarioResponse.java
@@ -180,6 +181,7 @@ D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarke
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\impl\FacturaServiceImpl.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\impl\FormaPagoServiceImpl.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\impl\GenericTrashServiceImpl.java
+D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\impl\GithubWebClientService.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\impl\GoogleDriveService.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\impl\InventarioServiceImpl.java
 D:\ApiSoftMarket\backend\ApiSoftMarket\src\main\java\com\softmarket\apisoftmarket\services\impl\IvaDataSheetServiceImpl.java
