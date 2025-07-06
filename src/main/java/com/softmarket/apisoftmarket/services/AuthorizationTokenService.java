@@ -6,11 +6,9 @@ import com.softmarket.apisoftmarket.entity.AuthorizationToken;
 
 public interface AuthorizationTokenService {
 
-  boolean isTokenExpired(AuthorizationToken token);
-
-  void actualizarToken(Long id);
-
   void createTokenAuth(Authentication authentication, FactusTokenResponse factusTokenResponse);
 
   AuthorizationToken obtenerTokenAuthId(String authId);
+
+  AuthorizationToken obtenerRangoEnumeracion(String accessToken,AuthorizationToken authorizationToken);
 }

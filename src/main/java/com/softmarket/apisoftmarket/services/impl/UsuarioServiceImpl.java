@@ -38,16 +38,6 @@ public class UsuarioServiceImpl implements UsuarioService {
   }
 
   @Override
-  public UsuarioResponse obtenerUsuarioId(Long id) {
-    Usuario usuario =  usuarioRepository.findById(id).get();
-    return new UsuarioResponse(
-          usuario.getNombre(),
-          usuario.getApellido(),
-          usuario.getIdentificacion()
-    );
-  }
-
-  @Override
   public UsuarioResponse obtenerUsuarioResponseId(Long id) {
     Usuario usuario =  usuarioRepository.findById(id).orElseThrow(()->new UsuarioException("Usuario no encontrado"));
     return new UsuarioResponse(

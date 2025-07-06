@@ -1,6 +1,7 @@
 package com.softmarket.apisoftmarket.services.impl;
 
 import com.softmarket.apisoftmarket.dto.FormaPagoResponse;
+import com.softmarket.apisoftmarket.entity.CodigosFormasPago;
 import com.softmarket.apisoftmarket.exception.GenericException;
 import com.softmarket.apisoftmarket.exception.ProductoException;
 import com.softmarket.apisoftmarket.mapper.FormaPagoMapper;
@@ -44,5 +45,13 @@ public class FormaPagoServiceImpl implements FormaPagoService {
               return ResponseEntity.status(HttpStatus.OK).body(formaPagoResponse);
             })
             .orElseThrow(()-> new GenericException("No existencias"));
+  }
+
+  @Override
+  public List<String> obtenerMetodosDePagoList() {
+    return formaPagoRepository.findAll()
+            .stream()
+            .map(CodigosFormasPago::getNombre)
+            .toList();
   }
 }

@@ -9,6 +9,10 @@ public class MarcaResponse {
     this.nombre = nombre;
   }
 
+  public MarcaResponse(String nombre){
+    this.nombre = nombre;
+  }
+
   public MarcaResponse() {
   }
 

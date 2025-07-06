@@ -54,16 +54,19 @@ public class MarcaServiceImpl implements MarcaService {
   }
 
   @Override
+  public List<String> obtenerMarcasList() {
+    return marcaRepository.findAll()
+            .stream()
+            .map(marcaMapper::entityToResponseString)
+            .toList();
+  }
+
+  @Override
   public ResponseEntity<List<MarcaResponse>> obtenerMarcaNombreList(String nombre) {
     List<MarcaResponse> marcaResponses = marcaRepository.findByNombreList(nombre)
             .stream()
             .map(marcaMapper::entityToResponse)
             .toList();
     return ResponseEntity.status(HttpStatus.OK).body(marcaResponses);
-  }
-
-  @Override
-  public Marca obtenerMarcaNombre(String nombre) {
-    return marcaRepository.findByNombre(nombre).orElseThrow(() -> new MarcaException("Marca no encontrada"));
   }
 }

@@ -43,8 +43,11 @@ public class CategoriaServiceImpl implements CategoriaService {
   }
 
   @Override
-  public Categoria obtenerCategoriaNombre(String nombre) {
-    return categoriaRepository.findByNombre(nombre).orElseThrow(()->new CategoriaException("Categoria no encontrada"));
+  public List<String> obtenerCategoriaList() {
+    return categoriaRepository.findAll()
+            .stream()
+            .map(categoriaMapper::entityToResponseString)
+            .toList();
   }
 
   @Override

@@ -29,9 +29,10 @@ public class InventarioController {
   }
 
   @GetMapping("/{codigoBarras}")
-  public ResponseEntity<InventarioResponse> verInventario(@PathVariable String codigoBarras) {
+  public ResponseEntity<InventarioResponse> obtenerStockInventario(@PathVariable String codigoBarras) {
      return inventarioService.obtenerInventario(codigoBarras);
   }
+
 
   @GetMapping("/obtenerStock")
   public ResponseEntity<StockResponse> obtenerStock(@RequestParam("codigoBarras") String codigoBarras){

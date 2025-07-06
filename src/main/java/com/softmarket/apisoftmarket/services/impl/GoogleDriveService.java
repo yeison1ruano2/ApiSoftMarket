@@ -47,31 +47,36 @@ public class GoogleDriveService {
     ).setApplicationName("SoftMarket").build();
   }
 
-  public void guardarPdfBase64EnDrive(String base64,String nombreArchivo,String folderIdDrive)throws IOException{
+  public void guardarImageBase64EnDrive(String base64,String nombreArchivo,String folderIdDrive)throws IOException{
     Drive driveService = getDriveService();
     File archivoDrive = new File();
-    byte[] decodedBytes = Base64.getDecoder().decode(base64);
-    java.io.File archivoPdf = java.io.File.createTempFile(nombreArchivo,".pdf");
+    String base64ImageLimpio = base64;
+    if(base64.startsWith("data:image/")){
+      base64ImageLimpio = base64.substring(base64.indexOf(",") + 1);
+    }
+    base64ImageLimpio = base64ImageLimpio.replaceAll("\\s+", "");
+    byte[] decodedBytes = Base64.getDecoder().decode(base64ImageLimpio);
+    java.io.File archivoImagen = java.io.File.createTempFile(nombreArchivo,".png");
     if (folderIdDrive != null && !folderIdDrive.isEmpty()) {
       if (verificarCarpetaExiste(folderIdDrive,driveService)) {
-        archivoDrive.setName(nombreArchivo + ".pdf");
+        archivoDrive.setName(nombreArchivo + ".png");
         archivoDrive.setParents(Collections.singletonList(folderIdDrive));
       }else{
         throw new IOException("La carpeta con ID " + folderIdDrive + " no existe o no tienes permisos para acceder.");
       }
     }
-    try(FileOutputStream fos = new FileOutputStream(archivoPdf)){
+    try(FileOutputStream fos = new FileOutputStream(archivoImagen)){
       fos.write(decodedBytes);
     }
-    FileContent mediaContent = new FileContent("application/pdf",archivoPdf);
+    FileContent mediaContent = new FileContent("image/png",archivoImagen);
     driveService.files().create(archivoDrive,mediaContent)
             .setFields("id,name,parents,webViewLink")
             .setUploadType("multipart")
             .execute();
     try{
-      Files.delete(archivoPdf.toPath());
+      Files.delete(archivoImagen.toPath());
     }catch (IOException e){
-      logger.warn("No se pudo eliminar el archivo temporal: {}", archivoPdf.getName(), e);
+      logger.warn("No se pudo eliminar el archivo temporal: {}", archivoImagen.getName(), e);
     }
   }
 

@@ -47,7 +47,7 @@ public class FacturaMapper {
     return facturaDto;
   }
 
-  public FacturaDto responseFactusToDtoV3(FacturaResponse responseFactus, FacturaPdfFactusResponse facturaPdfFactusResponse) {
+  public FacturaDto responseFactusToDtoV3(FacturaResponse responseFactus) {
     var bill = responseFactus.getData().getBill();
     FacturaDto facturaDto = new FacturaDto(
             HttpStatus.OK.value(),
@@ -60,8 +60,7 @@ public class FacturaMapper {
             facturaDto.getCufe(),
             facturaDto.getNumber(),
             facturaDto.getReference_code(),
-            facturaPdfFactusResponse.getData().getFile_name(),
-            facturaPdfFactusResponse.getData().getPdf_base_64_encoded()
+            responseFactus.getData().getBill().getQr_image()
     );
     facturaRepository.save(factura);
     return facturaDto;

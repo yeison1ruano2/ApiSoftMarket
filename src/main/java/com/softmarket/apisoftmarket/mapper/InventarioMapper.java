@@ -1,6 +1,7 @@
 package com.softmarket.apisoftmarket.mapper;
 
 import com.softmarket.apisoftmarket.dto.InventarioResponse;
+import com.softmarket.apisoftmarket.dto.ProductoResponse;
 import com.softmarket.apisoftmarket.entity.Inventario;
 import com.softmarket.apisoftmarket.entity.Producto;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,18 @@ public class InventarioMapper {
             inventario.getCantidadActual(),
             HttpStatus.OK.getReasonPhrase(),
             ""
+    );
+  }
+
+  public ProductoResponse entityToProductoResponse(Inventario inventario) {
+    return new ProductoResponse(
+            inventario.getProducto().getNombre(),
+            inventario.getProducto().getCodigoBarras(),
+            inventario.getProducto().getPrecioVenta(),
+            inventario.getProducto().getPrecioPorMayor(),
+            inventario.getProducto().getMarca(),
+            inventario.getProducto().getCategoria(),
+            inventario.getCantidadActual()
     );
   }
 }

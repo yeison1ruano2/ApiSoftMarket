@@ -16,6 +16,9 @@ public class ExternalApiProperties {
   private String githubRepo;
   private String nameAuthorizationGoogle;
   private String urlGithub;
+  private String folderIdDrive;
+
+
 
   public String getDescargarFacturaUrl() {
     return descargarFacturaUrl;
@@ -87,5 +90,13 @@ public class ExternalApiProperties {
 
   public void setUrlGithub(String urlGithub) {
     this.urlGithub = urlGithub;
+  }
+
+  public String getFolderIdDrive() {
+    return folderIdDrive;
+  }
+
+  public void setFolderIdDrive(String folderIdDrive) {
+    this.folderIdDrive = folderIdDrive;
   }
 }

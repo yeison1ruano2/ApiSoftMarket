@@ -22,8 +22,11 @@ public class CategoriaMapper {
 
   public CategoriaResponse entityToResponse(Categoria categoria) {
     return new CategoriaResponse(
-            categoria.getId().toString(),
             categoria.getNombre()
     );
+  }
+
+  public String entityToResponseString(Categoria categoria) {
+    return categoria.getNombre();
   }
 }

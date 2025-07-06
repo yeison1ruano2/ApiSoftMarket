@@ -3,6 +3,7 @@ com\softmarket\apisoftmarket\repository\CategoriaRepository.class
 com\softmarket\apisoftmarket\dto\CategoriaRequest.class
 com\softmarket\apisoftmarket\entity\CodigosTributosClientes.class
 com\softmarket\apisoftmarket\services\impl\InventarioServiceImpl.class
+com\softmarket\apisoftmarket\dto\PreconfiguradoResponse.class
 com\softmarket\apisoftmarket\services\impl\ClienteServiceImpl.class
 com\softmarket\apisoftmarket\dto\UserResponse.class
 com\softmarket\apisoftmarket\exception\StockException.class
@@ -47,7 +48,6 @@ com\softmarket\apisoftmarket\entity\Producto.class
 com\softmarket\apisoftmarket\dto\InventarioResponse.class
 com\softmarket\apisoftmarket\dto\PaymentMethodResponse.class
 com\softmarket\apisoftmarket\entity\CodigosTiposDocumentosFactura.class
-com\softmarket\apisoftmarket\services\UserService.class
 com\softmarket\apisoftmarket\services\TipoIdentificacionService.class
 com\softmarket\apisoftmarket\entity\ExternalApiProperties.class
 com\softmarket\apisoftmarket\services\impl\MetodoDePagoServiceImpl.class
@@ -71,6 +71,7 @@ com\softmarket\apisoftmarket\services\IvaDataSheetService.class
 com\softmarket\apisoftmarket\entity\DataSheetProductosIva.class
 com\softmarket\apisoftmarket\exception\ProductoException.class
 com\softmarket\apisoftmarket\entity\Cuenta.class
+com\softmarket\apisoftmarket\exception\ProductoInfoWebException.class
 com\softmarket\apisoftmarket\entity\StandardCode.class
 com\softmarket\apisoftmarket\exception\RetryInterruptedException.class
 com\softmarket\apisoftmarket\mapper\InventarioMapper.class
@@ -129,6 +130,7 @@ com\softmarket\apisoftmarket\entity\CodigosTiposOperacion.class
 com\softmarket\apisoftmarket\dto\StockResponse.class
 com\softmarket\apisoftmarket\repository\FacturaRepository.class
 com\softmarket\apisoftmarket\repository\FormaPagoRepository.class
+com\softmarket\apisoftmarket\services\PreconfiguradoService.class
 com\softmarket\apisoftmarket\dto\DetalleVentaRequest.class
 com\softmarket\apisoftmarket\controller\ProductoController.class
 com\softmarket\apisoftmarket\entity\DetalleVenta.class
@@ -138,11 +140,13 @@ com\softmarket\apisoftmarket\mapper\DetalleVentaMapper.class
 com\softmarket\apisoftmarket\dto\WithholdingTaxisResponse.class
 com\softmarket\apisoftmarket\entity\TipoIdentificacion.class
 com\softmarket\apisoftmarket\dto\AuthFacturaRequest.class
+com\softmarket\apisoftmarket\controller\PreconfiguradoController.class
 com\softmarket\apisoftmarket\dto\BillingPeriodRequest.class
 com\softmarket\apisoftmarket\dto\DataRangoEnumeracionFactusResponse.class
 com\softmarket\apisoftmarket\repository\ClienteRepository.class
 com\softmarket\apisoftmarket\services\impl\RequestLogServiceImpl.class
 com\softmarket\apisoftmarket\services\TipoClienteService.class
+com\softmarket\apisoftmarket\dto\ProductoInfoWebResponse.class
 com\softmarket\apisoftmarket\controller\AuthenticationController.class
 com\softmarket\apisoftmarket\repository\MovimientoInventarioRepository.class
 com\softmarket\apisoftmarket\services\ClienteService.class
@@ -195,9 +199,9 @@ com\softmarket\apisoftmarket\dto\FormaPagoResponse.class
 com\softmarket\apisoftmarket\services\AuthenticationService.class
 com\softmarket\apisoftmarket\dto\UsuarioRequest.class
 com\softmarket\apisoftmarket\services\impl\GenericTrashServiceImpl.class
+com\softmarket\apisoftmarket\services\impl\PreconfiguradoServiceImpl.class
 com\softmarket\apisoftmarket\entity\Usuario.class
 com\softmarket\apisoftmarket\security\RequestLoggingFilter.class
-com\softmarket\apisoftmarket\services\FacturaFactusService.class
 com\softmarket\apisoftmarket\dto\ItemResponse.class
 com\softmarket\apisoftmarket\exception\RetryOperationException.class
 com\softmarket\apisoftmarket\dto\VentaRequest.class

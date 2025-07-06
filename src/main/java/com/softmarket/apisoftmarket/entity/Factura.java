@@ -14,9 +14,10 @@ public class Factura {
   private String number;
   private String reference_code;
   private String cufe;
-  private String filename;
   @Column(name="pdf", columnDefinition = "text",length=100000)
   private String pdf;
+  @Column(name="qrImage", columnDefinition = "text",length=100000)
+  private String qrImage;
 
   public Factura(String cufe, String number, String reference_code) {
     this.cufe = cufe;
@@ -25,12 +26,11 @@ public class Factura {
     this.fecha = Instant.now().toEpochMilli();
   }
 
-  public Factura(String cufe, String number, String reference_code, String filename, String pdf) {
+  public Factura(String cufe, String number, String reference_code, String qrImage) {
     this.cufe = cufe;
     this.number = number;
     this.reference_code = reference_code;
-    this.filename = filename;
-    this.pdf = pdf;
+    this.qrImage = qrImage;
     this.fecha = Instant.now().toEpochMilli();
   }
 
@@ -77,19 +77,19 @@ public class Factura {
     this.fecha = fecha;
   }
 
-  public String getFilename() {
-    return filename;
-  }
-
-  public void setFilename(String filename) {
-    this.filename = filename;
-  }
-
   public String getPdf() {
     return pdf;
   }
 
   public void setPdf(String pdf) {
     this.pdf = pdf;
+  }
+
+  public String getQrImage() {
+    return qrImage;
+  }
+
+  public void setQrImage(String qrImage) {
+    this.qrImage = qrImage;
   }
 }

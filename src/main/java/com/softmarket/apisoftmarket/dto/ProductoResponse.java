@@ -11,6 +11,7 @@ public class ProductoResponse {
   private BigDecimal precioPorMayor;
   private Integer cantidadMinimaMayor;
   private String categoria;
+  private Integer stock;
 
   public ProductoResponse(String nombre, String codigoBarras, String marca, BigDecimal precioVenta, String categoria) {
     this.nombre = nombre;
@@ -18,6 +19,25 @@ public class ProductoResponse {
     this.marca = marca;
     this.precioVenta = precioVenta;
     this.categoria = categoria;
+  }
+
+  public ProductoResponse(String nombre, String codigoBarras,BigDecimal precioVenta, BigDecimal precioPorMayor, String marca,String categoria) {
+    this.nombre = nombre;
+    this.codigoBarras = codigoBarras;
+    this.precioVenta = precioVenta;
+    this.precioPorMayor = precioPorMayor;
+    this.marca = marca;
+    this.categoria = categoria;
+  }
+
+  public ProductoResponse(String nombre, String codigoBarras,BigDecimal precioVenta, BigDecimal precioPorMayor, String marca,String categoria,Integer stock) {
+    this.nombre = nombre;
+    this.codigoBarras = codigoBarras;
+    this.precioVenta = precioVenta;
+    this.precioPorMayor = precioPorMayor;
+    this.marca = marca;
+    this.categoria = categoria;
+    this.stock = stock;
   }
 
   public ProductoResponse() {
@@ -77,5 +97,13 @@ public class ProductoResponse {
 
   public void setPrecioVenta(BigDecimal precioVenta) {
     this.precioVenta = precioVenta;
+  }
+
+  public Integer getStock() {
+    return stock;
+  }
+
+  public void setStock(Integer stock) {
+    this.stock = stock;
   }
 }

@@ -18,8 +18,11 @@ public class MarcaMapper {
 
   public MarcaResponse entityToResponse(Marca marca) {
     return new MarcaResponse(
-            Long.toString(marca.getId()),
             marca.getNombre()
     );
+  }
+
+  public String entityToResponseString(Marca marca) {
+    return marca.getNombre();
   }
 }

@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface FormaPagoService {
   ResponseEntity<List<FormaPagoResponse>> listarTodos();
-
   ResponseEntity<FormaPagoResponse> listarPorCodigo(String codigo);
+  List<String> obtenerMetodosDePagoList();
 }

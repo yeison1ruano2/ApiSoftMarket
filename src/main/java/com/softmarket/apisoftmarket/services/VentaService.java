@@ -9,8 +9,6 @@ import java.util.List;
 
 public interface VentaService {
   GenericResponse registrarVenta(VentaRequest ventaRequest);
-
   ResponseEntity<VentaResponse> listarVentasFactura(String codigoFactura);
-
   ResponseEntity<List<VentaResponse>> listarVentas();
 }

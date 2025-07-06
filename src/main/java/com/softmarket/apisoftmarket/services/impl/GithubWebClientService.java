@@ -59,6 +59,4 @@ public class GithubWebClientService {
     }
     return response.getContent();
   }
-
-
 }

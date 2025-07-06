@@ -1,9 +1,11 @@
 package com.softmarket.apisoftmarket.controller;
 
 import com.softmarket.apisoftmarket.dto.GenericResponse;
+import com.softmarket.apisoftmarket.dto.ProductoInfoWebResponse;
 import com.softmarket.apisoftmarket.dto.ProductoRequest;
 import com.softmarket.apisoftmarket.dto.ProductoResponse;
 import com.softmarket.apisoftmarket.services.ProductoService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,9 +51,8 @@ public class ProductoController {
     return productoService.actualizarProducto(codigoBarras,productoRequest);
   }
 
-  @GetMapping("/info/{codigoBarras}")
-  public ResponseEntity<ProductoResponse> obtenerInformacionProductoCodigoBarras(@RequestParam String codigoBarras){
-      //ProductoResponse productoInfo = productoService.obtenerInfoWeb(codigoBarras);
-    return null;
+  @GetMapping("/info")
+  public ResponseEntity<ProductoInfoWebResponse> obtenerInformacionProductoCodigoBarras(@RequestParam String codigoBarras){
+    return ResponseEntity.status(HttpStatus.OK).body(productoService.obtenerInfoProductoWeb(codigoBarras));
   }
 }

@@ -7,6 +7,5 @@ import java.util.Optional;
 
 public interface TokenService {
   Optional<Token> obtenerUsuario(Usuario usuario);
-
   void guardarToken(Token token);
 }

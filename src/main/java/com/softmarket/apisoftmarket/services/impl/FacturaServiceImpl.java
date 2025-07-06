@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softmarket.apisoftmarket.dto.*;
 import com.softmarket.apisoftmarket.entity.Authentication;
 import com.softmarket.apisoftmarket.entity.AuthorizationToken;
+import com.softmarket.apisoftmarket.entity.ExternalApiProperties;
 import com.softmarket.apisoftmarket.entity.Factura;
 import com.softmarket.apisoftmarket.exception.Factura409Exception;
 import com.softmarket.apisoftmarket.exception.Factura422Exception;
@@ -35,11 +36,12 @@ public class FacturaServiceImpl implements FacturaService {
   private final AuthenticationMapper authenticationMapper;
   private final FacturaRepository facturaRepository;
   private final GoogleDriveService googleDriveService;
+  private final ExternalApiProperties externalApiProperties;
 
   private static final Logger logger = LoggerFactory.getLogger(FacturaServiceImpl.class);
 
   public FacturaServiceImpl(AuthenticationService authenticationService, AuthorizationTokenService authorizationTokenService, FacturaMapper facturaMapper,
-                            ObjectMapper objectMapper, WebClientService webClientService, RangoEnumeracionService rangoEnumeracionService, AuthenticationMapper authenticationMapper, FacturaRepository facturaRepository, GoogleDriveService googleDriveService) {
+                            ObjectMapper objectMapper, WebClientService webClientService, RangoEnumeracionService rangoEnumeracionService, AuthenticationMapper authenticationMapper, FacturaRepository facturaRepository, GoogleDriveService googleDriveService, ExternalApiProperties externalApiProperties) {
     this.authenticationService = authenticationService;
     this.authorizationTokenService = authorizationTokenService;
     this.facturaMapper = facturaMapper;
@@ -49,10 +51,11 @@ public class FacturaServiceImpl implements FacturaService {
     this.rangoEnumeracionService = rangoEnumeracionService;
     this.facturaRepository = facturaRepository;
     this.googleDriveService = googleDriveService;
+    this.externalApiProperties = externalApiProperties;
   }
 
   @Override
-  public ResponseEntity<?> crearfactura(FacturaRequest facturaRequest) throws JsonProcessingException {
+  public ResponseEntity<FacturaDto> crearfactura(FacturaRequest facturaRequest) throws JsonProcessingException {
     try {
       Factura factura = facturaRepository.findByReferenceCode(facturaRequest.getReference_code()).orElse(null);
       if(factura != null){
@@ -74,7 +77,7 @@ public class FacturaServiceImpl implements FacturaService {
   }
 
   @Override
-  public ResponseEntity<?> crearFacturaV2(String authId, FacturaRequest data) {
+  public ResponseEntity<FacturaDto> crearFacturaV2(String authId, FacturaRequest data) {
     try{
        AuthorizationToken authorizationToken = authorizationTokenService.obtenerTokenAuthId(authId);
        Authentication auth = authorizationToken.getAuthId();
@@ -101,7 +104,7 @@ public class FacturaServiceImpl implements FacturaService {
   }
 
   @Override
-  public ResponseEntity<?> crearFacturaV3(String authId, FacturaRequest data) {
+  public ResponseEntity<FacturaDto> crearFacturaV3(String authId, FacturaRequest data) {
     try{
       AuthorizationToken authorizationToken = authorizationTokenService.obtenerTokenAuthId(authId);
       Authentication auth = authorizationToken.getAuthId();
@@ -111,13 +114,14 @@ public class FacturaServiceImpl implements FacturaService {
         FactusTokenResponse factusTokenResponse = webClientService.authenticationCreate(auth);
         authorizationToken = authenticationMapper.factusResponseToAuthorizationTokenUpdate(factusTokenResponse,authorizationToken,auth);
       }
-      Integer idventa = rangoEnumeracionService.buscarCrearRangoEnumeracion(authorizationToken.getAccess_token()).intValue();
-      data.setNumbering_range_id(idventa);
+      if(authorizationToken.getRangoEnumeracionVenta()==null){
+        authorizationToken = authorizationTokenService.obtenerRangoEnumeracion(authorizationToken.getAccess_token(),authorizationToken);
+      }
+      data.setNumbering_range_id(Integer.parseInt(authorizationToken.getRangoEnumeracionVenta()));
       FacturaResponse responseFactus = webClientService.enviarFacturaAFactus(data,authorizationToken.getAccess_token());
-      FacturaPdfFactusResponse facturaPdfFactusResponse = webClientService.descargarPdfFactus(responseFactus.getData().getBill().getNumber(),authorizationToken.getAccess_token());
-      String folderIdDrive = "1Xu629qE8FT5lrGU1ibuvToiiHxm7W-p1";
-      googleDriveService.guardarPdfBase64EnDrive(facturaPdfFactusResponse.getData().getPdf_base_64_encoded(),responseFactus.getData().getBill().getNumber(),folderIdDrive);
-      FacturaDto facturaDto = facturaMapper.responseFactusToDtoV3(responseFactus,facturaPdfFactusResponse);
+      String folderIdDrive = externalApiProperties.getFolderIdDrive();
+      googleDriveService.guardarImageBase64EnDrive(responseFactus.getData().getBill().getQr_image(),responseFactus.getData().getBill().getNumber(),folderIdDrive);
+      FacturaDto facturaDto = facturaMapper.responseFactusToDtoV3(responseFactus);
       return ResponseEntity.ok(facturaDto);
     } catch (Factura422Exception e){
       return manejarFactura422Exception(e, data);
@@ -131,7 +135,7 @@ public class FacturaServiceImpl implements FacturaService {
     }
   }
 
-  private ResponseEntity<?> manejarFactura409Exception(Factura409Exception e, FacturaRequest data) {
+  private ResponseEntity<FacturaDto> manejarFactura409Exception(Factura409Exception e, FacturaRequest data) {
     String message = extraerMensajeDeError(e.getMessage());
     FacturaDto facturaDto = facturaMapper.exceptionFacturaSave(e,data,message);
     return ResponseEntity.status(e.getStatus()).body(facturaDto);

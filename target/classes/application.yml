@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://ep-rapid-grass-a4m42ube-pooler.us-east-1.aws.neon.tech/neondb
-    username: neondb_owner
-    password: npg_29oYLCIbMuvF
+    url: ${DBURL}
+    username: ${DBUSERNAME}
+    password: ${DBPASSWORD}
     driver-class-name: org.postgresql.Driver
     hikari:
       minimum-idle: 5
@@ -45,13 +45,13 @@ external-api:
     read-timeout: 60s
     max-retries: 1
     retry-delay: 2s
-  authUrl: https://api-sandbox.factus.com.co/oauth/token
-  facturaUrl: https://api-sandbox.factus.com.co/v1/bills/validate
-  rangoEnumeracionUrl: https://api-sandbox.factus.com.co/v1/numbering-ranges
-  descargarFacturaUrl: https://api-sandbox.factus.com.co/v1/bills/download-pdf
+  authUrl: ${AUTHURL}
+  facturaUrl: ${FACTURAURL}
+  rangoEnumeracionUrl: ${RANGOENUMERACIONURL}
+  descargarFacturaUrl: ${DESCARGARFACTURAURL}
   githubToken: ${GITHUBTOKEN}
   githubOwner: ${GITHUBOWNER}
   githubRepo: ${GITHUBREPO}
   nameAuthorizationGoogle: ${NAMEAUTHORIZATIONGOOGLE}
   urlGithub: ${URLGITHUB}
-
+  folderIdDrive: ${FOLDERIDDRIVE}

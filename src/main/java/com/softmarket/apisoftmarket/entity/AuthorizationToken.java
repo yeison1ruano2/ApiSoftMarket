@@ -19,24 +19,7 @@ public class AuthorizationToken {
   @Column(length = 3000)
   private String refresh_token;
   private LocalDateTime expiration_time;
-
-  public Authentication getAuthId() {
-    return authId;
-  }
-
-  public void setAuthId(Authentication authId) {
-    this.authId = authId;
-  }
-
-
-
-  public AuthorizationToken(String access_token, int expires_in, Long id, String refresh_token, String token_type) {
-    this.access_token = access_token;
-    this.expires_in = expires_in;
-    this.id = id;
-    this.refresh_token = refresh_token;
-    this.token_type = token_type;
-  }
+  private String rangoEnumeracionVenta;
 
   public AuthorizationToken(Long id,String access_token, int expires_in, String refresh_token, String token_type,LocalDateTime timeColombia,Authentication auth) {
     this.access_token = access_token;
@@ -47,6 +30,7 @@ public class AuthorizationToken {
     this.id = id;
     this.authId = auth;
   }
+
 
   public AuthorizationToken(String access_token, int expires_in, String refresh_token, String token_type,LocalDateTime timeColombia,Authentication authentication) {
     this.access_token = access_token;
@@ -107,4 +91,21 @@ public class AuthorizationToken {
   public void setExpiration_time(LocalDateTime expiration_time) {
     this.expiration_time = expiration_time;
   }
+
+  public Authentication getAuthId() {
+    return authId;
+  }
+
+  public void setAuthId(Authentication authId) {
+    this.authId = authId;
+  }
+
+  public String getRangoEnumeracionVenta() {
+    return rangoEnumeracionVenta;
+  }
+
+  public void setRangoEnumeracionVenta(String rangoEnumeracionVenta) {
+    this.rangoEnumeracionVenta = rangoEnumeracionVenta;
+  }
+
 }

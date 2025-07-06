@@ -2,6 +2,7 @@ package com.softmarket.apisoftmarket.services.impl;
 
 import com.softmarket.apisoftmarket.dto.GenericResponse;
 import com.softmarket.apisoftmarket.dto.InventarioResponse;
+import com.softmarket.apisoftmarket.dto.ProductoResponse;
 import com.softmarket.apisoftmarket.entity.Inventario;
 import com.softmarket.apisoftmarket.entity.MovimientoInventario;
 import com.softmarket.apisoftmarket.entity.Producto;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -64,10 +66,7 @@ public class InventarioServiceImpl implements InventarioService {
     inventarioRepository.save(inventario);
 
     MovimientoInventario movimientoInventario = new MovimientoInventario(
-            null,
-            inventario,
-            "SALIDA",
-            cantidad
+            null, inventario, "SALIDA", cantidad
     );
     movimientoRepository.save(movimientoInventario);
     return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse(HttpStatus.OK.value(),"Stock retirado con éxito"));
@@ -92,12 +91,6 @@ public class InventarioServiceImpl implements InventarioService {
   }
 
   @Override
-  public Boolean validarStock(Long productoId,Integer cantidad) {
-    Inventario inventario = inventarioRepository.findByInventarioProductoId(productoId);
-    return cantidad <= inventario.getCantidadActual();
-  }
-
-  @Override
   public Integer obtenerStock(String codigoBarras) {
     Optional<Producto> productoOptional = productoRepository.findByCodigoBarras(codigoBarras);
     if(productoOptional.isEmpty()){
@@ -105,6 +98,14 @@ public class InventarioServiceImpl implements InventarioService {
     }
     Inventario inventario = inventarioRepository.findByInventarioProductoId(productoOptional.get().getId());
     return inventario.getCantidadActual();
+  }
+
+  @Override
+  public List<ProductoResponse> obtenerProductoList() {
+    List<Inventario> inventarioList = inventarioRepository.findAll();
+    return inventarioList.stream()
+            .map(inventarioMapper::entityToProductoResponse)
+            .toList();
   }
 
 }

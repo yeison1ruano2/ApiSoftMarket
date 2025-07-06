@@ -42,12 +42,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
   }
 
   @Override
-  public Authentication obtenerAuth(Long authId) {
-    return authenticationRepository.findById(authId)
-            .orElseThrow(()->new AuthenticationException("Autenticacion no existe"));
-  }
-
-  @Override
   public ResponseEntity<GenericResponse> crearClienteAuth(ClientAuthRequest clientAuthRequest) {
     Authentication authentication = authenticationMapper.crearClientAuth(clientAuthRequest);
     authentication = authenticationRepository.save(authentication);

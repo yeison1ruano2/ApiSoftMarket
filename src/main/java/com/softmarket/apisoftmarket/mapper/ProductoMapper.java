@@ -4,11 +4,7 @@ import com.softmarket.apisoftmarket.dto.CategoriaResponse;
 import com.softmarket.apisoftmarket.dto.MarcaResponse;
 import com.softmarket.apisoftmarket.dto.ProductoRequest;
 import com.softmarket.apisoftmarket.dto.ProductoResponse;
-import com.softmarket.apisoftmarket.entity.Categoria;
-import com.softmarket.apisoftmarket.entity.CodigosTributosClientes;
-import com.softmarket.apisoftmarket.entity.Marca;
 import com.softmarket.apisoftmarket.entity.Producto;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -16,13 +12,13 @@ import java.math.BigDecimal;
 @Service
 public class ProductoMapper {
 
-  public Producto requestToEntityCreate(ProductoRequest productoRequest, Marca marca, Categoria categoria, BigDecimal iva){
+  public Producto requestToEntityCreate(ProductoRequest productoRequest, BigDecimal iva){
     return new Producto(
             null,
             productoRequest.getNombre(),
             productoRequest.getCodigoBarras(),
-            marca,
-            categoria,
+            productoRequest.getMarca(),
+            productoRequest.getCategoria(),
             productoRequest.getPrecioVenta(),
             productoRequest.getPrecioPorMayor(),
             productoRequest.getCantidadMinimaMayor(),
@@ -34,9 +30,10 @@ public class ProductoMapper {
     return new ProductoResponse(
             producto.getNombre(),
             producto.getCodigoBarras(),
-            producto.getMarca().getNombre(),
             producto.getPrecioVenta(),
-            producto.getCategoria().getNombre()
+            producto.getPrecioPorMayor(),
+            producto.getMarca(),
+            producto.getCategoria()
     );
   }
 

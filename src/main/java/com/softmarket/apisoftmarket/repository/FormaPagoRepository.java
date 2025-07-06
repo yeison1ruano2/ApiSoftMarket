@@ -1,6 +1,5 @@
 package com.softmarket.apisoftmarket.repository;
 
-import com.softmarket.apisoftmarket.dto.FormaPagoResponse;
 import com.softmarket.apisoftmarket.entity.CodigosFormasPago;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

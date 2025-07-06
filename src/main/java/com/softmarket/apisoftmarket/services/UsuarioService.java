@@ -9,11 +9,8 @@ import org.springframework.http.ResponseEntity;
 import java.util.Optional;
 
 public interface UsuarioService {
-  UsuarioResponse obtenerUsuarioId(Long id);
   ResponseEntity<UserResponse> autenticacion(UsuarioRequest usuarioRequest);
   ResponseEntity<UserResponse> registrar(UsuarioRequest usuarioRequest);
-
   Optional<Usuario> obtenerUsuarioUsername(String username);
-
   UsuarioResponse obtenerUsuarioResponseId(Long id);
 }
