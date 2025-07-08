@@ -34,7 +34,7 @@ public class WebClientService {
     this.externalApiProperties = externalApiProperties;
   }
 
-  public FactusTokenResponse authenticationCreate(Authentication authentication) {
+  public Mono<FactusTokenResponse> authenticationCreate(Authentication authentication) {
     return webClientBuilder
             .post()
             .uri(externalApiProperties.getAuthUrl())
@@ -59,10 +59,7 @@ public class WebClientService {
                       return new RuntimeException("Error al refrescar token después de reintentos: " +
                               retrySignal.failure().getMessage(),
                               retrySignal.failure());
-                    })))
-            .doOnSuccess(response -> logger.info("✅ Token refrescado exitosamente"))
-            .doOnError(error -> logger.error("💥 Error final en refresh token: {}", error.getMessage()))
-            .block();
+                    })));
   }
 
   public FactusTokenResponse authenticationRefresh(Authentication authentication, AuthorizationToken token) {
@@ -104,7 +101,7 @@ public class WebClientService {
     return throwable instanceof ConnectException || throwable instanceof java.net.SocketTimeoutException || throwable instanceof Errors.NativeIoException || message.contains("Connection reset") || message.contains("recvAddress") || message.contains("Connection refused") || message.contains("timeout") || message.contains("broken pipe");
   }
 
-  public FacturaResponse enviarFacturaAFactus(FacturaRequest facturaRequest, String accessToken) {
+  public Mono<FacturaResponse> enviarFacturaAFactus(FacturaRequest facturaRequest, String accessToken) {
     return webClientBuilder
             .post()
             .uri(externalApiProperties.getFacturaUrl())
@@ -140,7 +137,7 @@ public class WebClientService {
                         )));
               }})
             .bodyToMono(FacturaResponse.class)
-            .block();
+            .doOnError(error -> logger.error("💥 Error al enviar factura: {}", error.getMessage()));
   }
 
   public DataRangoEnumeracionFactusResponse buscarCrearRangoEnumeracion(String token) {

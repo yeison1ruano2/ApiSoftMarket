@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/api/autenticacionAuth")
@@ -20,7 +21,7 @@ public class AuthenticationController {
   }
 
   @PostMapping()
-  public ResponseEntity<GenericResponse> crearClienteAuth(@RequestBody ClientAuthRequest clientAuthRequest){
+  public Mono<ResponseEntity<GenericResponse>> crearClienteAuth(@RequestBody ClientAuthRequest clientAuthRequest){
     return authenticationService.crearClienteAuth(clientAuthRequest);
   }
 

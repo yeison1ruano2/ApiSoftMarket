@@ -2,8 +2,6 @@ package com.softmarket.apisoftmarket.services.impl;
 
 import com.softmarket.apisoftmarket.dto.ClientAuthRequest;
 import com.softmarket.apisoftmarket.dto.GenericResponse;
-import com.softmarket.apisoftmarket.entity.Authentication;
-import com.softmarket.apisoftmarket.dto.FactusTokenResponse;
 import com.softmarket.apisoftmarket.entity.AuthorizationToken;
 import com.softmarket.apisoftmarket.exception.*;
 import com.softmarket.apisoftmarket.mapper.AuthenticationMapper;
@@ -14,6 +12,8 @@ import com.softmarket.apisoftmarket.services.AuthorizationTokenService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -42,11 +42,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
   }
 
   @Override
-  public ResponseEntity<GenericResponse> crearClienteAuth(ClientAuthRequest clientAuthRequest) {
-    Authentication authentication = authenticationMapper.crearClientAuth(clientAuthRequest);
-    authentication = authenticationRepository.save(authentication);
-    FactusTokenResponse factusTokenResponse = webClientService.authenticationCreate(authentication);
-    authorizationTokenService.createTokenAuth(authentication,factusTokenResponse);
-    return ResponseEntity.ok(new GenericResponse(HttpStatus.OK.value(),"Authenticacion exitosa"));
+  public Mono<ResponseEntity<GenericResponse>> crearClienteAuth(ClientAuthRequest clientAuthRequest) {
+    return Mono.fromCallable(()-> authenticationMapper.crearClientAuth(clientAuthRequest))
+            .flatMap(authentication ->
+                    Mono.fromCallable(()-> authenticationRepository.save(authentication))
+                            .subscribeOn(Schedulers.boundedElastic()))
+            .flatMap(savedAuth ->
+                    webClientService.authenticationCreate(savedAuth)
+                            .flatMap(factusTokenResponse ->
+                                    Mono.fromRunnable(()->
+                                            authorizationTokenService.createTokenAuth(savedAuth,factusTokenResponse))
+                                            .subscribeOn(Schedulers.boundedElastic())))
+            .thenReturn(ResponseEntity.ok(new GenericResponse(HttpStatus.OK.value(), "Autenticación exitosa")))
+            .onErrorResume(e ->Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new GenericResponse(500,"Error en autenticacion: " + e.getMessage()))));
   }
 }
