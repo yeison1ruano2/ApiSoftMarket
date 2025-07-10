@@ -32,7 +32,6 @@ public class ProductoServiceImpl implements ProductoService {
   private final ProductoMapper productoMapper;
   private final InventarioService inventarioService;
   private final IvaDataSheetService ivaDataSheetService;
-
   public ProductoServiceImpl(ProductoRepository productoRepository, ProductoMapper productoMapper, InventarioService inventarioService, IvaDataSheetService ivaDataSheetService) {
     this.productoRepository = productoRepository;
     this.productoMapper = productoMapper;
@@ -62,7 +61,10 @@ public class ProductoServiceImpl implements ProductoService {
   public ResponseEntity<List<ProductoResponse>> listarTodos() {
     List<ProductoResponse> productosResponse = productoRepository.findAll()
               .stream()
-              .map(productoMapper::entityToResponse)
+              .map(producto -> {
+                Integer stockProducto = inventarioService.obtenerStock(producto.getCodigoBarras());
+                return productoMapper.entityToResponse(producto,stockProducto);
+              })
               .toList();
     if(productosResponse.isEmpty()){
       throw new ProductoException("Lista de productos vacia");
@@ -72,19 +74,23 @@ public class ProductoServiceImpl implements ProductoService {
 
   @Override
   public ResponseEntity<List<ProductoResponse>> obtenerProductoNombre(String nombre) {
-      List<ProductoResponse> productoResponses = productoRepository.findByNombre(nombre)
-              .stream()
-              .map(productoMapper::entityToResponse)
-              .toList();
-      return ResponseEntity.status(HttpStatus.OK).body(productoResponses);
+    List<ProductoResponse> productoResponses = productoRepository.findByNombre(nombre)
+            .stream()
+            .map(producto->{
+              Integer stockProducto = inventarioService.obtenerStock(producto.getCodigoBarras());
+              return productoMapper.entityToResponse(producto,stockProducto);
+            })
+            .toList();
+    return ResponseEntity.status(HttpStatus.OK).body(productoResponses);
   }
 
 
   @Override
   public ResponseEntity<List<ProductoResponse>> obtenerProductoBarras(String codigoBarras) {
+    Integer stockProducto = inventarioService.obtenerStock(codigoBarras);
     List<ProductoResponse> productResponses = productoRepository.findByCodigoBarras(codigoBarras)
             .stream()
-            .map(productoMapper::entityToResponse)
+            .map(producto -> productoMapper.entityToResponse(producto,stockProducto))
             .toList();
     return ResponseEntity.status(HttpStatus.OK).body(productResponses);
   }
@@ -104,7 +110,9 @@ public class ProductoServiceImpl implements ProductoService {
   public ProductoInfoWebResponse obtenerInfoProductoWeb(String codigoBarras){
     try {
       String htmlContent = makeHttpRequest(codigoBarras);
-      return parseProductoInfo(htmlContent);
+      String productName = getProductName(htmlContent);
+      BigDecimal ivaProducto = ivaDataSheetService.buscarCoincidenciaCadena(productName);
+      return parseProductoInfo(htmlContent,codigoBarras,ivaProducto);
     } catch (IOException e) {
       throw new ProductoInfoWebException("Ocurrio un error al obtener la información del producto");
     } catch (InterruptedException e) {
@@ -124,7 +132,7 @@ public class ProductoServiceImpl implements ProductoService {
       return response.body();
   }
 
-  public ProductoInfoWebResponse parseProductoInfo(String htmlContent){
+  public ProductoInfoWebResponse parseProductoInfo(String htmlContent,String codigoBarras,BigDecimal ivaProducto){
     Document doc = Jsoup.parse(htmlContent);
     String productName = "";
     Element productNameElement = doc.selectFirst("h1.product-name");
@@ -147,6 +155,16 @@ public class ProductoServiceImpl implements ProductoService {
         }
       }
     }
-    return new ProductoInfoWebResponse(brand, category, productName);
+    return new ProductoInfoWebResponse(brand, category, productName,codigoBarras,ivaProducto);
+  }
+
+  private String getProductName (String htmlContent){
+    Document doc = Jsoup.parse(htmlContent);
+    String productName = "";
+    Element productNameElement = doc.selectFirst("h1.product-name");
+    if (productNameElement != null) {
+      productName = productNameElement.text().trim();
+    }
+    return productName;
   }
 }

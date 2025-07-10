@@ -12,4 +12,6 @@ public interface MetodoDePagoService {
   ResponseEntity<MetodoDePagoResponse> listarMetodoDePagoTermino(String termino);
 
   MetodoDePago obtenerMetodoPagoTermino(String termino);
+
+  List<String> obtenerMetodosDePagoList();
 }

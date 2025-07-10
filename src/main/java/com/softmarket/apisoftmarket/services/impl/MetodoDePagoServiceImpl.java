@@ -1,6 +1,7 @@
 package com.softmarket.apisoftmarket.services.impl;
 
 import com.softmarket.apisoftmarket.dto.MetodoDePagoResponse;
+import com.softmarket.apisoftmarket.entity.CodigosFormasPago;
 import com.softmarket.apisoftmarket.entity.MetodoDePago;
 import com.softmarket.apisoftmarket.exception.MetodoPagoException;
 import com.softmarket.apisoftmarket.mapper.MetodoDePagoMapper;
@@ -43,5 +44,13 @@ public class MetodoDePagoServiceImpl implements MetodoDePagoService {
   @Override
   public MetodoDePago obtenerMetodoPagoTermino(String termino) {
     return metodoDePagoRepository.buscarPorTermino(termino).orElseThrow(()->new MetodoPagoException("Metodo de pago no encontrado"));
+  }
+
+  @Override
+  public List<String> obtenerMetodosDePagoList() {
+    return metodoDePagoRepository.findAll()
+            .stream()
+            .map(MetodoDePago::getNombre)
+            .toList();
   }
 }

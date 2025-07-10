@@ -21,16 +21,18 @@ public class ProductoResponse {
     this.categoria = categoria;
   }
 
-  public ProductoResponse(String nombre, String codigoBarras,BigDecimal precioVenta, BigDecimal precioPorMayor, String marca,String categoria) {
+  public ProductoResponse(String nombre, String codigoBarras,BigDecimal precioVenta, BigDecimal precioPorMayor,Integer cantidadMinimaMayor, String marca,String categoria, Integer stock) {
     this.nombre = nombre;
     this.codigoBarras = codigoBarras;
     this.precioVenta = precioVenta;
     this.precioPorMayor = precioPorMayor;
+    this.cantidadMinimaMayor = cantidadMinimaMayor;
     this.marca = marca;
     this.categoria = categoria;
+    this.stock = stock;
   }
 
-  public ProductoResponse(String nombre, String codigoBarras,BigDecimal precioVenta, BigDecimal precioPorMayor, String marca,String categoria,Integer stock) {
+  public ProductoResponse(String nombre, String codigoBarras,BigDecimal precioVenta, BigDecimal precioPorMayor,String marca,String categoria,Integer stock) {
     this.nombre = nombre;
     this.codigoBarras = codigoBarras;
     this.precioVenta = precioVenta;

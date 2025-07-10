@@ -14,13 +14,13 @@ public class PreconfiguradoServiceImpl implements PreconfiguradoService {
   private final MarcaService marcaService;
   private final CategoriaService categoriaService;
   private final InventarioService inventarioService;
-  private final FormaPagoService formaPagoService;
+  private final MetodoDePagoService metodoDePagoService;
 
-  public PreconfiguradoServiceImpl(MarcaService marcaService, CategoriaService categoriaService, InventarioService inventarioService, FormaPagoService formaPagoService) {
+  public PreconfiguradoServiceImpl(MarcaService marcaService, CategoriaService categoriaService, InventarioService inventarioService, FormaPagoService formaPagoService, MetodoDePagoService metodoDePagoService) {
     this.marcaService = marcaService;
     this.categoriaService = categoriaService;
     this.inventarioService = inventarioService;
-    this.formaPagoService = formaPagoService;
+    this.metodoDePagoService = metodoDePagoService;
   }
 
   @Override
@@ -28,7 +28,7 @@ public class PreconfiguradoServiceImpl implements PreconfiguradoService {
     List<String> marcaResponseList = marcaService.obtenerMarcasList();
     List<String> categoriaResponseList = categoriaService.obtenerCategoriaList();
     List<ProductoResponse> productoResponsesList = inventarioService.obtenerProductoList();
-    List<String> metodosDePagosList = formaPagoService.obtenerMetodosDePagoList();
+    List<String> metodosDePagosList = metodoDePagoService.obtenerMetodosDePagoList();
     return ResponseEntity.status(HttpStatus.OK).body(
             new PreconfiguradoResponse(marcaResponseList,categoriaResponseList,productoResponsesList,metodosDePagosList)
     );

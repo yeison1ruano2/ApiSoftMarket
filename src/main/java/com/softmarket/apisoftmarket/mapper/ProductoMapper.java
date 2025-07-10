@@ -26,14 +26,16 @@ public class ProductoMapper {
     );
   }
 
-  public ProductoResponse entityToResponse(Producto producto) {
+  public ProductoResponse entityToResponse(Producto producto,Integer stock) {
     return new ProductoResponse(
             producto.getNombre(),
             producto.getCodigoBarras(),
             producto.getPrecioVenta(),
             producto.getPrecioPorMayor(),
+            producto.getCantidadMinimaMayor(),
             producto.getMarca(),
-            producto.getCategoria()
+            producto.getCategoria(),
+            stock
     );
   }
 

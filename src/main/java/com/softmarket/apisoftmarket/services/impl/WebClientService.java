@@ -47,7 +47,7 @@ public class WebClientService {
                     .with("password", authentication.getPassword()))
             .retrieve()
             .bodyToMono(FactusTokenResponse.class)
-            .retryWhen(Retry.fixedDelay(1,Duration.ofSeconds(2))
+            .retryWhen(Retry.fixedDelay(2,Duration.ofSeconds(2))
                     .filter(this::isRetryableError)
                     .doBeforeRetry(retrySignal -> logger.warn("🔄 Reintentando refresh token. Intento: {}, Error: {}",
                             retrySignal.totalRetries()+1,

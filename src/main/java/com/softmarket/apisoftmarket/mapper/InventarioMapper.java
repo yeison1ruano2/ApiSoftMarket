@@ -33,6 +33,7 @@ public class InventarioMapper {
             inventario.getProducto().getCodigoBarras(),
             inventario.getProducto().getPrecioVenta(),
             inventario.getProducto().getPrecioPorMayor(),
+            inventario.getProducto().getCantidadMinimaMayor(),
             inventario.getProducto().getMarca(),
             inventario.getProducto().getCategoria(),
             inventario.getCantidadActual()
