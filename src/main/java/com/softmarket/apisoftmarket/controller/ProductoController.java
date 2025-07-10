@@ -42,7 +42,7 @@ public class ProductoController {
   }
 
   @GetMapping("/barras")
-  public ResponseEntity<List<ProductoResponse>> obtenerProductoBarras(@RequestParam("codigoBarras") String codigoBarras){
+  public ResponseEntity<ProductoResponse> obtenerProductoBarras(@RequestParam("codigoBarras") String codigoBarras){
     return productoService.obtenerProductoBarras(codigoBarras);
   }
 

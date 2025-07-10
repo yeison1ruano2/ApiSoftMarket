@@ -42,7 +42,10 @@ public class ProductoServiceImpl implements ProductoService {
   @Override
   public ResponseEntity<GenericResponse> crearProducto(ProductoRequest productoRequest) {
     try {
-      BigDecimal ivaProducto = ivaDataSheetService.buscarCoincidenciaCadena(productoRequest.getNombre());
+      BigDecimal ivaProducto = productoRequest.getIva();
+      if(ivaProducto==null){
+        ivaProducto = ivaDataSheetService.buscarCoincidenciaCadena(productoRequest.getNombre());
+      }
       Producto producto = productoMapper.requestToEntityCreate(productoRequest,ivaProducto);
       producto  = productoRepository.save(producto);
       inventarioService.crearInventario(producto.getId(),productoRequest.getStockMinimo());
@@ -86,13 +89,12 @@ public class ProductoServiceImpl implements ProductoService {
 
 
   @Override
-  public ResponseEntity<List<ProductoResponse>> obtenerProductoBarras(String codigoBarras) {
+  public ResponseEntity<ProductoResponse> obtenerProductoBarras(String codigoBarras) {
     Integer stockProducto = inventarioService.obtenerStock(codigoBarras);
-    List<ProductoResponse> productResponses = productoRepository.findByCodigoBarras(codigoBarras)
-            .stream()
-            .map(producto -> productoMapper.entityToResponse(producto,stockProducto))
-            .toList();
-    return ResponseEntity.status(HttpStatus.OK).body(productResponses);
+    return productoRepository.findByCodigoBarras(codigoBarras)
+            .map(producto->productoMapper.entityToResponse(producto,stockProducto))
+            .map(productoResponse -> ResponseEntity.status(HttpStatus.OK).body(productoResponse)).
+            orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ProductoResponse()));
   }
 
   @Override

@@ -12,6 +12,7 @@ public class ProductoRequest {
   private String marca;
   private Integer stockMinimo;
   private String categoria;
+  private BigDecimal iva;
 
   public String getCodigoBarras() {
     return codigoBarras;
@@ -84,5 +85,13 @@ public class ProductoRequest {
 
   public void setPrecioCredito(BigDecimal precioCredito) {
     this.precioCredito = precioCredito;
+  }
+
+  public BigDecimal getIva() {
+    return iva;
+  }
+
+  public void setIva(BigDecimal iva) {
+    this.iva = iva;
   }
 }

@@ -35,7 +35,8 @@ public class ProductoMapper {
             producto.getCantidadMinimaMayor(),
             producto.getMarca(),
             producto.getCategoria(),
-            stock
+            stock,
+            producto.getIva()
     );
   }
 

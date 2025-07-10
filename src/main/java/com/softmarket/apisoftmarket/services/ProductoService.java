@@ -13,6 +13,6 @@ public interface ProductoService {
   ResponseEntity<List<ProductoResponse>> listarTodos();
   ResponseEntity<List<ProductoResponse>> obtenerProductoNombre(String nombre);
   ResponseEntity<GenericResponse> actualizarProducto(String codigoBarras, ProductoRequest productoRequest);
-  ResponseEntity<List<ProductoResponse>> obtenerProductoBarras(String codigoBarras);
+  ResponseEntity<ProductoResponse> obtenerProductoBarras(String codigoBarras);
   ProductoInfoWebResponse obtenerInfoProductoWeb(String codigoBarras);
 }
