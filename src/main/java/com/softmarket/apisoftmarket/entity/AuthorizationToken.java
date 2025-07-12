@@ -1,44 +1,40 @@
 package com.softmarket.apisoftmarket.entity;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
-@Entity
+@Document(collection = "authorization_tokens")
 public class AuthorizationToken {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  @OneToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name="auth_id")
-  private Authentication authId;
+  private String authenticationId;
   private String token_type;
-  private int expires_in;
-  @Column(length = 3000)
+  private Integer expires_in;
   private String access_token;
-  @Column(length = 3000)
   private String refresh_token;
   private LocalDateTime expiration_time;
   private String rangoEnumeracionVenta;
 
-  public AuthorizationToken(Long id,String access_token, int expires_in, String refresh_token, String token_type,LocalDateTime timeColombia,Authentication auth) {
+  public AuthorizationToken(Long id,String access_token, Integer expires_in, String refresh_token, String token_type,LocalDateTime timeColombia,String authenticacionId) {
     this.access_token = access_token;
     this.expires_in = expires_in;
     this.refresh_token = refresh_token;
     this.token_type = token_type;
     this.expiration_time = timeColombia;
     this.id = id;
-    this.authId = auth;
+    this.authenticationId = authenticacionId;
   }
 
 
-  public AuthorizationToken(String access_token, int expires_in, String refresh_token, String token_type,LocalDateTime timeColombia,Authentication authentication) {
+  public AuthorizationToken(String access_token, Integer expires_in, String refresh_token, String token_type,LocalDateTime timeColombia,String authenticationId) {
     this.access_token = access_token;
     this.expires_in = expires_in;
     this.refresh_token = refresh_token;
     this.token_type = token_type;
     this.expiration_time = timeColombia;
-    this.authId = authentication;
+    this.authenticationId = authenticationId;
   }
 
   public AuthorizationToken() {
@@ -52,11 +48,11 @@ public class AuthorizationToken {
     this.access_token = access_token;
   }
 
-  public int getExpires_in() {
+  public Integer getExpires_in() {
     return expires_in;
   }
 
-  public void setExpires_in(int expires_in) {
+  public void setExpires_in(Integer expires_in) {
     this.expires_in = expires_in;
   }
 
@@ -92,12 +88,12 @@ public class AuthorizationToken {
     this.expiration_time = expiration_time;
   }
 
-  public Authentication getAuthId() {
-    return authId;
+  public String getAuthenticationId() {
+    return authenticationId;
   }
 
-  public void setAuthId(Authentication authId) {
-    this.authId = authId;
+  public void setAuthenticationId(String authenticationId) {
+    this.authenticationId = authenticationId;
   }
 
   public String getRangoEnumeracionVenta() {
