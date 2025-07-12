@@ -24,3 +24,4 @@ external-api:
   nameAuthorizationGoogle: ${NAMEAUTHORIZATIONGOOGLE}
   urlGithub: ${URLGITHUB}
   folderIdDrive: ${FOLDERIDDRIVE}
+

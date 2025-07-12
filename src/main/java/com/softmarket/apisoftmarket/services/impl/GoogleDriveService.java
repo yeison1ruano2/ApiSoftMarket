@@ -8,6 +8,8 @@ import com.google.api.services.drive.model.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
@@ -47,38 +49,52 @@ public class GoogleDriveService {
     ).setApplicationName("SoftMarket").build();
   }
 
-  public void guardarImageBase64EnDrive(String base64,String nombreArchivo,String folderIdDrive)throws IOException{
-    Drive driveService = getDriveService();
-    File archivoDrive = new File();
-    String base64ImageLimpio = base64;
-    if(base64.startsWith("data:image/")){
-      base64ImageLimpio = base64.substring(base64.indexOf(",") + 1);
-    }
-    base64ImageLimpio = base64ImageLimpio.replaceAll("\\s+", "");
-    byte[] decodedBytes = Base64.getDecoder().decode(base64ImageLimpio);
-    java.io.File archivoImagen = java.io.File.createTempFile(nombreArchivo,".png");
-    if (folderIdDrive != null && !folderIdDrive.isEmpty()) {
-      if (verificarCarpetaExiste(folderIdDrive,driveService)) {
-        archivoDrive.setName(nombreArchivo + ".png");
-        archivoDrive.setParents(Collections.singletonList(folderIdDrive));
-      }else{
-        throw new IOException("La carpeta con ID " + folderIdDrive + " no existe o no tienes permisos para acceder.");
+  public Mono<Void> guardarImageBase64EnDrive(String base64, String nombreArchivo, String folderIdDrive) {
+    return Mono.fromRunnable(() -> {
+      try {
+        Drive driveService = getDriveService();
+        File archivoDrive = new File();
+        String base64ImageLimpio = base64;
+
+        if (base64.startsWith("data:image/")) {
+          base64ImageLimpio = base64.substring(base64.indexOf(",") + 1);
+        }
+
+        base64ImageLimpio = base64ImageLimpio.replaceAll("\\s+", "");
+        byte[] decodedBytes = Base64.getDecoder().decode(base64ImageLimpio);
+        java.io.File archivoImagen = java.io.File.createTempFile(nombreArchivo, ".png");
+
+        if (folderIdDrive != null && !folderIdDrive.isEmpty()) {
+          if (verificarCarpetaExiste(folderIdDrive, driveService)) {
+            archivoDrive.setName(nombreArchivo + ".png");
+            archivoDrive.setParents(Collections.singletonList(folderIdDrive));
+          } else {
+            throw new IOException("La carpeta con ID " + folderIdDrive + " no existe o no tienes permisos para acceder.");
+          }
+        }
+
+        try (FileOutputStream fos = new FileOutputStream(archivoImagen)) {
+          fos.write(decodedBytes);
+        }
+
+        FileContent mediaContent = new FileContent("image/png", archivoImagen);
+        driveService.files().create(archivoDrive, mediaContent)
+                .setFields("id,name,parents,webViewLink")
+                .setUploadType("multipart")
+                .execute();
+
+        try {
+          Files.delete(archivoImagen.toPath());
+        } catch (IOException e) {
+          logger.warn("No se pudo eliminar el archivo temporal: {}", archivoImagen.getName(), e);
+        }
+
+      } catch (Exception e) {
+        throw new RuntimeException("Error al guardar imagen en Google Drive", e);
       }
-    }
-    try(FileOutputStream fos = new FileOutputStream(archivoImagen)){
-      fos.write(decodedBytes);
-    }
-    FileContent mediaContent = new FileContent("image/png",archivoImagen);
-    driveService.files().create(archivoDrive,mediaContent)
-            .setFields("id,name,parents,webViewLink")
-            .setUploadType("multipart")
-            .execute();
-    try{
-      Files.delete(archivoImagen.toPath());
-    }catch (IOException e){
-      logger.warn("No se pudo eliminar el archivo temporal: {}", archivoImagen.getName(), e);
-    }
+    }).subscribeOn(Schedulers.boundedElastic()).then();
   }
+
 
   private boolean verificarCarpetaExiste(String folderId,Drive driveService) {
     try {
