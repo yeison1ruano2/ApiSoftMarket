@@ -19,6 +19,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.softmarket.apisoftmarket.mapper.FacturaMapper;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -54,7 +56,7 @@ public class FacturaServiceImpl implements FacturaService {
     this.externalApiProperties = externalApiProperties;
   }
 
-  @Override
+  /*@Override
   public ResponseEntity<FacturaDto> crearfactura(FacturaRequest facturaRequest) throws JsonProcessingException {
     try {
       Factura factura = facturaRepository.findByReferenceCode(facturaRequest.getReference_code()).orElse(null);
@@ -74,65 +76,107 @@ public class FacturaServiceImpl implements FacturaService {
       FacturaDto facturaDto = facturaMapper.exceptionFactura500Save(e, facturaRequest);
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(facturaDto);
     }
+  }*/
+
+  @Override
+  public Mono<ResponseEntity<FacturaDto>> crearFacturaV2(String authId, FacturaRequest data) {
+    return Mono.fromCallable(() -> authorizationTokenService.obtenerTokenAuthId(authId))
+            .subscribeOn(Schedulers.boundedElastic())
+            .flatMap(authorizationToken -> {
+              Authentication auth = authorizationToken.getAuthId();
+              ZoneId colombiaZone = ZoneId.of("America/Bogota");
+              LocalDateTime nowColombia = LocalDateTime.now(Clock.system(colombiaZone));
+
+              Mono<AuthorizationToken> tokenMono;
+
+              if (nowColombia.isAfter(authorizationToken.getExpiration_time())) {
+                tokenMono = webClientService.authenticationCreate(auth)
+                        .map(refresh -> authenticationMapper.factusResponseToAuthorizationTokenUpdate(
+                                refresh, authorizationToken, auth
+                        ));
+              } else {
+                tokenMono = Mono.just(authorizationToken);
+              }
+
+              return tokenMono.flatMap(updatedToken ->
+                      Mono.fromCallable(rangoEnumeracionService::rangoEnumeracionVenta)
+                              .subscribeOn(Schedulers.boundedElastic())
+                              .map(idVenta -> {
+                                data.setNumbering_range_id(idVenta.intValue());
+                                return updatedToken;
+                              })
+              );
+            })
+            .flatMap(updatedToken ->
+                    webClientService.enviarFacturaAFactus(data, updatedToken.getAccess_token())
+            )
+            .map(responseFactus -> {
+              FacturaDto facturaDto = facturaMapper.responseFactusToDto(responseFactus);
+              return ResponseEntity.ok(facturaDto);
+            })
+            .onErrorResume(Factura422Exception.class, e -> Mono.just(manejarFactura422Exception(e, data)))
+            .onErrorResume(Factura409Exception.class, e -> Mono.just(manejarFactura409Exception(e, data)))
+            .onErrorResume(Exception.class,e -> {
+              logErrorInesperado(e);
+              FacturaDto facturaDto = facturaMapper.exceptionFactura500Save(e, data);
+              return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(facturaDto));
+            });
   }
 
   @Override
-  public ResponseEntity<FacturaDto> crearFacturaV2(String authId, FacturaRequest data) {
-    try{
-       AuthorizationToken authorizationToken = authorizationTokenService.obtenerTokenAuthId(authId);
-       Authentication auth = authorizationToken.getAuthId();
-       ZoneId colombiaZone = ZoneId.of("America/Bogota");
-       LocalDateTime nowColombia = LocalDateTime.now(Clock.system(colombiaZone));
-       if(nowColombia.isAfter(authorizationToken.getExpiration_time())){
-         FactusTokenResponse factusTokenResponse = webClientService.authenticationRefresh(auth,authorizationToken);
-         authorizationToken = authenticationMapper.factusResponseToAuthorizationTokenUpdate(factusTokenResponse,authorizationToken,auth);
-       }
-       Integer idventa = rangoEnumeracionService.rangoEnumeracionVenta().intValue();
-       data.setNumbering_range_id(idventa);
-       FacturaResponse responseFactus = webClientService.enviarFacturaAFactus(data,authorizationToken.getAccess_token());
-       FacturaDto facturaDto = facturaMapper.responseFactusToDto(responseFactus);
-       return ResponseEntity.ok(facturaDto);
-    } catch (Factura422Exception e){
-      return manejarFactura422Exception(e, data);
-    }catch (Factura409Exception e){
-      return manejarFactura409Exception(e,data);
-    }catch(Exception e){
-      logErrorInesperado(e);
-      FacturaDto facturaDto = facturaMapper.exceptionFactura500Save(e, data);
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(facturaDto);
-    }
-  }
+  public Mono<ResponseEntity<FacturaDto>> crearFacturaV3(String authId, FacturaRequest data) {
+    ZoneId colombiaZone = ZoneId.of("America/Bogota");
+    LocalDateTime nowColombia = LocalDateTime.now(Clock.system(colombiaZone));
 
-  @Override
-  public ResponseEntity<FacturaDto> crearFacturaV3(String authId, FacturaRequest data) {
-    try{
-      AuthorizationToken authorizationToken = authorizationTokenService.obtenerTokenAuthId(authId);
-      Authentication auth = authorizationToken.getAuthId();
-      ZoneId colombiaZone = ZoneId.of("America/Bogota");
-      LocalDateTime nowColombia = LocalDateTime.now(Clock.system(colombiaZone));
-      if(nowColombia.isAfter(authorizationToken.getExpiration_time())){
-        FactusTokenResponse factusTokenResponse = webClientService.authenticationCreate(auth);
-        authorizationToken = authenticationMapper.factusResponseToAuthorizationTokenUpdate(factusTokenResponse,authorizationToken,auth);
-      }
-      if(authorizationToken.getRangoEnumeracionVenta()==null){
-        authorizationToken = authorizationTokenService.obtenerRangoEnumeracion(authorizationToken.getAccess_token(),authorizationToken);
-      }
-      data.setNumbering_range_id(Integer.parseInt(authorizationToken.getRangoEnumeracionVenta()));
-      FacturaResponse responseFactus = webClientService.enviarFacturaAFactus(data,authorizationToken.getAccess_token());
-      String folderIdDrive = externalApiProperties.getFolderIdDrive();
-      googleDriveService.guardarImageBase64EnDrive(responseFactus.getData().getBill().getQr_image(),responseFactus.getData().getBill().getNumber(),folderIdDrive);
-      FacturaDto facturaDto = facturaMapper.responseFactusToDtoV3(responseFactus);
-      return ResponseEntity.ok(facturaDto);
-    } catch (Factura422Exception e){
-      return manejarFactura422Exception(e, data);
-    }catch (Factura409Exception e){
-      return manejarFactura409Exception(e,data);
-    }
-    catch(Exception e){
-      logErrorInesperado(e);
-      FacturaDto facturaDto = facturaMapper.exceptionFactura500Save(e, data);
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(facturaDto);
-    }
+    return Mono.fromCallable(()-> authorizationTokenService.obtenerTokenAuthId(authId))
+            .subscribeOn(Schedulers.boundedElastic())
+            .flatMap(authorizationToken -> {
+              Authentication auth = authorizationToken.getAuthId();
+              Mono<AuthorizationToken>tokenMono;
+              if(nowColombia.isAfter(authorizationToken.getExpiration_time())){
+                tokenMono = webClientService.authenticationCreate(auth)
+                        .flatMap(tokenResponse ->
+                                Mono.fromCallable(()->
+                                        authenticationMapper.factusResponseToAuthorizationTokenUpdate(
+                                                tokenResponse,authorizationToken,auth
+                                        ))
+                                        .subscribeOn(Schedulers.boundedElastic()));
+              }else{
+                tokenMono = Mono.just(authorizationToken);
+              }
+              return tokenMono.flatMap(finalToken ->{
+                Mono<AuthorizationToken> rangoMono;
+                if(finalToken.getRangoEnumeracionVenta()==null){
+                  rangoMono = Mono.fromCallable(()->
+                          authorizationTokenService.obtenerRangoEnumeracion(
+                                  finalToken.getAccess_token(),finalToken
+                          )).subscribeOn(Schedulers.boundedElastic());
+                }else{
+                  rangoMono = Mono.just(finalToken);
+                }
+                return rangoMono.flatMap(tokenConRango ->{
+                  data.setNumbering_range_id(Integer.parseInt(tokenConRango.getRangoEnumeracionVenta()));
+                  return webClientService.enviarFacturaAFactus(data,tokenConRango.getAccess_token())
+                          .flatMap(responseFactus -> {
+                            String qrImage = responseFactus.getData().getBill().getQr_image();
+                            String number = responseFactus.getData().getBill().getNumber();
+                            String folderId = externalApiProperties.getFolderIdDrive();
+                            return googleDriveService.guardarImageBase64EnDrive(qrImage,number,folderId)
+                                    .thenReturn(facturaMapper.responseFactusToDtoV3(responseFactus));
+                          });
+                });
+              });
+            })
+            .map(ResponseEntity::ok)
+            .onErrorResume(Factura422Exception.class,e ->
+                    Mono.just(manejarFactura422Exception(e,data)))
+            .onErrorResume(Factura409Exception.class,e ->
+                    Mono.just(manejarFactura409Exception(e,data)))
+            .onErrorResume(Exception.class,e ->{
+              logErrorInesperado(e);
+              FacturaDto facturaDto = facturaMapper.exceptionFactura500Save(e,data);
+              return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(facturaDto));
+            });
   }
 
   private ResponseEntity<FacturaDto> manejarFactura409Exception(Factura409Exception e, FacturaRequest data) {

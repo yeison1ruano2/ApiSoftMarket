@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/api/factura")
@@ -21,18 +22,18 @@ public class FacturaController {
     this.facturaService = facturaService;
   }
 
-  @PostMapping("/create")
+  /*@PostMapping("/create")
   public ResponseEntity<FacturaDto> crearFactura(@RequestBody FacturaRequest facturaRequest) throws JsonProcessingException {
     return facturaService.crearfactura(facturaRequest);
-  }
+  }*/
 
   @PostMapping("/create/v2")
-  public ResponseEntity<FacturaDto> crearFacturaV2(@RequestBody AuthFacturaRequest authFacturaRequest){
+  public Mono<ResponseEntity<FacturaDto>> crearFacturaV2(@RequestBody AuthFacturaRequest authFacturaRequest){
     return facturaService.crearFacturaV2(authFacturaRequest.getAuth_id(),authFacturaRequest.getData());
   }
 
   @PostMapping("/create/v3")
-  public ResponseEntity<FacturaDto> crearFacturav3(@RequestBody AuthFacturaRequest authFacturaRequest){
+  public Mono<ResponseEntity<FacturaDto>> crearFacturav3(@RequestBody AuthFacturaRequest authFacturaRequest){
     return facturaService.crearFacturaV3(authFacturaRequest.getAuth_id(),authFacturaRequest.getData());
   }
 

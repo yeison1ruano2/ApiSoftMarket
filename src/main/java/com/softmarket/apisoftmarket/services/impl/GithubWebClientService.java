@@ -43,7 +43,6 @@ public class GithubWebClientService {
             .retrieve()
             .bodyToMono(GitHubFileResponse.class)
             .map(this::decodificarContenido)
-            .doOnSuccess(content -> logger.info("Archivo {} obtenido exitosamente", filePath))
             .doOnError(error -> logger.error("Error obteniendo archivo {}: {}", filePath, error.getMessage()));
   }
 
