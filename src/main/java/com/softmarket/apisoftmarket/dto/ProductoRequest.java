@@ -1,18 +1,16 @@
 package com.softmarket.apisoftmarket.dto;
 
-import java.math.BigDecimal;
-
 public class ProductoRequest {
   private String nombre;
   private String codigoBarras;
-  private BigDecimal precioVenta;
-  private BigDecimal precioPorMayor;
-  private BigDecimal precioCredito;
-  private Integer cantidadMinimaMayor;
+  private float precioVenta;
+  private float precioPorMayor;
+  private float precioCredito;
+  private int cantidadMinimaMayor;
   private String marca;
-  private Integer stockMinimo;
+  private int stockMinimo;
   private String categoria;
-  private BigDecimal iva;
+  private int iva;
 
   public String getCodigoBarras() {
     return codigoBarras;
@@ -63,35 +61,35 @@ public class ProductoRequest {
     this.cantidadMinimaMayor = cantidadMinimaMayor;
   }
 
-  public BigDecimal getPrecioPorMayor() {
+  public float getPrecioPorMayor() {
     return precioPorMayor;
   }
 
-  public void setPrecioPorMayor(BigDecimal precioPorMayor) {
+  public void setPrecioPorMayor(float precioPorMayor) {
     this.precioPorMayor = precioPorMayor;
   }
 
-  public BigDecimal getPrecioVenta() {
+  public float getPrecioVenta() {
     return precioVenta;
   }
 
-  public void setPrecioVenta(BigDecimal precioVenta) {
+  public void setPrecioVenta(float precioVenta) {
     this.precioVenta = precioVenta;
   }
 
-  public BigDecimal getPrecioCredito() {
+  public float getPrecioCredito() {
     return precioCredito;
   }
 
-  public void setPrecioCredito(BigDecimal precioCredito) {
+  public void setPrecioCredito(float precioCredito) {
     this.precioCredito = precioCredito;
   }
 
-  public BigDecimal getIva() {
+  public int getIva() {
     return iva;
   }
 
-  public void setIva(BigDecimal iva) {
+  public void setIva(int iva) {
     this.iva = iva;
   }
 }

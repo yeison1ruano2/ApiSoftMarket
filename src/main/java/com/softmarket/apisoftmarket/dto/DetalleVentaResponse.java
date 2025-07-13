@@ -4,11 +4,11 @@ import java.math.BigDecimal;
 
 public class DetalleVentaResponse {
   private String productoNombre;
-  private Integer cantidad;
-  private BigDecimal precioUnitario;
-  private BigDecimal subtotal;
+  private int cantidad;
+  private float precioUnitario;
+  private float subtotal;
 
-  public DetalleVentaResponse(String productoNombre, Integer cantidad, BigDecimal precioUnitario, BigDecimal subtotal) {
+  public DetalleVentaResponse(String productoNombre, int cantidad, float precioUnitario, float subtotal) {
     this.productoNombre = productoNombre;
     this.cantidad = cantidad;
     this.precioUnitario = precioUnitario;
@@ -18,19 +18,19 @@ public class DetalleVentaResponse {
   public DetalleVentaResponse() {
   }
 
-  public Integer getCantidad() {
+  public int getCantidad() {
     return cantidad;
   }
 
-  public void setCantidad(Integer cantidad) {
+  public void setCantidad(int cantidad) {
     this.cantidad = cantidad;
   }
 
-  public BigDecimal getPrecioUnitario() {
+  public float getPrecioUnitario() {
     return precioUnitario;
   }
 
-  public void setPrecioUnitario(BigDecimal precioUnitario) {
+  public void setPrecioUnitario(float precioUnitario) {
     this.precioUnitario = precioUnitario;
   }
 
@@ -42,11 +42,11 @@ public class DetalleVentaResponse {
     this.productoNombre = productoNombre;
   }
 
-  public BigDecimal getSubtotal() {
+  public float getSubtotal() {
     return subtotal;
   }
 
-  public void setSubtotal(BigDecimal subtotal) {
+  public void setSubtotal(float subtotal) {
     this.subtotal = subtotal;
   }
 }

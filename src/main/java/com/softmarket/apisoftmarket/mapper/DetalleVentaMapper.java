@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 
 @Service
 public class DetalleVentaMapper {
-  public static DetalleVenta detalleCreate(Producto producto, int cantidad, BigDecimal precioVenta, BigDecimal subtotal, Venta venta) {
+  public static DetalleVenta detalleCreate(Producto producto, int cantidad, float precioVenta, float subtotal, Venta venta) {
     return new DetalleVenta(
             null,
             venta,

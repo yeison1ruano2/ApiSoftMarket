@@ -26,7 +26,7 @@ public class GenericController {
     if(ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)){
       ip = request.getRemoteAddr();
     }
-    String genericTrash = genericTrashService.obtenerBasura();
+    String genericTrash = "Ip que pide:";
     String mensaje = genericTrash + ip;
     return ResponseEntity.status(HttpStatus.OK).body(new GenericResponse(HttpStatus.OK.value(),mensaje));
   }

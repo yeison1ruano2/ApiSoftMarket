@@ -7,12 +7,10 @@ import com.softmarket.apisoftmarket.dto.ProductoResponse;
 import com.softmarket.apisoftmarket.entity.Producto;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-
 @Service
 public class ProductoMapper {
 
-  public Producto requestToEntityCreate(ProductoRequest productoRequest, BigDecimal iva){
+  public Producto requestToEntityCreate(ProductoRequest productoRequest, int iva){
     return new Producto(
             null,
             productoRequest.getNombre(),
@@ -21,6 +19,7 @@ public class ProductoMapper {
             productoRequest.getCategoria(),
             productoRequest.getPrecioVenta(),
             productoRequest.getPrecioPorMayor(),
+            productoRequest.getPrecioCredito(),
             productoRequest.getCantidadMinimaMayor(),
             iva
     );

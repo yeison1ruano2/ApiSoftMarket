@@ -21,13 +21,13 @@ public class DetalleVenta {
   @JoinColumn(name = "producto_id", nullable = false)
   private Producto producto;
 
-  private Integer cantidad;
+  private int cantidad;
 
-  private BigDecimal precioUnitario;
+  private float precioUnitario;
 
-  private BigDecimal subtotal;
+  private float subtotal;
 
-  public DetalleVenta(Long id, Venta venta, Producto producto, Integer cantidad, BigDecimal precioUnitario, BigDecimal subtotal) {
+  public DetalleVenta(Long id, Venta venta, Producto producto, int cantidad, float precioUnitario, float subtotal) {
     this.id = id;
     this.venta = venta;
     this.producto = producto;
@@ -39,7 +39,7 @@ public class DetalleVenta {
   public DetalleVenta() {
   }
 
-  public Integer getCantidad() {
+  public int getCantidad() {
     return cantidad;
   }
 
@@ -55,11 +55,11 @@ public class DetalleVenta {
     this.id = id;
   }
 
-  public BigDecimal getPrecioUnitario() {
+  public float getPrecioUnitario() {
     return precioUnitario;
   }
 
-  public void setPrecioUnitario(BigDecimal precioUnitario) {
+  public void setPrecioUnitario(float precioUnitario) {
     this.precioUnitario = precioUnitario;
   }
 
@@ -71,11 +71,11 @@ public class DetalleVenta {
     this.producto = producto;
   }
 
-  public BigDecimal getSubtotal() {
+  public float getSubtotal() {
     return subtotal;
   }
 
-  public void setSubtotal(BigDecimal subtotal) {
+  public void setSubtotal(float subtotal) {
     this.subtotal = subtotal;
   }
 

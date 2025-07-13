@@ -42,11 +42,7 @@ public class ProductoServiceImpl implements ProductoService {
   @Override
   public ResponseEntity<GenericResponse> crearProducto(ProductoRequest productoRequest) {
     try {
-      BigDecimal ivaProducto = productoRequest.getIva();
-      if(ivaProducto==null){
-        ivaProducto = ivaDataSheetService.buscarCoincidenciaCadena(productoRequest.getNombre());
-      }
-      Producto producto = productoMapper.requestToEntityCreate(productoRequest,ivaProducto);
+      Producto producto = productoMapper.requestToEntityCreate(productoRequest,productoRequest.getIva());
       producto  = productoRepository.save(producto);
       inventarioService.crearInventario(producto.getId(),productoRequest.getStockMinimo());
       return ResponseEntity.status(HttpStatus.CREATED).body(new GenericResponse(HttpStatus.CREATED.value(), "Producto creado con éxito"));

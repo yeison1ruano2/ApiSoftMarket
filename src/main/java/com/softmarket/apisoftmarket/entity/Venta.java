@@ -3,7 +3,6 @@ package com.softmarket.apisoftmarket.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -31,7 +30,7 @@ public class Venta {
 
   private Long fecha;
 
-  private BigDecimal total;
+  private float total;
 
   private boolean estado;
 
@@ -39,7 +38,7 @@ public class Venta {
   @JsonManagedReference
   private List<DetalleVenta> detalles;
 
-  public Venta(Long id, String codigoFactura, Cliente cliente, Usuario usuario, MetodoDePago metodoDePago, Long fecha, BigDecimal total, boolean estado) {
+  public Venta(Long id, String codigoFactura, Cliente cliente, Usuario usuario, MetodoDePago metodoDePago, Long fecha, float total, boolean estado) {
     this.id = id;
     this.codigoFactura = codigoFactura;
     this.cliente = cliente;
@@ -101,11 +100,11 @@ public class Venta {
     this.metodoDePago = metodoDePago;
   }
 
-  public BigDecimal getTotal() {
+  public float getTotal() {
     return total;
   }
 
-  public void setTotal(BigDecimal total) {
+  public void setTotal(float total) {
     this.total = total;
   }
 

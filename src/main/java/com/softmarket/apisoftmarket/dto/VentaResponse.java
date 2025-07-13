@@ -8,10 +8,10 @@ public class VentaResponse {
   private ClienteResponse cliente;
   private UsuarioResponse usuario;
   private Long fecha;
-  private BigDecimal total;
+  private float total;
   private List<DetalleVentaResponse> detalles;
 
-  public VentaResponse(String codigoFactura, ClienteResponse cliente, UsuarioResponse usuario, Long fecha, BigDecimal total, List<DetalleVentaResponse> detalles) {
+  public VentaResponse(String codigoFactura, ClienteResponse cliente, UsuarioResponse usuario, Long fecha, float total, List<DetalleVentaResponse> detalles) {
     this.codigoFactura = codigoFactura;
     this.cliente = cliente;
     this.usuario = usuario;
@@ -52,11 +52,11 @@ public class VentaResponse {
     this.fecha = fecha;
   }
 
-  public BigDecimal getTotal() {
+  public float getTotal() {
     return total;
   }
 
-  public void setTotal(BigDecimal total) {
+  public void setTotal(float total) {
     this.total = total;
   }
 

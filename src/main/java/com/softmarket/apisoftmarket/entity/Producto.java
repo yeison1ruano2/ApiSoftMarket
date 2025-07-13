@@ -2,8 +2,6 @@ package com.softmarket.apisoftmarket.entity;
 
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
-
 @Entity
 @Table(name = "productos")
 public class Producto {
@@ -14,14 +12,15 @@ public class Producto {
   @Column(unique = true)
   private String codigoBarras;
   private String marca;
-  private BigDecimal precioVenta;
-  private BigDecimal precioPorMayor;
-  private Integer cantidadMinimaMayor;
+  private float precioVenta;
+  private float precioPorMayor;
+  private float precioCredito;
+  private int cantidadMinimaMayor;
   private String categoria;
 
-  private BigDecimal iva;
+  private int iva;
 
-  public Producto(Long id, String nombre,String codigoBarras,String marca,String categoria, BigDecimal precioVenta,BigDecimal precioPorMayor,Integer cantidadMinimaMayor,BigDecimal iva) {
+  public Producto(Long id, String nombre,String codigoBarras,String marca,String categoria, float precioVenta,float precioPorMayor,float precioCredito, int cantidadMinimaMayor,int iva) {
     this.id = id;
     this.nombre = nombre;
     this.codigoBarras = codigoBarras;
@@ -30,6 +29,7 @@ public class Producto {
     this.precioVenta = precioVenta;
     this.precioPorMayor = precioPorMayor;
     this.cantidadMinimaMayor = cantidadMinimaMayor;
+    this.precioCredito = precioCredito;
     this.iva = iva;
   }
 
@@ -76,35 +76,43 @@ public class Producto {
     this.marca = marca;
   }
 
-  public Integer getCantidadMinimaMayor() {
+  public int getCantidadMinimaMayor() {
     return cantidadMinimaMayor;
   }
 
-  public void setCantidadMinimaMayor(Integer cantidadMinimaMayor) {
+  public void setCantidadMinimaMayor(int cantidadMinimaMayor) {
     this.cantidadMinimaMayor = cantidadMinimaMayor;
   }
 
-  public BigDecimal getPrecioPorMayor() {
+  public float getPrecioPorMayor() {
     return precioPorMayor;
   }
 
-  public void setPrecioPorMayor(BigDecimal precioPorMayor) {
+  public void setPrecioPorMayor(float precioPorMayor) {
     this.precioPorMayor = precioPorMayor;
   }
 
-  public BigDecimal getPrecioVenta() {
+  public float getPrecioVenta() {
     return precioVenta;
   }
 
-  public void setPrecioVenta(BigDecimal precioVenta) {
+  public void setPrecioVenta(float precioVenta) {
     this.precioVenta = precioVenta;
   }
 
-  public BigDecimal getIva() {
+  public int getIva() {
     return iva;
   }
 
-  public void setIva(BigDecimal iva) {
+  public void setIva(int iva) {
     this.iva = iva;
+  }
+
+  public float getPrecioCredito() {
+    return precioCredito;
+  }
+
+  public void setPrecioCredito(float precioCredito) {
+    this.precioCredito = precioCredito;
   }
 }

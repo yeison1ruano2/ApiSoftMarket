@@ -32,7 +32,7 @@ public class VentaMapper {
     this.metodoDePagoService = metodoDePagoService;
   }
 
-  public Venta entityCreate(Venta venta, Cliente cliente, Usuario usuario, String metodoDePago, BigDecimal totalVenta, List<DetalleVenta> detalles) {
+  public Venta entityCreate(Venta venta, Cliente cliente, Usuario usuario, String metodoDePago, float totalVenta, List<DetalleVenta> detalles) {
     venta.setCliente(cliente);
     venta.setUsuario(usuario);
     venta.setFecha(Instant.now().toEpochMilli());

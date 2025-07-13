@@ -1,20 +1,18 @@
 package com.softmarket.apisoftmarket.dto;
 
-import java.math.BigDecimal;
-
 public class ProductoResponse {
 
   private String nombre;
   private String codigoBarras;
   private String marca;
-  private BigDecimal precioVenta;
-  private BigDecimal precioPorMayor;
-  private Integer cantidadMinimaMayor;
+  private float precioVenta;
+  private float precioPorMayor;
+  private int cantidadMinimaMayor;
   private String categoria;
-  private Integer stock;
-  private BigDecimal iva;
+  private int stock;
+  private int iva;
 
-  public ProductoResponse(String nombre, String codigoBarras, String marca, BigDecimal precioVenta, String categoria) {
+  public ProductoResponse(String nombre, String codigoBarras, String marca, float precioVenta, String categoria) {
     this.nombre = nombre;
     this.codigoBarras = codigoBarras;
     this.marca = marca;
@@ -22,7 +20,7 @@ public class ProductoResponse {
     this.categoria = categoria;
   }
 
-  public ProductoResponse(String nombre, String codigoBarras,BigDecimal precioVenta, BigDecimal precioPorMayor,Integer cantidadMinimaMayor, String marca,String categoria, Integer stock,BigDecimal iva) {
+  public ProductoResponse(String nombre, String codigoBarras,float precioVenta, float precioPorMayor,int cantidadMinimaMayor, String marca,String categoria, int stock,int iva) {
     this.nombre = nombre;
     this.codigoBarras = codigoBarras;
     this.precioVenta = precioVenta;
@@ -77,19 +75,19 @@ public class ProductoResponse {
     this.marca = marca;
   }
 
-  public BigDecimal getPrecioPorMayor() {
+  public float getPrecioPorMayor() {
     return precioPorMayor;
   }
 
-  public void setPrecioPorMayor(BigDecimal precioPorMayor) {
+  public void setPrecioPorMayor(float precioPorMayor) {
     this.precioPorMayor = precioPorMayor;
   }
 
-  public BigDecimal getPrecioVenta() {
+  public float getPrecioVenta() {
     return precioVenta;
   }
 
-  public void setPrecioVenta(BigDecimal precioVenta) {
+  public void setPrecioVenta(float precioVenta) {
     this.precioVenta = precioVenta;
   }
 
@@ -101,11 +99,11 @@ public class ProductoResponse {
     this.stock = stock;
   }
 
-  public BigDecimal getIva() {
+  public int getIva() {
     return iva;
   }
 
-  public void setIva(BigDecimal iva) {
+  public void setIva(int iva) {
     this.iva = iva;
   }
 }

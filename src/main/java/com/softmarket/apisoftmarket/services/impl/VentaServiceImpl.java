@@ -17,10 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class VentaServiceImpl implements VentaService {
@@ -49,13 +47,14 @@ public class VentaServiceImpl implements VentaService {
       Usuario usuario = usuarioRepository.findById(Long.parseLong(ventaRequest.getUsuarioId()))
               .orElseThrow(()->new UsuarioException("Usuario no encontrado"));
       Venta venta = new Venta();
-      AtomicReference<BigDecimal> totalVenta = new AtomicReference<>(BigDecimal.ZERO);
+      float totalVenta = 0.0f;
       List<DetalleVenta> detalles = new ArrayList<>();
       for(DetalleVentaRequest d: ventaRequest.getDetalles()){
-        DetalleVenta detalle = procesarDetalle(d,venta,totalVenta);
+        DetalleVenta detalle = procesarDetalle(d,venta);
         detalles.add(detalle);
+        totalVenta +=detalle.getSubtotal();
       }
-      Venta ventaCreate = ventaMapper.entityCreate(venta,cliente,usuario,ventaRequest.getMetodoDePago(),totalVenta.get(),detalles);
+      Venta ventaCreate = ventaMapper.entityCreate(venta,cliente,usuario,ventaRequest.getMetodoDePago(),totalVenta,detalles);
       ventaRepository.save(ventaCreate);
       return new GenericResponse(HttpStatus.OK.value(),"Venta realizada con éxito");
   }
@@ -75,16 +74,14 @@ public class VentaServiceImpl implements VentaService {
     return ResponseEntity.status(HttpStatus.OK).body(ventaResponseList);
   }
 
-  private DetalleVenta procesarDetalle(DetalleVentaRequest detalleRequest, Venta venta, AtomicReference<BigDecimal> totalVenta) {
+  private DetalleVenta procesarDetalle(DetalleVentaRequest detalleRequest, Venta venta) {
     Long productoId = Long.parseLong(detalleRequest.getProductoId());
     int cantidad = detalleRequest.getCantidad();
 
     Producto producto = productoRepository.findById(productoId)
             .orElseThrow(()->new ProductoException("Producto no encontrado"));
-    BigDecimal precioUnitario = producto.getPrecioVenta();
-    BigDecimal subtotal = precioUnitario.multiply(BigDecimal.valueOf(cantidad));
-
-    totalVenta.updateAndGet(current -> current.add(subtotal));
+    float precioUnitario = producto.getPrecioVenta();
+    float subtotal = precioUnitario * cantidad;
     inventarioService.retirarStock(producto.getCodigoBarras(), cantidad);
     return DetalleVentaMapper.detalleCreate(producto,cantidad,precioUnitario,subtotal,venta);
   }
