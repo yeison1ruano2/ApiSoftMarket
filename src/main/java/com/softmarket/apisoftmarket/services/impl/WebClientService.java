@@ -47,7 +47,7 @@ public class WebClientService {
                     .with("password", authentication.getPassword()))
             .retrieve()
             .bodyToMono(FactusTokenResponse.class)
-            .retryWhen(Retry.fixedDelay(2,Duration.ofSeconds(2))
+            .retryWhen(Retry.fixedDelay(2,Duration.ofSeconds(3))
                     .filter(this::isRetryableError)
                     .doBeforeRetry(retrySignal -> logger.warn("🔄 Reintentando refresh token. Intento: {}, Error: {}",
                             retrySignal.totalRetries()+1,
@@ -75,7 +75,7 @@ public class WebClientService {
                     .with("refresh_token", token.getRefresh_token()))
             .retrieve()
             .bodyToMono(FactusTokenResponse.class)
-            .retryWhen(Retry.fixedDelay(1, Duration.ofSeconds(2))
+            .retryWhen(Retry.fixedDelay(2, Duration.ofSeconds(3))
                     .filter(this::isRetryableError)
                     .doBeforeRetry(retrySignal -> logger.warn("🔄 Reintentando refresh token. Intento: {}, Error: {}",
                             retrySignal.totalRetries() + 1,
@@ -137,6 +137,20 @@ public class WebClientService {
                         )));
               }})
             .bodyToMono(FacturaResponse.class)
+            .retryWhen(Retry.fixedDelay(2, Duration.ofSeconds(3))
+                    .filter(this::isRetryableError)
+                    .doBeforeRetry(retrySignal -> logger.warn("🔄 Reintentando refresh token. Intento: {}, Error: {}",
+                            retrySignal.totalRetries() + 1,
+                            retrySignal.failure().getMessage()))
+                    .onRetryExhaustedThrow((retryBackOffSpec,retrySignal)->{
+                      logger.error("❌ Error después de {} intentos: {}",
+                              retrySignal.totalRetries() + 1,
+                              retrySignal.failure().getMessage());
+                      return new RuntimeException("Error al refrescar token después de reintentos: " +
+                              retrySignal.failure().getMessage(),
+                              retrySignal.failure());
+                    })
+            )
             .doOnError(error -> logger.error("💥 Error al enviar factura: {}", error.getMessage()));
   }
 
